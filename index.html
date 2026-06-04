@@ -3,233 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GoodPoint — Pricing Scenario Simulator</title>
+<title>GoodPoint — Pricing Simulator & Competitive Intelligence</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #F8FAFC;
-    color: #1E293B;
-    font-size: 14px;
-    min-height: 100vh;
-  }
-
-  header {
-    background: #0891B2;
-    padding: 14px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header .brand { font-size: 20px; font-weight: 600; color: #fff; letter-spacing: -.3px; }
-  header .sub { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 2px; }
-  header button {
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: #fff;
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 13px;
-    cursor: pointer;
-  }
-  header button:hover { background: rgba(255,255,255,0.25); }
-
-  .main { max-width: 1200px; margin: 0 auto; padding: 24px 24px; }
-
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 16px; }
-
-  .card {
-    background: #fff;
-    border: 1px solid #E2E8F0;
-    border-radius: 12px;
-    padding: 16px 20px;
-  }
-
-  .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    color: #64748B;
-    margin-bottom: 14px;
-  }
-
-  .metric {
-    background: #F1F5F9;
-    border-radius: 8px;
-    padding: 12px 16px;
-  }
-  .metric .lbl { font-size: 12px; color: #64748B; margin-bottom: 4px; }
-  .metric .val { font-size: 22px; font-weight: 600; color: #1E293B; }
-  .metric .sub { font-size: 11px; color: #94A3B8; margin-top: 3px; }
-  .val-green { color: #0F6E56 !important; }
-  .val-amber { color: #92400E !important; }
-  .val-red   { color: #991B1B !important; }
-
-  .slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .slider-row label { font-size: 12.5px; color: #475569; min-width: 160px; }
-  .slider-row input[type=range] {
-    flex: 1;
-    -webkit-appearance: none;
-    height: 4px;
-    background: #CBD5E1;
-    border-radius: 4px;
-    outline: none;
-    cursor: pointer;
-  }
-  .slider-row input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: #0891B2;
-    cursor: pointer;
-    border: 2px solid #fff;
-    box-shadow: 0 1px 4px rgba(0,0,0,.2);
-  }
-  .slider-row .readout {
-    font-size: 13px; font-weight: 600; min-width: 68px; text-align: right; color: #0891B2;
-  }
-
-  .tier-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-  .tier-btn {
-    border: 1px solid #CBD5E1;
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-size: 13px;
-    cursor: pointer;
-    background: #fff;
-    color: #475569;
-    transition: all .12s;
-    font-family: inherit;
-  }
-  .tier-btn:hover { background: #F1F5F9; }
-  .tier-btn.active {
-    background: #E0F2FE;
-    border-color: #0891B2;
-    color: #0E4F6A;
-    font-weight: 600;
-  }
-
-  .be-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 9px 14px;
-    background: #F8FAFC;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-  }
-  .be-row .be-label { color: #64748B; }
-  .be-row .be-val { font-weight: 600; }
-
-  .tag {
-    display: inline-block;
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 99px;
-    font-weight: 600;
-  }
-  .tag-green { background: #D1FAE5; color: #065F46; }
-  .tag-amber { background: #FEF3C7; color: #92400E; }
-  .tag-red   { background: #FEE2E2; color: #991B1B; }
-
-  .insight {
-    font-size: 13px;
-    color: #334155;
-    line-height: 1.6;
-    padding: 12px 16px;
-    background: #F0F9FF;
-    border-radius: 8px;
-    border-left: 3px solid #0891B2;
-  }
-
-  .chart-section { margin-bottom: 0; }
-  .chart-legend { display: flex; gap: 20px; margin-bottom: 10px; font-size: 12px; color: #64748B; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 5px; vertical-align: middle; }
-
-  footer { text-align: center; padding: 16px; font-size: 11px; color: #94A3B8; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F8FAFC;color:#1E293B;font-size:14px;min-height:100vh}
+a{color:#0891B2;text-decoration:none}a:hover{text-decoration:underline}
+header{background:#0891B2;padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:20px;font-weight:600;color:#fff}.sub{font-size:12px;color:rgba(255,255,255,.75);margin-top:2px}
+header button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
+header button:hover{background:rgba(255,255,255,.25)}
+.tab-bar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 32px;display:flex;gap:0}
+.tab-btn{padding:12px 22px;font-size:14px;font-weight:500;border:none;background:none;cursor:pointer;color:#64748B;border-bottom:2px solid transparent;font-family:inherit;transition:all .15s}
+.tab-btn.active{color:#0891B2;border-bottom-color:#0891B2}
+.tab-btn:hover:not(.active){color:#1E293B}
+.main{max-width:1200px;margin:0 auto;padding:24px}
+.pane{display:none}.pane.active{display:block}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 20px}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#64748B;margin-bottom:14px}
+.metric{background:#F1F5F9;border-radius:8px;padding:12px 16px}
+.metric .lbl{font-size:12px;color:#64748B;margin-bottom:4px}
+.metric .val{font-size:22px;font-weight:600;color:#1E293B}
+.metric .sub{font-size:11px;color:#94A3B8;margin-top:3px}
+.val-green{color:#0F6E56!important}.val-amber{color:#92400E!important}.val-red{color:#991B1B!important}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.slider-row label{font-size:12.5px;color:#475569;min-width:160px}
+.slider-row input[type=range]{flex:1;-webkit-appearance:none;height:4px;background:#CBD5E1;border-radius:4px;outline:none;cursor:pointer}
+.slider-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#0891B2;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.slider-row .readout{font-size:13px;font-weight:600;min-width:68px;text-align:right;color:#0891B2}
+.tier-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tier-btn{border:1px solid #CBD5E1;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;background:#fff;color:#475569;transition:all .12s;font-family:inherit}
+.tier-btn:hover{background:#F1F5F9}
+.tier-btn.active{background:#E0F2FE;border-color:#0891B2;color:#0E4F6A;font-weight:600}
+.be-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#F8FAFC;border-radius:8px;margin-bottom:8px;font-size:13px}
+.be-label{color:#64748B}.be-val{font-weight:600}
+.tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600}
+.tag-green{background:#D1FAE5;color:#065F46}.tag-amber{background:#FEF3C7;color:#92400E}.tag-red{background:#FEE2E2;color:#991B1B}
+.insight{font-size:13px;color:#334155;line-height:1.6;padding:12px 16px;background:#F0F9FF;border-radius:8px;border-left:3px solid #0891B2}
+/* Competitor table */
+.comp-table{width:100%;border-collapse:collapse;font-size:13px}
+.comp-table th{background:#0891B2;color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.comp-table th:first-child{border-radius:8px 0 0 0}
+.comp-table th:last-child{border-radius:0 8px 0 0}
+.comp-table td{padding:10px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle}
+.comp-table tr:nth-child(even) td{background:#F8FAFC}
+.comp-table tr:hover td{background:#F0F9FF}
+.comp-table tr.goodpoint td{background:#E0F2FE!important;font-weight:600}
+.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:99px;font-weight:600;white-space:nowrap}
+.badge-red{background:#FEE2E2;color:#991B1B}
+.badge-amber{background:#FEF3C7;color:#92400E}
+.badge-green{background:#D1FAE5;color:#065F46}
+.badge-blue{background:#E0F2FE;color:#0E4F6A}
+.badge-gray{background:#F1F5F9;color:#475569}
+.sim-btn{border:1px solid #0891B2;color:#0891B2;background:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap}
+.sim-btn:hover{background:#E0F2FE}
+.adv-cell{font-size:12px;font-weight:600;text-align:center}
+.source-link{font-size:11px;color:#0891B2}
+.comp-note{font-size:12px;color:#64748B;margin-top:8px;line-height:1.5;padding:10px 14px;background:#F8FAFC;border-radius:8px;border-left:2px solid #CBD5E1}
+.market-pos{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;background:#E0F2FE;color:#0E4F6A;margin-left:12px}
+footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 </style>
 </head>
 <body>
-
 <header>
   <div>
-    <div class="brand">GoodPoint — Pricing Scenario Simulator</div>
-    <div class="sub">Model profit, ROI, and break-even across pricing tiers</div>
+    <div class="brand">GoodPoint — Pricing Simulator & Competitive Intelligence</div>
+    <div class="sub">Model profit, ROI, and break-even · Benchmark against 6 competitors</div>
   </div>
-  <button onclick="resetAll()">↺ Reset defaults</button>
+  <button onclick="resetAll()">↺ Reset</button>
 </header>
 
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-sim" onclick="switchTab('sim')">📊 Scenario Simulator</button>
+  <button class="tab-btn" id="tab-comp" onclick="switchTab('comp')">🏆 Competitor Benchmarking</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ SIMULATOR TAB -->
+<div class="pane active" id="pane-sim">
 <div class="main">
 
   <div class="grid-2">
     <div class="card">
       <p class="section-label">Cost structure</p>
-      <div class="slider-row">
-        <label>Fixed cost / month (£)</label>
-        <input type="range" min="1000" max="20000" step="500" id="fixedCost" value="5000" oninput="update()">
-        <span class="readout" id="fixedCostOut">£5,000</span>
-      </div>
-      <div class="slider-row">
-        <label>Variable cost / script (£)</label>
-        <input type="range" min="0.01" max="0.5" step="0.01" id="varCost" value="0.12" oninput="update()">
-        <span class="readout" id="varCostOut">£0.12</span>
-      </div>
-      <div class="slider-row">
-        <label>CAC per customer (£)</label>
-        <input type="range" min="0" max="5000" step="100" id="cac" value="800" oninput="update()">
-        <span class="readout" id="cacOut">£800</span>
-      </div>
-      <div class="slider-row">
-        <label>Avg. retention (months)</label>
-        <input type="range" min="6" max="60" step="1" id="retention" value="24" oninput="update()">
-        <span class="readout" id="retentionOut">24 mo</span>
-      </div>
+      <div class="slider-row"><label>Fixed cost / month (£)</label><input type="range" min="1000" max="20000" step="500" id="fixedCost" value="5000" oninput="update()"><span class="readout" id="fixedCostOut">£5,000</span></div>
+      <div class="slider-row"><label>Variable cost / script (£)</label><input type="range" min="0.01" max="0.5" step="0.01" id="varCost" value="0.12" oninput="update()"><span class="readout" id="varCostOut">£0.12</span></div>
+      <div class="slider-row"><label>CAC per customer (£)</label><input type="range" min="0" max="5000" step="100" id="cac" value="800" oninput="update()"><span class="readout" id="cacOut">£800</span></div>
+      <div class="slider-row"><label>Avg. retention (months)</label><input type="range" min="6" max="60" step="1" id="retention" value="24" oninput="update()"><span class="readout" id="retentionOut">24 mo</span></div>
     </div>
-
     <div class="card">
-      <p class="section-label">Active pricing tier</p>
+      <p class="section-label">Active pricing tier <span id="market-pos-badge"></span></p>
       <div class="tier-btns">
-        <button class="tier-btn active" id="tier-script"        onclick="setTier('script')">Per-script</button>
-        <button class="tier-btn"        id="tier-student"       onclick="setTier('student')">Per-student</button>
-        <button class="tier-btn"        id="tier-faculty"       onclick="setTier('faculty')">Faculty licence</button>
-        <button class="tier-btn"        id="tier-institutional" onclick="setTier('institutional')">Institutional</button>
+        <button class="tier-btn active" id="tier-script" onclick="setTier('script')">Per-script</button>
+        <button class="tier-btn" id="tier-student" onclick="setTier('student')">Per-student</button>
+        <button class="tier-btn" id="tier-faculty" onclick="setTier('faculty')">Faculty licence</button>
+        <button class="tier-btn" id="tier-institutional" onclick="setTier('institutional')">Institutional</button>
       </div>
       <div id="tier-inputs"></div>
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:16px;">
+  <div class="card" style="margin-bottom:16px">
     <p class="section-label">Volume & demand</p>
-    <div class="grid-2" style="margin-bottom:0; gap:0 40px;">
+    <div class="grid-2" style="margin-bottom:0;gap:0 40px">
       <div>
-        <div class="slider-row">
-          <label>Scripts / month</label>
-          <input type="range" min="100" max="20000" step="100" id="scripts" value="2000" oninput="update()">
-          <span class="readout" id="scriptsOut">2,000</span>
-        </div>
-        <div class="slider-row">
-          <label>Students / year</label>
-          <input type="range" min="100" max="10000" step="100" id="students" value="1000" oninput="update()">
-          <span class="readout" id="studentsOut">1,000</span>
-        </div>
+        <div class="slider-row"><label>Scripts / month</label><input type="range" min="100" max="20000" step="100" id="scripts" value="2000" oninput="update()"><span class="readout" id="scriptsOut">2,000</span></div>
+        <div class="slider-row"><label>Students / year</label><input type="range" min="100" max="10000" step="100" id="students" value="1000" oninput="update()"><span class="readout" id="studentsOut">1,000</span></div>
       </div>
       <div>
-        <div class="slider-row">
-          <label>Active customers</label>
-          <input type="range" min="1" max="50" step="1" id="customers" value="5" oninput="update()">
-          <span class="readout" id="customersOut">5</span>
-        </div>
-        <div class="slider-row">
-          <label>Churn rate / month (%)</label>
-          <input type="range" min="0" max="10" step="0.5" id="churn" value="2" oninput="update()">
-          <span class="readout" id="churnOut">2.0%</span>
-        </div>
+        <div class="slider-row"><label>Active customers</label><input type="range" min="1" max="50" step="1" id="customers" value="5" oninput="update()"><span class="readout" id="customersOut">5</span></div>
+        <div class="slider-row"><label>Churn rate / month (%)</label><input type="range" min="0" max="10" step="0.5" id="churn" value="2" oninput="update()"><span class="readout" id="churnOut">2.0%</span></div>
       </div>
     </div>
   </div>
@@ -237,33 +122,90 @@
   <div class="grid-4" id="kpi-grid"></div>
   <div class="grid-3" id="kpi-grid2"></div>
 
-  <div class="grid-2" style="margin-bottom:16px;">
-    <div class="card">
-      <p class="section-label">Break-even & runway</p>
-      <div id="breakeven-section"></div>
-    </div>
-    <div class="card">
-      <p class="section-label">Scenario insight</p>
-      <div id="insight-box"></div>
-    </div>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card"><p class="section-label">Break-even & runway</p><div id="breakeven-section"></div></div>
+    <div class="card"><p class="section-label">Scenario insight</p><div id="insight-box"></div></div>
   </div>
 
-  <div class="card chart-section">
+  <div class="card">
     <p class="section-label">Monthly profit curve — scripts/month vs operating profit</p>
-    <div class="chart-legend">
-      <span><span class="legend-dot" style="background:#0891B2;"></span>Operating profit (£/mo)</span>
-      <span><span class="legend-dot" style="background:#F59E0B; border-radius:50%;"></span>Current scenario</span>
+    <div style="display:flex;gap:20px;margin-bottom:10px;font-size:12px;color:#64748B">
+      <span><span style="width:10px;height:10px;border-radius:2px;background:#0891B2;display:inline-block;margin-right:5px;vertical-align:middle"></span>Operating profit (£/mo)</span>
+      <span><span style="width:10px;height:10px;border-radius:50%;background:#F59E0B;display:inline-block;margin-right:5px;vertical-align:middle"></span>Current scenario</span>
     </div>
-    <div style="position:relative; width:100%; height:240px;">
-      <canvas id="profitChart" role="img" aria-label="Line chart showing operating profit at different monthly script volumes.">Operating profit curve across script volumes.</canvas>
+    <div style="position:relative;width:100%;height:240px">
+      <canvas id="profitChart" role="img" aria-label="Line chart showing operating profit at different monthly script volumes.">Operating profit curve.</canvas>
     </div>
   </div>
 
+  <div style="text-align:center;margin-top:16px">
+    <button class="tier-btn" onclick="switchTab('comp')" style="font-size:13px;padding:10px 20px">View competitor benchmarking →</button>
+  </div>
+</div>
 </div>
 
-<footer>GoodPoint Pricing Simulator &nbsp;·&nbsp; Generated for internal use</footer>
+<!-- ═══════════════════════════════════════════════════════ COMPETITOR TAB -->
+<div class="pane" id="pane-comp">
+<div class="main">
+
+  <div class="card" style="margin-bottom:16px">
+    <p class="section-label">Competitive landscape — AI grading & assessment platforms</p>
+    <p style="font-size:13px;color:#475569;margin-bottom:16px;line-height:1.6">Prices sourced from public pricing pages, procurement records, and industry reports. Click <strong>Simulate</strong> on any competitor row to load a suggested competitive GoodPoint price into the simulator and see the unit economics side by side.</p>
+
+    <div style="overflow-x:auto">
+    <table class="comp-table" id="comp-table">
+      <thead>
+        <tr>
+          <th>Competitor</th>
+          <th>Segment</th>
+          <th>Pricing model</th>
+          <th>Entry price</th>
+          <th>Institutional price</th>
+          <th>STEM / handwriting</th>
+          <th>GDPR-native</th>
+          <th>Threat</th>
+          <th>vs. GoodPoint now</th>
+          <th>Source</th>
+          <th>Simulate</th>
+        </tr>
+      </thead>
+      <tbody id="comp-tbody"></tbody>
+    </table>
+    </div>
+
+    <div class="comp-note" id="comp-note">
+      ⬆ The <strong>vs. GoodPoint now</strong> column updates live based on your current simulator price. Go to the Simulator tab, adjust your price per script, then return here to see how your positioning shifts.
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <p class="section-label">Positioning summary</p>
+      <div id="pos-summary"></div>
+    </div>
+    <div class="card">
+      <p class="section-label">Key differentiation vs competitors</p>
+      <div style="display:flex;flex-direction:column;gap:8px" id="diff-box">
+        <div class="be-row"><span class="be-label">Handwritten STEM grading</span><span class="badge badge-green">GoodPoint only</span></div>
+        <div class="be-row"><span class="be-label">GDPR-native architecture</span><span class="badge badge-green">GoodPoint only</span></div>
+        <div class="be-row"><span class="be-label">UK/EU HE focus</span><span class="badge badge-green">GoodPoint only</span></div>
+        <div class="be-row"><span class="be-label">Free pilot tier</span><span class="badge badge-blue">GoodPoint + Gradescope</span></div>
+        <div class="be-row"><span class="be-label">LMS integration</span><span class="badge badge-amber">Gradescope ahead</span></div>
+        <div class="be-row"><span class="be-label">Brand recognition in HE</span><span class="badge badge-red">Turnitin dominant</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px">
+    <button class="tier-btn" onclick="switchTab('sim')" style="font-size:13px;padding:10px 20px">← Back to simulator</button>
+  </div>
+</div>
+</div>
+
+<footer>GoodPoint Pricing Simulator &amp; Competitive Intelligence · Generated for internal use · Prices verified June 2026</footer>
 
 <script>
+// ── State ─────────────────────────────────────────────────────────────────
 let currentTier = 'script';
 let profitChart = null;
 const tierConfig = {
@@ -273,10 +215,144 @@ const tierConfig = {
   institutional: { annualLicence: 24000 }
 };
 
+// ── Competitor data ────────────────────────────────────────────────────────
+const competitors = [
+  {
+    name: 'Turnitin',
+    segment: 'Global HE',
+    model: 'Per-student / yr',
+    entry: '£2–5 / student / yr',
+    institutional: '£50K–200K / yr',
+    stem: 'Low',
+    stemTag: 'badge-red',
+    gdpr: 'No',
+    gdprTag: 'badge-red',
+    threat: 'HIGH',
+    threatTag: 'badge-red',
+    suggestedPrice: 3.00,
+    sourceUrl: 'https://themarkup.org/artificial-intelligence/2025/06/26/plagiarism-detector-costs-california',
+    sourceLabel: 'The Markup, Jun 2025',
+    entryNum: 3.0
+  },
+  {
+    name: 'Gradescope',
+    segment: 'Global HE',
+    model: 'Per-student / yr',
+    entry: '$1–5 / student / yr',
+    institutional: 'Via Turnitin licence',
+    stem: 'High',
+    stemTag: 'badge-green',
+    gdpr: 'No',
+    gdprTag: 'badge-red',
+    threat: 'HIGH',
+    threatTag: 'badge-red',
+    suggestedPrice: 2.00,
+    sourceUrl: 'https://www.gradescope.com/pricing',
+    sourceLabel: 'gradescope.com/pricing',
+    entryNum: 2.0
+  },
+  {
+    name: 'ExamAI',
+    segment: 'Global HE',
+    model: 'Subscription / per-script',
+    entry: 'Free + paid plans',
+    institutional: 'Enterprise (custom)',
+    stem: 'Medium–High',
+    stemTag: 'badge-amber',
+    gdpr: 'No',
+    gdprTag: 'badge-red',
+    threat: 'MEDIUM',
+    threatTag: 'badge-amber',
+    suggestedPrice: 1.50,
+    sourceUrl: 'https://www.examai.ai/pricing',
+    sourceLabel: 'examai.ai/pricing',
+    entryNum: 0.80
+  },
+  {
+    name: 'EduSageAI',
+    segment: 'K-12 / SMB',
+    model: 'Flat monthly',
+    entry: 'Free + $25 / mo',
+    institutional: 'Enterprise (custom)',
+    stem: 'Low',
+    stemTag: 'badge-red',
+    gdpr: 'No',
+    gdprTag: 'badge-red',
+    threat: 'LOW',
+    threatTag: 'badge-green',
+    suggestedPrice: 1.00,
+    sourceUrl: 'https://www.edusageai.com/',
+    sourceLabel: 'edusageai.com',
+    entryNum: 0.50
+  },
+  {
+    name: 'CoGrader',
+    segment: 'K-12 / SMB',
+    model: 'Per-teacher / mo',
+    entry: 'Free + $15 / mo',
+    institutional: '~$200 / yr (est.)',
+    stem: 'Low',
+    stemTag: 'badge-red',
+    gdpr: 'No',
+    gdprTag: 'badge-red',
+    threat: 'LOW',
+    threatTag: 'badge-green',
+    suggestedPrice: 0.80,
+    sourceUrl: 'https://www.edusageai.com/blogs/best-cograder-alternatives-in-2026-ai-grading-tools-compared',
+    sourceLabel: 'EduSageAI comparison, Mar 2026',
+    entryNum: 0.30
+  },
+  {
+    name: 'Eklavvya',
+    segment: 'Asia / EU',
+    model: 'Custom / enterprise',
+    entry: 'Custom quote',
+    institutional: 'Custom quote',
+    stem: 'Medium',
+    stemTag: 'badge-amber',
+    gdpr: 'Partial',
+    gdprTag: 'badge-amber',
+    threat: 'MEDIUM',
+    threatTag: 'badge-amber',
+    suggestedPrice: 2.50,
+    sourceUrl: 'https://www.eklavvya.com/',
+    sourceLabel: 'eklavvya.com',
+    entryNum: 2.0
+  },
+  {
+    name: 'GoodPoint ★',
+    segment: 'UK / EU HE',
+    model: 'Per-script / licence',
+    entry: 'Free pilot',
+    institutional: '£6.5K–30K / yr',
+    stem: 'Highest',
+    stemTag: 'badge-green',
+    gdpr: 'Yes',
+    gdprTag: 'badge-green',
+    threat: '—',
+    threatTag: 'badge-blue',
+    suggestedPrice: null,
+    sourceUrl: 'https://zanista.ai',
+    sourceLabel: 'zanista.ai',
+    entryNum: 2.50,
+    isGoodPoint: true
+  }
+];
+
+// ── Tab switching ─────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('pane-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'comp') renderCompTable();
+}
+
+// ── Tier logic ────────────────────────────────────────────────────────────
 function setTier(t) {
   currentTier = t;
   ['script','student','faculty','institutional'].forEach(id => {
-    document.getElementById('tier-'+id).classList.toggle('active', id === t);
+    document.getElementById('tier-' + id).classList.toggle('active', id === t);
   });
   renderTierInputs();
   update();
@@ -285,32 +361,17 @@ function setTier(t) {
 function renderTierInputs() {
   const el = document.getElementById('tier-inputs');
   if (currentTier === 'script') {
-    el.innerHTML = `<div class="slider-row">
-      <label>Price per script (£)</label>
-      <input type="range" min="0.5" max="6" step="0.1" id="pricePerScript" value="${tierConfig.script.pricePerScript}" oninput="tierConfig.script.pricePerScript=+this.value; update()">
-      <span class="readout" id="pricePerScriptOut">£${tierConfig.script.pricePerScript.toFixed(2)}</span>
-    </div>`;
+    el.innerHTML = `<div class="slider-row"><label>Price per script (£)</label><input type="range" min="0.5" max="6" step="0.1" id="pricePerScript" value="${tierConfig.script.pricePerScript}" oninput="tierConfig.script.pricePerScript=+this.value;update()"><span class="readout" id="pricePerScriptOut">£${tierConfig.script.pricePerScript.toFixed(2)}</span></div>`;
   } else if (currentTier === 'student') {
-    el.innerHTML = `<div class="slider-row">
-      <label>Price per student/yr (£)</label>
-      <input type="range" min="5" max="30" step="0.5" id="pricePerStudent" value="${tierConfig.student.pricePerStudent}" oninput="tierConfig.student.pricePerStudent=+this.value; update()">
-      <span class="readout" id="pricePerStudentOut">£${tierConfig.student.pricePerStudent.toFixed(2)}</span>
-    </div>`;
+    el.innerHTML = `<div class="slider-row"><label>Price per student/yr (£)</label><input type="range" min="5" max="30" step="0.5" id="pricePerStudent" value="${tierConfig.student.pricePerStudent}" oninput="tierConfig.student.pricePerStudent=+this.value;update()"><span class="readout" id="pricePerStudentOut">£${tierConfig.student.pricePerStudent.toFixed(2)}</span></div>`;
   } else if (currentTier === 'faculty') {
-    el.innerHTML = `<div class="slider-row">
-      <label>Annual licence (£)</label>
-      <input type="range" min="3000" max="15000" step="500" id="facultyLicence" value="${tierConfig.faculty.annualLicence}" oninput="tierConfig.faculty.annualLicence=+this.value; update()">
-      <span class="readout" id="facultyLicenceOut">£${(tierConfig.faculty.annualLicence/1000).toFixed(1)}K</span>
-    </div>`;
+    el.innerHTML = `<div class="slider-row"><label>Annual licence (£)</label><input type="range" min="3000" max="15000" step="500" id="facultyLicence" value="${tierConfig.faculty.annualLicence}" oninput="tierConfig.faculty.annualLicence=+this.value;update()"><span class="readout" id="facultyLicenceOut">£${(tierConfig.faculty.annualLicence/1000).toFixed(1)}K</span></div>`;
   } else {
-    el.innerHTML = `<div class="slider-row">
-      <label>Annual licence (£)</label>
-      <input type="range" min="10000" max="60000" step="1000" id="instLicence" value="${tierConfig.institutional.annualLicence}" oninput="tierConfig.institutional.annualLicence=+this.value; update()">
-      <span class="readout" id="instLicenceOut">£${(tierConfig.institutional.annualLicence/1000).toFixed(0)}K</span>
-    </div>`;
+    el.innerHTML = `<div class="slider-row"><label>Annual licence (£)</label><input type="range" min="10000" max="60000" step="1000" id="instLicence" value="${tierConfig.institutional.annualLicence}" oninput="tierConfig.institutional.annualLicence=+this.value;update()"><span class="readout" id="instLicenceOut">£${(tierConfig.institutional.annualLicence/1000).toFixed(0)}K</span></div>`;
   }
 }
 
+// ── Helpers ───────────────────────────────────────────────────────────────
 function getV(id) { return parseFloat(document.getElementById(id).value); }
 function fmt(n) {
   if (Math.abs(n) >= 1000000) return '£' + (n/1000000).toFixed(1) + 'M';
@@ -321,12 +382,18 @@ function fmtN(n) { return Math.round(n).toLocaleString(); }
 
 function calcRevenue(scripts, students, customers, tier) {
   if (tier === 'script')        return scripts * tierConfig.script.pricePerScript;
-  if (tier === 'student')       return (students * tierConfig.student.pricePerStudent / 12);
+  if (tier === 'student')       return students * tierConfig.student.pricePerStudent / 12;
   if (tier === 'faculty')       return customers * tierConfig.faculty.annualLicence / 12;
   if (tier === 'institutional') return customers * tierConfig.institutional.annualLicence / 12;
   return 0;
 }
 
+function getCurrentPricePerScript() {
+  if (currentTier === 'script') return tierConfig.script.pricePerScript;
+  return null;
+}
+
+// ── Main update ───────────────────────────────────────────────────────────
 function update() {
   const fixed    = getV('fixedCost');
   const varC     = getV('varCost');
@@ -341,10 +408,10 @@ function update() {
   document.getElementById('varCostOut').textContent    = '£' + varC.toFixed(2);
   document.getElementById('cacOut').textContent        = fmt(cac);
   document.getElementById('retentionOut').textContent  = retention + ' mo';
-  document.getElementById('scriptsOut').textContent    = fmtN(scripts);
-  document.getElementById('studentsOut').textContent   = fmtN(students);
-  document.getElementById('customersOut').textContent  = customers;
-  document.getElementById('churnOut').textContent      = (churn*100).toFixed(1) + '%';
+  document.getElementById('scriptsOut').textContent   = fmtN(scripts);
+  document.getElementById('studentsOut').textContent  = fmtN(students);
+  document.getElementById('customersOut').textContent = customers;
+  document.getElementById('churnOut').textContent     = (churn*100).toFixed(1) + '%';
 
   if (currentTier==='script'        && document.getElementById('pricePerScriptOut'))
     document.getElementById('pricePerScriptOut').textContent = '£' + tierConfig.script.pricePerScript.toFixed(2);
@@ -363,18 +430,17 @@ function update() {
   const annualRevenue = revenueMonth * 12;
   const annualProfit  = opProfit * 12;
 
-  const revenuePerCustomer = customers > 0 ? revenueMonth / customers : 0;
-  const ltv     = revenuePerCustomer * retention * (1 - churn * retention / 2);
+  const revPerCustomer = customers > 0 ? revenueMonth / customers : 0;
+  const ltv     = revPerCustomer * retention * (1 - churn * retention / 2);
   const ltvcac  = cac > 0 ? ltv / cac : 0;
-  const payback = revenuePerCustomer > 0 ? cac / revenuePerCustomer : Infinity;
+  const payback = revPerCustomer > 0 ? cac / revPerCustomer : Infinity;
   const roi     = cac > 0 ? ((ltv - cac) / cac) * 100 : 0;
-
-  const ppu = currentTier === 'script' ? tierConfig.script.pricePerScript : (revenueMonth / Math.max(scripts, 1));
+  const ppu     = currentTier === 'script' ? tierConfig.script.pricePerScript : (revenueMonth / Math.max(scripts, 1));
   const beScripts = (ppu - varC) > 0 ? fixed / (ppu - varC) : Infinity;
 
-  const profitColor  = opProfit >= 0 ? 'val-green' : 'val-red';
-  const marginColor  = grossMargin >= 70 ? 'val-green' : grossMargin >= 40 ? 'val-amber' : 'val-red';
-  const ltvColor     = ltvcac >= 3 ? 'val-green' : ltvcac >= 1 ? 'val-amber' : 'val-red';
+  const profitColor = opProfit >= 0 ? 'val-green' : 'val-red';
+  const marginColor = grossMargin >= 70 ? 'val-green' : grossMargin >= 40 ? 'val-amber' : 'val-red';
+  const ltvColor    = ltvcac >= 3 ? 'val-green' : ltvcac >= 1 ? 'val-amber' : 'val-red';
 
   document.getElementById('kpi-grid').innerHTML = `
     <div class="metric"><div class="lbl">Monthly revenue</div><div class="val">${fmt(revenueMonth)}</div><div class="sub">${fmt(annualRevenue)} / year</div></div>
@@ -384,20 +450,28 @@ function update() {
 
   document.getElementById('kpi-grid2').innerHTML = `
     <div class="metric"><div class="lbl">Customer LTV</div><div class="val ${ltvColor}">${fmt(ltv)}</div><div class="sub">Over ${retention} months</div></div>
-    <div class="metric"><div class="lbl">CAC payback</div><div class="val ${payback<=12?'val-green':payback<=24?'val-amber':'val-red'}">${isFinite(payback) ? payback.toFixed(1)+' mo' : '—'}</div><div class="sub">Target ≤ 12 months</div></div>
-    <div class="metric"><div class="lbl">Revenue / customer</div><div class="val">${fmt(revenuePerCustomer)}</div><div class="sub">per month</div></div>`;
+    <div class="metric"><div class="lbl">CAC payback</div><div class="val ${payback<=12?'val-green':payback<=24?'val-amber':'val-red'}">${isFinite(payback)?payback.toFixed(1)+' mo':'—'}</div><div class="sub">Target ≤ 12 months</div></div>
+    <div class="metric"><div class="lbl">Revenue / customer</div><div class="val">${fmt(revPerCustomer)}</div><div class="sub">per month</div></div>`;
 
-  const beDisplay = isFinite(beScripts) ? Math.ceil(beScripts).toLocaleString() : '—';
   const aboveBe   = isFinite(beScripts) && scripts >= beScripts;
-  const shortfall = isFinite(beScripts) && !aboveBe ? Math.ceil(beScripts - scripts).toLocaleString() + ' scripts short' : '';
-
+  const beDisplay = isFinite(beScripts) ? Math.ceil(beScripts).toLocaleString() : '—';
   document.getElementById('breakeven-section').innerHTML = `
     <div class="be-row"><span class="be-label">Break-even scripts / mo</span><span class="be-val">${beDisplay}</span></div>
-    <div class="be-row"><span class="be-label">Volume vs break-even</span><span class="tag ${aboveBe?'tag-green':'tag-amber'}">${aboveBe ? 'Above ✓' : (isFinite(beScripts) ? shortfall : 'N/A')}</span></div>
+    <div class="be-row"><span class="be-label">Volume vs break-even</span><span class="tag ${aboveBe?'tag-green':'tag-amber'}">${aboveBe?'Above ✓':(isFinite(beScripts)?Math.ceil(beScripts-scripts).toLocaleString()+' short':'N/A')}</span></div>
     <div class="be-row"><span class="be-label">Monthly burn / surplus</span><span class="be-val" style="color:${opProfit>=0?'#0F6E56':'#991B1B'}">${opProfit>=0?'+':''}${fmt(opProfit)}</span></div>
     <div class="be-row"><span class="be-label">Annual operating profit</span><span class="be-val" style="color:${annualProfit>=0?'#0F6E56':'#991B1B'}">${fmt(annualProfit)}</span></div>`;
 
   document.getElementById('insight-box').innerHTML = `<div class="insight">${buildInsight(opProfit, grossMargin, ltvcac, payback, beScripts, scripts)}</div>`;
+
+  // Market position badge
+  const price = getCurrentPricePerScript();
+  const badge = document.getElementById('market-pos-badge');
+  if (price !== null) {
+    const pos = price <= 1.5 ? 'Entry / aggressive' : price <= 2.5 ? 'Mid-market' : price <= 4 ? 'Premium' : 'Enterprise';
+    badge.innerHTML = `<span class="market-pos">📍 ${pos} (£${price.toFixed(2)}/script)</span>`;
+  } else {
+    badge.innerHTML = '';
+  }
 
   updateChart(fixed, varC, currentTier, students, customers, scripts);
 }
@@ -421,39 +495,109 @@ function updateChart(fixed, varC, tier, students, customers, currentScripts) {
     const rev = calcRevenue(v, students, customers, tier);
     profits.push(Math.round(rev - varC * v - fixed));
   }
-  const closest = volumes.reduce((b, v, i) => Math.abs(v - currentScripts) < Math.abs(volumes[b] - currentScripts) ? i : b, 0);
-
+  const closest = volumes.reduce((b,v,i) => Math.abs(v-currentScripts) < Math.abs(volumes[b]-currentScripts) ? i : b, 0);
   if (!profitChart) {
     profitChart = new Chart(document.getElementById('profitChart'), {
       type: 'line',
       data: {
         labels: volumes,
         datasets: [
-          { label: 'Operating profit (£/mo)', data: profits, borderColor: '#0891B2', backgroundColor: 'rgba(8,145,178,0.07)', fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 },
-          { label: 'Current scenario', data: volumes.map((v,i) => i === closest ? profits[closest] : null), pointRadius: volumes.map((v,i) => i === closest ? 8 : 0), pointBackgroundColor: '#F59E0B', pointBorderColor: '#fff', pointBorderWidth: 2, borderColor: 'transparent', showLine: false }
+          { label: 'Operating profit', data: profits, borderColor: '#0891B2', backgroundColor: 'rgba(8,145,178,0.07)', fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 },
+          { label: 'Current', data: volumes.map((v,i) => i===closest?profits[closest]:null), pointRadius: volumes.map((v,i) => i===closest?8:0), pointBackgroundColor: '#F59E0B', pointBorderColor: '#fff', pointBorderWidth: 2, borderColor: 'transparent', showLine: false }
         ]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { callbacks: {
-          label: ctx => ' £' + ctx.parsed.y.toLocaleString() + '/mo',
-          title: ctx => ctx[0].label.toLocaleString() + ' scripts/mo'
-        }}},
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' £'+ctx.parsed.y.toLocaleString()+'/mo', title: ctx => ctx[0].label.toLocaleString()+' scripts/mo' }}},
         scales: {
-          x: { ticks: { color: '#94A3B8', callback: (v,i) => volumes[i] % 3000 === 0 ? (volumes[i]/1000)+'K' : null, autoSkip: false, maxRotation: 0 }, grid: { color: 'rgba(0,0,0,0.04)' } },
-          y: { ticks: { color: '#94A3B8', callback: v => v >= 0 ? '£'+v.toLocaleString() : '-£'+Math.abs(v).toLocaleString() }, grid: { color: 'rgba(0,0,0,0.06)' } }
+          x: { ticks: { color: '#94A3B8', callback: (v,i) => volumes[i]%3000===0?(volumes[i]/1000)+'K':null, autoSkip: false, maxRotation: 0 }, grid: { color: 'rgba(0,0,0,0.04)' }},
+          y: { ticks: { color: '#94A3B8', callback: v => v>=0?'£'+v.toLocaleString():'-£'+Math.abs(v).toLocaleString() }, grid: { color: 'rgba(0,0,0,0.06)' }}
         }
       }
     });
   } else {
     profitChart.data.labels = volumes;
     profitChart.data.datasets[0].data = profits;
-    profitChart.data.datasets[1].data = volumes.map((v,i) => i === closest ? profits[closest] : null);
-    profitChart.data.datasets[1].pointRadius = volumes.map((v,i) => i === closest ? 8 : 0);
+    profitChart.data.datasets[1].data = volumes.map((v,i) => i===closest?profits[closest]:null);
+    profitChart.data.datasets[1].pointRadius = volumes.map((v,i) => i===closest?8:0);
     profitChart.update('none');
   }
 }
 
+// ── Competitor table ───────────────────────────────────────────────────────
+function renderCompTable() {
+  const currentPrice = getCurrentPricePerScript();
+  const tbody = document.getElementById('comp-tbody');
+  tbody.innerHTML = '';
+
+  competitors.forEach(c => {
+    const tr = document.createElement('tr');
+    if (c.isGoodPoint) tr.className = 'goodpoint';
+
+    // vs GoodPoint column
+    let advCell = '—';
+    if (!c.isGoodPoint && currentPrice !== null && c.entryNum > 0) {
+      const ratio = currentPrice / c.entryNum;
+      if (ratio < 0.8) advCell = `<span class="badge badge-green">£${currentPrice.toFixed(2)} — ${((1-ratio)*100).toFixed(0)}% cheaper</span>`;
+      else if (ratio <= 1.25) advCell = `<span class="badge badge-amber">£${currentPrice.toFixed(2)} — similar</span>`;
+      else advCell = `<span class="badge badge-red">£${currentPrice.toFixed(2)} — ${((ratio-1)*100).toFixed(0)}% pricier</span>`;
+    } else if (c.isGoodPoint) {
+      advCell = currentPrice !== null ? `<span class="badge badge-blue">Current: £${currentPrice.toFixed(2)}/script</span>` : '—';
+    }
+
+    const simBtn = !c.isGoodPoint && c.suggestedPrice !== null
+      ? `<button class="sim-btn" onclick="loadCompetitorPrice(${c.suggestedPrice}, '${c.name}')">Simulate £${c.suggestedPrice.toFixed(2)}</button>`
+      : '—';
+
+    tr.innerHTML = `
+      <td><strong>${c.name}</strong></td>
+      <td>${c.segment}</td>
+      <td>${c.model}</td>
+      <td><strong>${c.entry}</strong></td>
+      <td>${c.institutional}</td>
+      <td><span class="badge ${c.stemTag}">${c.stem}</span></td>
+      <td><span class="badge ${c.gdprTag}">${c.gdpr}</span></td>
+      <td><span class="badge ${c.threatTag}">${c.threat}</span></td>
+      <td class="adv-cell">${advCell}</td>
+      <td><a href="${c.sourceUrl}" target="_blank" class="source-link">↗ ${c.sourceLabel}</a></td>
+      <td>${simBtn}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  renderPosSummary(currentPrice);
+}
+
+function loadCompetitorPrice(price, name) {
+  tierConfig.script.pricePerScript = price;
+  currentTier = 'script';
+  ['script','student','faculty','institutional'].forEach(id => {
+    document.getElementById('tier-'+id).classList.toggle('active', id==='script');
+  });
+  renderTierInputs();
+  update();
+  switchTab('sim');
+  setTimeout(() => {
+    const badge = document.getElementById('market-pos-badge');
+    if (badge) badge.style.outline = '2px solid #F59E0B';
+    setTimeout(() => { if(badge) badge.style.outline = ''; }, 2000);
+  }, 200);
+}
+
+function renderPosSummary(currentPrice) {
+  const el = document.getElementById('pos-summary');
+  const price = currentPrice !== null ? currentPrice : 2.50;
+  const cheaper = competitors.filter(c => !c.isGoodPoint && c.entryNum > 0 && price < c.entryNum * 0.8).length;
+  const similar = competitors.filter(c => !c.isGoodPoint && c.entryNum > 0 && price >= c.entryNum * 0.8 && price <= c.entryNum * 1.25).length;
+  const pricier = competitors.filter(c => !c.isGoodPoint && c.entryNum > 0 && price > c.entryNum * 1.25).length;
+  el.innerHTML = `
+    <div class="be-row"><span class="be-label">Cheaper than (est.)</span><span class="be-val val-green">${cheaper} of 6 competitors</span></div>
+    <div class="be-row"><span class="be-label">Price-similar to</span><span class="be-val val-amber">${similar} of 6 competitors</span></div>
+    <div class="be-row"><span class="be-label">Pricier than (est.)</span><span class="be-val val-red">${pricier} of 6 competitors</span></div>
+    <div class="be-row" style="margin-top:8px"><span class="be-label">Your current price</span><span class="be-val">${price!==null?'£'+price.toFixed(2)+'/script':'Licence tier'}</span></div>
+    <p style="font-size:12px;color:#64748B;margin-top:10px;line-height:1.5">Comparisons are approximate — competitor prices use different units (per-student vs per-script). Use as directional signal only.</p>`;
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────────
 function resetAll() {
   document.getElementById('fixedCost').value  = 5000;
   document.getElementById('varCost').value    = 0.12;
