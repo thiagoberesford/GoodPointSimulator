@@ -44,21 +44,21 @@ header button:hover{background:rgba(255,255,255,.25)}
 .tag-green{background:#D1FAE5;color:#065F46}.tag-amber{background:#FEF3C7;color:#92400E}.tag-red{background:#FEE2E2;color:#991B1B}
 .insight{font-size:13px;color:#334155;line-height:1.6;padding:12px 16px;background:#F0F9FF;border-radius:8px;border-left:3px solid #0891B2}
 /* Competitor table */
-.comp-table{width:100%;border-collapse:collapse;font-size:13px}
-.comp-table th{background:#0891B2;color:#fff;padding:10px 14px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.comp-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.comp-table th{background:#0891B2;color:#fff;padding:8px 9px;text-align:left;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;overflow:hidden}
 .comp-table th:first-child{border-radius:8px 0 0 0}
 .comp-table th:last-child{border-radius:0 8px 0 0}
-.comp-table td{padding:10px 14px;border-bottom:1px solid #E2E8F0;vertical-align:middle}
+.comp-table td{padding:8px 9px;border-bottom:1px solid #E2E8F0;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0}
 .comp-table tr:nth-child(even) td{background:#F8FAFC}
 .comp-table tr:hover td{background:#F0F9FF}
 .comp-table tr.goodpoint td{background:#E0F2FE!important;font-weight:600}
-.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:99px;font-weight:600;white-space:nowrap}
+.badge{display:inline-block;font-size:10px;padding:2px 6px;border-radius:99px;font-weight:600;white-space:nowrap}
 .badge-red{background:#FEE2E2;color:#991B1B}
 .badge-amber{background:#FEF3C7;color:#92400E}
 .badge-green{background:#D1FAE5;color:#065F46}
 .badge-blue{background:#E0F2FE;color:#0E4F6A}
 .badge-gray{background:#F1F5F9;color:#475569}
-.sim-btn{border:1px solid #0891B2;color:#0891B2;background:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap}
+.sim-btn{border:1px solid #0891B2;color:#0891B2;background:#fff;border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap}
 .sim-btn:hover{background:#E0F2FE}
 .adv-cell{font-size:12px;font-weight:600;text-align:center}
 .source-link{font-size:11px;color:#0891B2}
@@ -155,26 +155,23 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
     <p class="section-label">Competitive landscape — AI grading & assessment platforms</p>
     <p style="font-size:13px;color:#475569;margin-bottom:16px;line-height:1.6">Prices sourced from public pricing pages, procurement records, and industry reports. Click <strong>Simulate</strong> on any competitor row to load a suggested competitive GoodPoint price into the simulator and see the unit economics side by side.</p>
 
-    <div style="overflow-x:auto">
     <table class="comp-table" id="comp-table">
       <thead>
         <tr>
-          <th>Competitor</th>
-          <th>Segment</th>
-          <th>Pricing model</th>
-          <th>Entry price</th>
-          <th>Institutional price</th>
-          <th>STEM / handwriting</th>
-          <th>GDPR-native</th>
-          <th>Threat</th>
-          <th>vs. GoodPoint now</th>
-          <th>Source</th>
-          <th>Simulate</th>
+          <th style="width:11%">Competitor</th>
+          <th style="width:10%">Pricing model</th>
+          <th style="width:10%">Entry price</th>
+          <th style="width:12%">Institutional price</th>
+          <th style="width:9%">STEM / handwriting</th>
+          <th style="width:7%">GDPR</th>
+          <th style="width:7%">Threat</th>
+          <th style="width:14%">vs. GoodPoint now</th>
+          <th style="width:11%">Source</th>
+          <th style="width:9%">Simulate</th>
         </tr>
       </thead>
       <tbody id="comp-tbody"></tbody>
     </table>
-    </div>
 
     <div class="comp-note" id="comp-note">
       ⬆ The <strong>vs. GoodPoint now</strong> column updates live based on your current simulator price. Go to the Simulator tab, adjust your price per script, then return here to see how your positioning shifts.
@@ -233,9 +230,9 @@ const competitors = [
   {
     name: 'Turnitin',
     segment: 'Global HE',
-    model: 'Per-student / yr',
-    entry: '£2–5 / student / yr',
-    institutional: '£50K–200K / yr **',
+    model: 'Per-student/yr',
+    entry: '£2–5/student/yr',
+    institutional: '£50K–200K/yr **',
     stem: 'Low',
     stemTag: 'badge-red',
     gdpr: 'No',
@@ -244,14 +241,14 @@ const competitors = [
     threatTag: 'badge-red',
     suggestedPrice: 3.00,
     sourceUrl: 'https://themarkup.org/artificial-intelligence/2025/06/26/plagiarism-detector-costs-california',
-    sourceLabel: 'The Markup, Jun 2025',
+    sourceLabel: 'The Markup (2025)',
     entryNum: 3.0
   },
   {
     name: 'Gradescope',
     segment: 'Global HE',
-    model: 'Per-student / yr',
-    entry: '$1–5 / student / yr *',
+    model: 'Per-student/yr',
+    entry: '$1–5/student/yr *',
     institutional: 'Via Turnitin licence *',
     stem: 'High',
     stemTag: 'badge-green',
@@ -261,13 +258,13 @@ const competitors = [
     threatTag: 'badge-red',
     suggestedPrice: 2.00,
     sourceUrl: 'https://www.gradescope.com/pricing',
-    sourceLabel: 'gradescope.com/pricing',
+    sourceLabel: 'gradescope.com',
     entryNum: 2.0
   },
   {
     name: 'ExamAI',
     segment: 'Global HE',
-    model: 'Subscription / per-script',
+    model: 'Subscription/per-script',
     entry: 'Free + paid plans ***',
     institutional: 'Enterprise (custom)',
     stem: 'Medium–High',
@@ -278,14 +275,14 @@ const competitors = [
     threatTag: 'badge-amber',
     suggestedPrice: 1.50,
     sourceUrl: 'https://www.examai.ai/pricing',
-    sourceLabel: 'examai.ai/pricing',
+    sourceLabel: 'examai.ai',
     entryNum: 0.80
   },
   {
     name: 'EduSageAI',
     segment: 'K-12 / SMB',
     model: 'Flat monthly',
-    entry: 'Free + $25 / mo',
+    entry: 'Free + $25/mo',
     institutional: 'Enterprise (custom)',
     stem: 'Low',
     stemTag: 'badge-red',
@@ -301,8 +298,8 @@ const competitors = [
   {
     name: 'CoGrader',
     segment: 'K-12 / SMB',
-    model: 'Per-teacher / mo',
-    entry: 'Free + $15 / mo',
+    model: 'Per-teacher/mo',
+    entry: 'Free + $15/mo',
     institutional: '~$200 / yr †',
     stem: 'Low',
     stemTag: 'badge-red',
@@ -312,13 +309,13 @@ const competitors = [
     threatTag: 'badge-green',
     suggestedPrice: 0.80,
     sourceUrl: 'https://www.edusageai.com/blogs/best-cograder-alternatives-in-2026-ai-grading-tools-compared',
-    sourceLabel: 'EduSageAI comparison, Mar 2026',
+    sourceLabel: 'EduSageAI (2026)',
     entryNum: 0.30
   },
   {
     name: 'Eklavvya',
     segment: 'Asia / EU',
-    model: 'Custom / enterprise',
+    model: 'Custom/enterprise',
     entry: 'Custom quote',
     institutional: 'Custom quote',
     stem: 'Medium',
@@ -335,7 +332,7 @@ const competitors = [
   {
     name: 'GoodPoint ★',
     segment: 'UK / EU HE',
-    model: 'Per-script / licence',
+    model: 'Per-script/licence',
     entry: 'Free pilot',
     institutional: '£6.5K–30K / yr',
     stem: 'Highest',
@@ -559,12 +556,11 @@ function renderCompTable() {
     }
 
     const simBtn = !c.isGoodPoint && c.suggestedPrice !== null
-      ? `<button class="sim-btn" onclick="loadCompetitorPrice(${c.suggestedPrice}, '${c.name}')">Simulate £${c.suggestedPrice.toFixed(2)}</button>`
+      ? `<button class="sim-btn" onclick="loadCompetitorPrice(${c.suggestedPrice}, '${c.name}')" title="Simulate GoodPoint at £${c.suggestedPrice.toFixed(2)}/script">▶ £${c.suggestedPrice.toFixed(2)}</button>`
       : '—';
 
     tr.innerHTML = `
-      <td><strong>${c.name}</strong></td>
-      <td>${c.segment}</td>
+      <td><strong>${c.name}</strong><br><span style="font-size:11px;color:#94A3B8;font-weight:400">${c.segment}</span></td>
       <td>${c.model}</td>
       <td><strong>${c.entry}</strong></td>
       <td>${c.institutional}</td>
