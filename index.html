@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GoodPoint — Pricing Simulator & Competitive Intelligence</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -70,6 +67,44 @@ header button:hover{background:rgba(255,255,255,.25)}
 .footnotes p{font-weight:600;margin-bottom:6px;color:#92400E}
 .footnotes li{margin-left:18px;margin-bottom:3px}
 .market-pos{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;background:#E0F2FE;color:#0E4F6A;margin-left:12px}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:28px 32px;max-width:520px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.2);position:relative}
+.modal-close{position:absolute;top:14px;right:16px;font-size:20px;background:none;border:none;cursor:pointer;color:#94A3B8;line-height:1}
+.modal-close:hover{color:#1E293B}
+.modal-title{font-size:17px;font-weight:600;color:#0891B2;margin-bottom:6px}
+.modal-subtitle{font-size:12px;color:#94A3B8;margin-bottom:16px}
+.modal-body{font-size:13px;color:#334155;line-height:1.65}
+.modal-body strong{color:#1E293B}
+.modal-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F1F5F9}
+.modal-row:last-child{border-bottom:none}
+.modal-row .mk{font-size:12px;color:#64748B;min-width:130px}
+.modal-row .mv{font-size:12px;font-weight:600;color:#1E293B;text-align:right}
+
+
+.guide-hero{background:linear-gradient(135deg,#0891B2 0%,#155E75 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff}
+.guide-hero h1{font-size:22px;font-weight:700;margin-bottom:6px}
+.guide-hero p{font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;max-width:700px}
+.guide-tabs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.guide-tab-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:18px 16px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.guide-tab-card:hover{box-shadow:0 4px 16px rgba(8,145,178,.12);border-color:#0891B2}
+.guide-tab-card .gtc-icon{font-size:26px;margin-bottom:8px}
+.guide-tab-card .gtc-title{font-size:13px;font-weight:600;color:#1E293B;margin-bottom:6px}
+.guide-tab-card .gtc-desc{font-size:12px;color:#64748B;line-height:1.5}
+.guide-tab-card .gtc-steps{margin-top:10px;padding-top:10px;border-top:1px solid #F1F5F9}
+.guide-tab-card .gtc-step{font-size:11.5px;color:#475569;display:flex;gap:7px;margin-bottom:5px;line-height:1.4}
+.guide-tab-card .gtc-step-num{background:#0891B2;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.guide-tips{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.guide-tip{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:14px 16px;font-size:12px;color:#1E293B;line-height:1.55}
+.guide-tip strong{display:block;color:#0891B2;font-size:13px;margin-bottom:4px}
+.gloss-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.gloss-section{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 18px}
+.gloss-section h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#0891B2;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E0F2FE}
+.gloss-term{display:flex;gap:8px;margin-bottom:8px;font-size:12px;line-height:1.5}
+.gloss-abbr{font-weight:700;color:#1E293B;min-width:68px;flex-shrink:0}
+.gloss-def{color:#475569}
+
 footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 </style>
 </head>
@@ -83,12 +118,163 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 </header>
 
 <div class="tab-bar">
-  <button class="tab-btn active" id="tab-sim" onclick="switchTab('sim')">📊 Scenario Simulator</button>
+  <button class="tab-btn active" id="tab-guide" onclick="switchTab('guide')">📖 Guide & Glossary</button>
+  <button class="tab-btn" id="tab-sim" onclick="switchTab('sim')">📊 Scenario Simulator</button>
   <button class="tab-btn" id="tab-comp" onclick="switchTab('comp')">🏆 Competitor Benchmarking</button>
+  <button class="tab-btn" id="tab-mobile" onclick="switchTab('mobile')">📱 Mobile App ROI</button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════ GUIDE TAB -->
+<div class="pane active" id="pane-guide">
+<div class="main">
+
+  <!-- Hero -->
+  <div class="guide-hero">
+    <h1>GoodPoint Pricing Simulator — User Guide</h1>
+    <p>This tool models GoodPoint's pricing economics, benchmarks it against competitors, and evaluates the ROI of building a mobile app. Use the four tabs to explore different angles of the same business model. All calculations update in real time — there is nothing to submit.</p>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="tier-btn" onclick="switchTab('sim')" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff;font-size:13px">📊 Go to Simulator →</button>
+      <button class="tier-btn" onclick="switchTab('comp')" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff;font-size:13px">🏆 See Competitors →</button>
+      <button class="tier-btn" onclick="switchTab('mobile')" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff;font-size:13px">📱 Mobile ROI →</button>
+    </div>
+  </div>
+
+  <!-- Tab cards -->
+  <p class="section-label" style="margin-bottom:12px">What each tab does</p>
+  <div class="guide-tabs-grid">
+
+    <div class="guide-tab-card" onclick="switchTab('guide')">
+      <div class="gtc-icon">📖</div>
+      <div class="gtc-title">Guide & Glossary</div>
+      <div class="gtc-desc">You are here. Explains how to use the tool and defines every acronym used across all tabs.</div>
+      <div class="gtc-steps">
+        <div class="gtc-step"><span class="gtc-step-num">1</span><span>Read this page once to understand the model</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">2</span><span>Return anytime to look up an acronym</span></div>
+      </div>
+    </div>
+
+    <div class="guide-tab-card" onclick="switchTab('sim')">
+      <div class="gtc-icon">📊</div>
+      <div class="gtc-title">Scenario Simulator</div>
+      <div class="gtc-desc">The core financial model. Adjust cost structure, pricing tier, and volume to see profit, ROI, LTV, and break-even in real time.</div>
+      <div class="gtc-steps">
+        <div class="gtc-step"><span class="gtc-step-num">1</span><span>Set your cost structure — fixed costs, variable cost/script, CAC, retention</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">2</span><span>Choose a pricing tier (Per-script, Per-student, Faculty, Institutional)</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">3</span><span>Adjust volume sliders — scripts/mo, customers, churn</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">4</span><span>Read the KPIs and profit curve — the insight box tells you what to fix</span></div>
+      </div>
+    </div>
+
+    <div class="guide-tab-card" onclick="switchTab('comp')">
+      <div class="gtc-icon">🏆</div>
+      <div class="gtc-title">Competitor Benchmarking</div>
+      <div class="gtc-desc">Compares GoodPoint against 6 competitors on pricing, STEM capability, GDPR, and threat level. Updates live based on your simulator price.</div>
+      <div class="gtc-steps">
+        <div class="gtc-step"><span class="gtc-step-num">1</span><span>Set your price in the Simulator tab first</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">2</span><span>Open this tab — the "vs. GoodPoint now" column reflects your price</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">3</span><span>Click ↗ source links to verify any price independently</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">4</span><span>Click Simulate (▶ £x.xx) to load a competitor-matched price into the simulator</span></div>
+      </div>
+    </div>
+
+    <div class="guide-tab-card" onclick="switchTab('mobile')">
+      <div class="gtc-icon">📱</div>
+      <div class="gtc-title">Mobile App ROI</div>
+      <div class="gtc-desc">Models the cost and return of building a mobile app across three scenarios: PWA, Cross-platform, and Native. Connected to your simulator baseline.</div>
+      <div class="gtc-steps">
+        <div class="gtc-step"><span class="gtc-step-num">1</span><span>Set your baseline in the Simulator tab first</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">2</span><span>Choose a build scenario — click ⓘ to learn about each</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">3</span><span>Adjust build cost, maintenance, and return assumptions</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">4</span><span>Read the recommendation box — it adapts to your current profitability</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tips -->
+  <p class="section-label" style="margin-bottom:12px">Quick tips</p>
+  <div class="guide-tips">
+    <div class="guide-tip"><strong>💡 Start in the Simulator</strong>The other two tabs pull data from the Simulator in real time. Set your cost structure and pricing tier there first — then everything else will be contextualised to your actual scenario.</div>
+    <div class="guide-tip"><strong>🔁 Tabs stay in sync</strong>There is nothing to save or submit. All sliders are live — change a value and every chart, KPI, and insight box updates instantly across all tabs.</div>
+    <div class="guide-tip"><strong>↺ Reset button</strong>The Reset button (top right) wipes all sliders back to the GoodPoint default baseline: £5K/mo fixed cost, £2.50/script, 2,000 scripts/month, 5 customers, 2% churn.</div>
+    <div class="guide-tip"><strong>⚠️ Asterisks in the table</strong>Prices marked *, **, ***, or † in the Competitor tab were not confirmed on the vendor's primary pricing page. Read the footnotes below that table before using figures in external documents.</div>
+    <div class="guide-tip"><strong>▶ Simulate buttons</strong>On the Competitor tab, each ▶ £x.xx button loads a suggested competitive price into the Simulator and switches tabs — letting you instantly see what GoodPoint's economics look like at that price point.</div>
+    <div class="guide-tip"><strong>📱 Mobile ⓘ icons</strong>On the Mobile ROI tab, clicking ⓘ next to each scenario name opens a detailed breakdown of costs, trade-offs, and a GoodPoint-specific recommendation for that approach.</div>
+  </div>
+
+  <!-- Glossary -->
+  <p class="section-label" style="margin-bottom:12px">Acronym & term dictionary</p>
+  <div class="gloss-grid">
+
+    <div class="gloss-section">
+      <h3>💰 Financial metrics</h3>
+      <div class="gloss-term"><span class="gloss-abbr">LTV</span><span class="gloss-def">Lifetime Value — total revenue expected from one customer over their entire relationship with GoodPoint.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">CAC</span><span class="gloss-def">Customer Acquisition Cost — what you spend on sales and marketing to win one new customer.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">LTV:CAC</span><span class="gloss-def">Ratio of lifetime value to acquisition cost. SaaS benchmark is 3× or above.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">ROI</span><span class="gloss-def">Return on Investment — gain relative to what was spent, expressed as a percentage.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">ARR</span><span class="gloss-def">Annual Recurring Revenue — predictable, subscription-based revenue projected over a year.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">MRR</span><span class="gloss-def">Monthly Recurring Revenue — same as ARR but expressed per month (ARR ÷ 12).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">COGS</span><span class="gloss-def">Cost of Goods Sold — direct cost per script delivered (LLM inference + infrastructure).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">GM</span><span class="gloss-def">Gross Margin — revenue minus COGS as a percentage. GoodPoint target: 90–95%.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Op. Profit</span><span class="gloss-def">Operating Profit — what remains after subtracting both COGS and fixed costs from revenue.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Break-even</span><span class="gloss-def">The exact script volume where total revenue equals total costs — neither profit nor loss.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Payback</span><span class="gloss-def">Months until a customer's revenue recoups the cost of acquiring them. Target: ≤ 12 months.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Churn</span><span class="gloss-def">Percentage of customers who stop using the product each month. Lower is better.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">pp</span><span class="gloss-def">Percentage point — an absolute change in a percentage (e.g. churn falling from 3% to 2% = 1 pp reduction).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">mo</span><span class="gloss-def">Month — used in "/mo" (per month) and "24 mo" (24 months).</span></div>
+    </div>
+
+    <div class="gloss-section">
+      <h3>📦 Pricing & sales</h3>
+      <div class="gloss-term"><span class="gloss-abbr">B2B</span><span class="gloss-def">Business to Business — selling to organisations (universities, departments) rather than individuals.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">SaaS</span><span class="gloss-def">Software as a Service — subscription-based software delivered over the internet.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">PLG</span><span class="gloss-def">Product-Led Growth — users discover and adopt the product themselves, reducing reliance on sales.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">GTM</span><span class="gloss-def">Go-to-Market — the strategy for how a product reaches its target customers.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">ACV</span><span class="gloss-def">Annual Contract Value — total value of a customer contract in a 12-month period.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">NRR</span><span class="gloss-def">Net Revenue Retention — revenue retained from existing customers including expansions, minus churn.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">PPU</span><span class="gloss-def">Price Per Unit — revenue earned per single script processed.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Land & expand</span><span class="gloss-def">Sales strategy: enter at departmental level (low friction), grow to faculty, then institutional licence.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Pilot tier</span><span class="gloss-def">Free or subsidised entry offer (0–500 scripts) used to build trust before converting to paid.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Freemium</span><span class="gloss-def">Model where basic use is free and users pay for premium features or higher volume.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Usage-based</span><span class="gloss-def">Pricing tied to consumption — GoodPoint's per-script model. Revenue scales with volume.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Licence</span><span class="gloss-def">Fixed annual fee for unlimited or capped access — Faculty (£6–10K) or Institutional (£18–30K+).</span></div>
+    </div>
+
+    <div class="gloss-section">
+      <h3>🛠️ Technical & regulatory</h3>
+      <div class="gloss-term"><span class="gloss-abbr">LLM</span><span class="gloss-def">Large Language Model — the AI model (e.g. GPT-4, Claude) GoodPoint uses to grade scripts. Main variable cost driver.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">PWA</span><span class="gloss-def">Progressive Web App — a website that behaves like a native app. No app store needed. Best fit for GoodPoint now.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">React Native</span><span class="gloss-def">Meta's cross-platform framework — one codebase builds both iOS and Android apps.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Flutter</span><span class="gloss-def">Google's cross-platform framework — alternative to React Native, known for consistent UI.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">GDPR</span><span class="gloss-def">General Data Protection Regulation — EU/UK data privacy law governing how student data can be processed.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">DPIA</span><span class="gloss-def">Data Protection Impact Assessment — legal requirement before a university can process student data with a new third-party tool. Key procurement friction point.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">ITT</span><span class="gloss-def">Invitation to Tender — formal procurement process triggered above a contract value threshold (~£25K in UK HE).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">API</span><span class="gloss-def">Application Programming Interface — how GoodPoint connects to LLMs, LMS platforms, and other services.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">LMS</span><span class="gloss-def">Learning Management System — university platforms like Canvas, Blackboard, or Moodle. Integration needed for institutional sales.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">MVP</span><span class="gloss-def">Minimum Viable Product — the smallest version of the product that delivers core value and can be tested with real users.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">CDN</span><span class="gloss-def">Content Delivery Network — serves files (like Chart.js) fast to any browser via distributed servers worldwide.</span></div>
+
+      <h3 style="margin-top:16px">🎓 Market & sector</h3>
+      <div class="gloss-term"><span class="gloss-abbr">HE</span><span class="gloss-def">Higher Education — the university sector. GoodPoint's primary target market.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">K-12</span><span class="gloss-def">Kindergarten to Grade 12 — primary and secondary school sector. Less relevant for GoodPoint.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">SMB</span><span class="gloss-def">Small and Medium-sized Business — used to describe smaller competitor segments (e.g. CoGrader, EduSageAI).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">STEM</span><span class="gloss-def">Science, Technology, Engineering, Mathematics — GoodPoint's core differentiation: handwritten STEM grading.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">CAGR</span><span class="gloss-def">Compound Annual Growth Rate — EdTech market growing at 14% CAGR 2025–2032.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">SBTi</span><span class="gloss-def">Science Based Targets initiative — sustainability commitment framework referenced in hyperscaler scoring.</span></div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;padding:8px 0 4px">
+    <button class="tier-btn" onclick="switchTab('sim')" style="font-size:13px;padding:10px 28px;background:#0891B2;color:#fff;border-color:#0891B2">Start with the Simulator →</button>
+  </div>
+
+</div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ SIMULATOR TAB -->
-<div class="pane active" id="pane-sim">
+<div class="pane" id="pane-sim">
 <div class="main">
 
   <div class="grid-2">
@@ -359,6 +545,7 @@ function switchTab(tab) {
   document.getElementById('pane-' + tab).classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
   if (tab === 'comp') renderCompTable();
+  if (tab === 'mobile') renderMobileTab();
 }
 
 // ── Tier logic ────────────────────────────────────────────────────────────
@@ -629,6 +816,450 @@ function resetAll() {
 
 renderTierInputs();
 update();
+
+// ── Mobile App ROI ──────────────────────────────────────────────────────────
+let currentMobScenario = 'pwa';
+let mobileChart = null;
+
+const mobScenarios = {
+  pwa:    { label:'PWA',               buildLow:15000, buildHigh:60000,  buildDefault:35000,  maintDefault:7000,  ttm:'6–12 weeks',  ttmSub:'No app store approval needed',    costSub:'Single codebase · 6–12 weeks' },
+  cross:  { label:'Cross-platform',    buildLow:50000, buildHigh:120000, buildDefault:80000,  maintDefault:14000, ttm:'3–6 months',  ttmSub:'App Store + Play Store required', costSub:'React Native or Flutter · iOS + Android' },
+  native: { label:'Native iOS+Android',buildLow:70000, buildHigh:180000, buildDefault:125000, maintDefault:25000, ttm:'6–12 months', ttmSub:'Longest but best performance',    costSub:'Separate iOS + Android builds' }
+};
+
+function setMobScenario(s) {
+  currentMobScenario = s;
+  ['pwa','cross','native'].forEach(id => {
+    const el = document.getElementById('mob-'+id);
+    if (el) el.classList.toggle('active', id===s);
+  });
+  const sc = mobScenarios[s];
+  const bcEl = document.getElementById('mob-build-cost');
+  if (bcEl) bcEl.textContent = '£'+Math.round(sc.buildLow/1000)+'K–£'+Math.round(sc.buildHigh/1000)+'K';
+  const bsEl = document.getElementById('mob-build-sub');
+  if (bsEl) bsEl.textContent = sc.costSub;
+  const ttmEl = document.getElementById('mob-ttm');
+  if (ttmEl) ttmEl.textContent = sc.ttm;
+  const ttmsEl = document.getElementById('mob-ttm-sub');
+  if (ttmsEl) ttmsEl.textContent = sc.ttmSub;
+  const mEl = document.getElementById('mob-maint-cost');
+  if (mEl) mEl.textContent = '£'+Math.round(sc.maintDefault/1000)+'K–£'+Math.round(sc.maintDefault*1.3/1000)+'K/yr';
+  const bcInput = document.getElementById('mobBuildCost');
+  if (bcInput) { bcInput.value = sc.buildDefault; document.getElementById('mobBuildCostOut').textContent = '£'+sc.buildDefault.toLocaleString(); }
+  const mInput = document.getElementById('mobMaint');
+  if (mInput) { mInput.value = sc.maintDefault; document.getElementById('mobMaintOut').textContent = '£'+sc.maintDefault.toLocaleString(); }
+  updateMobile();
+}
+
+function fmtM(n) {
+  if (Math.abs(n)>=1000000) return '£'+(n/1000000).toFixed(2)+'M';
+  if (Math.abs(n)>=1000)    return '£'+(n/1000).toFixed(1)+'K';
+  return '£'+Math.round(n).toLocaleString();
+}
+
+function getSimValues() {
+  const scripts   = parseFloat(document.getElementById('scripts').value)||2000;
+  const students  = parseFloat(document.getElementById('students').value)||1000;
+  const customers = parseFloat(document.getElementById('customers').value)||5;
+  const fixed     = parseFloat(document.getElementById('fixedCost').value)||5000;
+  const varC      = parseFloat(document.getElementById('varCost').value)||0.12;
+  const churn     = parseFloat(document.getElementById('churn').value)||2;
+  const rev       = calcRevenue(scripts, students, customers, currentTier);
+  const opProfit  = rev - varC*scripts - fixed;
+  return { scripts, students, customers, fixed, varC, churn, rev, opProfit };
+}
+
+function renderMobileTab() {
+  const base = getSimValues();
+  const bEl = document.getElementById('mob-baseline');
+  if (bEl) bEl.innerHTML = `
+    <div class="be-row"><span class="be-label">Monthly revenue</span><span class="be-val">${fmtM(base.rev)}</span></div>
+    <div class="be-row"><span class="be-label">Operating profit / mo</span><span class="be-val" style="color:${base.opProfit>=0?'#0F6E56':'#991B1B'}">${fmtM(base.opProfit)}</span></div>
+    <div class="be-row"><span class="be-label">Scripts / month</span><span class="be-val">${base.scripts.toLocaleString()}</span></div>
+    <div class="be-row"><span class="be-label">Churn rate</span><span class="be-val">${base.churn.toFixed(1)}%/mo</span></div>
+    <div style="font-size:11px;color:#94A3B8;margin-top:8px">Adjust in the Simulator tab — updates live here.</div>`;
+  updateMobile();
+}
+
+function updateMobile() {
+  if (!document.getElementById('mobBuildCost')) return;
+  const base        = getSimValues();
+  const buildCost   = parseFloat(document.getElementById('mobBuildCost').value)||35000;
+  const maintCost   = parseFloat(document.getElementById('mobMaint').value)||7000;
+  const amortYears  = parseFloat(document.getElementById('mobAmort').value)||3;
+  const volUplift   = parseFloat(document.getElementById('mobVolumeUplift').value)||25;
+  const churnRed    = parseFloat(document.getElementById('mobChurnReduction').value)||0.5;
+  const newCustMo   = parseFloat(document.getElementById('mobNewCust').value)||0.5;
+
+  document.getElementById('mobBuildCostOut').textContent    = '£'+buildCost.toLocaleString();
+  document.getElementById('mobMaintOut').textContent        = '£'+maintCost.toLocaleString();
+  document.getElementById('mobAmortOut').textContent        = amortYears+' yr'+(amortYears>1?'s':'');
+  document.getElementById('mobVolumeUpliftOut').textContent = volUplift+'%';
+  document.getElementById('mobChurnReductionOut').textContent = churnRed.toFixed(1)+' pp';
+  document.getElementById('mobNewCustOut').textContent      = newCustMo.toFixed(1);
+
+  const newScripts      = base.scripts * (1 + volUplift/100);
+  const newCustomers    = base.customers + newCustMo*12;
+  const newRevMonth     = calcRevenue(newScripts, base.students, newCustomers, currentTier);
+  const revUpliftMonth  = newRevMonth - base.rev;
+  const oldChurnRate    = base.churn/100;
+  const newChurnRate    = Math.max(0, oldChurnRate - churnRed/100);
+  const revPerCust      = base.customers>0 ? base.rev/base.customers : 0;
+  const oldLTV          = revPerCust * (1/Math.max(oldChurnRate,0.001));
+  const newLTV          = revPerCust * (1/Math.max(newChurnRate,0.001));
+  const ltvUpliftTotal  = (newLTV - oldLTV) * base.customers;
+  const annualBenefit   = revUpliftMonth*12 + ltvUpliftTotal/amortYears;
+  const annualCost      = buildCost/amortYears + maintCost;
+  const netAnnual       = annualBenefit - annualCost;
+  const roi3yr          = (annualBenefit*amortYears - buildCost - maintCost*amortYears) / Math.max(buildCost + maintCost*amortYears, 1) * 100;
+  const paybackMonths   = revUpliftMonth>0 ? buildCost/revUpliftMonth : Infinity;
+
+  const kpiEl = document.getElementById('mob-kpi');
+  if (kpiEl) kpiEl.innerHTML = `
+    <div class="metric"><div class="lbl">Monthly revenue uplift</div><div class="val ${revUpliftMonth>=0?'val-green':'val-red'}">${fmtM(revUpliftMonth)}</div><div class="sub">+${volUplift}% scripts + ${newCustMo.toFixed(1)} cust/mo</div></div>
+    <div class="metric"><div class="lbl">Annual net benefit</div><div class="val ${netAnnual>=0?'val-green':'val-red'}">${fmtM(netAnnual)}</div><div class="sub">After build + maintenance</div></div>
+    <div class="metric"><div class="lbl">${amortYears}-year ROI</div><div class="val ${roi3yr>=0?'val-green':'val-red'}">${roi3yr.toFixed(0)}%</div><div class="sub">On total invested</div></div>
+    <div class="metric"><div class="lbl">Build payback</div><div class="val ${paybackMonths<=18?'val-green':paybackMonths<=36?'val-amber':'val-red'}">${isFinite(paybackMonths)?paybackMonths.toFixed(0)+' mo':'> 60 mo'}</div><div class="sub">Break-even on build cost</div></div>`;
+
+  const roiEl = document.getElementById('mob-roi-breakdown');
+  if (roiEl) roiEl.innerHTML = `
+    <div class="be-row"><span class="be-label">Build cost (one-off)</span><span class="be-val val-red">−${fmtM(buildCost)}</span></div>
+    <div class="be-row"><span class="be-label">Maintenance / yr</span><span class="be-val val-red">−${fmtM(maintCost)}</span></div>
+    <div class="be-row"><span class="be-label">Total cost over ${amortYears} yr</span><span class="be-val val-red">−${fmtM(buildCost+maintCost*amortYears)}</span></div>
+    <div class="be-row" style="border-top:1px solid #E2E8F0;margin-top:4px;padding-top:10px"><span class="be-label">Revenue uplift / yr</span><span class="be-val val-green">+${fmtM(revUpliftMonth*12)}</span></div>
+    <div class="be-row"><span class="be-label">LTV improvement (total)</span><span class="be-val val-green">+${fmtM(ltvUpliftTotal)}</span></div>
+    <div class="be-row"><span class="be-label">Net benefit over ${amortYears} yr</span><span class="be-val ${netAnnual*amortYears>=0?'val-green':'val-red'}">${netAnnual*amortYears>=0?'+':''}${fmtM(netAnnual*amortYears)}</span></div>`;
+
+  const recEl = document.getElementById('mob-recommendation');
+  if (recEl) recEl.innerHTML = `<div class="insight">${buildRecommendation(roi3yr, paybackMonths, buildCost, currentMobScenario, base.opProfit)}</div>`;
+
+  updateMobileChart(buildCost, maintCost, revUpliftMonth, ltvUpliftTotal, amortYears);
+}
+
+function buildRecommendation(roi, payback, build, scenario, opProfit) {
+  if (opProfit<0 && build>50000)
+    return '⚠️ <strong>Not recommended now.</strong> GoodPoint is pre-profit — a '+fmtM(build)+' build adds fixed cost before the core model is proven. Reach break-even first, then revisit mobile.';
+  if (scenario==='pwa' && roi>50)
+    return '✅ <strong>PWA is the right first move.</strong> '+roi.toFixed(0)+'% projected ROI, lowest build cost, no install friction, full camera access for STEM handwriting. This is GoodPoint\'s mobile MVP. Build now, validate adoption, consider native later.';
+  if (scenario==='pwa')
+    return '🟡 <strong>PWA viable but conservative.</strong> ROI of '+roi.toFixed(0)+'% depends on volume uplift assumptions. Start with student submission only — measure conversion before expanding scope.';
+  if (scenario==='cross' && roi>40)
+    return '✅ <strong>Cross-platform makes sense at this volume.</strong> '+roi.toFixed(0)+'% ROI justifies the higher cost. React Native gives App Store presence plus full camera access. Right for a post-product-market-fit investment.';
+  if (scenario==='cross')
+    return '🟡 <strong>Cross-platform is premature at current volumes.</strong> ROI is '+roi.toFixed(0)+'% — uplift doesn\'t yet justify cost over a PWA. Consider when ARR exceeds £150K and institutions request App Store distribution.';
+  return '🔴 <strong>Native not justified at this stage.</strong> £70K–£180K build cost requires significantly higher volume to pay back within 3 years. Gradescope went native only after reaching 3.6M students across 2,600 institutions. Reserve for Series A+ stage.';
+}
+
+function updateMobileChart(buildCost, maintCost, monthlyBenefit, ltvUplift, years) {
+  const canvas = document.getElementById('mobileChart');
+  if (!canvas) return;
+  const scenarios = [
+    { label:'PWA',            color:'#0891B2', bMult:0.45, mMult:0.5 },
+    { label:'Cross-platform', color:'#0E7490', bMult:1.0,  mMult:1.0 },
+    { label:'Native',         color:'#155E75', bMult:1.8,  mMult:1.8 }
+  ];
+  const months = Array.from({length:37},(_,i)=>i);
+  const labels = months.map(m => m===0?'Now':m===6?'6mo':m===12?'1yr':m===18?'18mo':m===24?'2yr':m===30?'30mo':m===36?'3yr':'');
+  const datasets = scenarios.map(sc => ({
+    label: sc.label,
+    data: months.map(m => Math.round(monthlyBenefit*m + ltvUplift*(m/36) - sc.bMult*buildCost - sc.mMult*maintCost*(m/12))),
+    borderColor: sc.color,
+    backgroundColor: 'transparent',
+    tension: 0.3,
+    pointRadius: 0,
+    borderWidth: 2
+  }));
+
+  if (mobileChart) { mobileChart.destroy(); mobileChart = null; }
+  mobileChart = new Chart(canvas, {
+    type:'line',
+    data:{ labels, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:'top', labels:{ font:{size:12}, boxWidth:16 }},
+        tooltip:{ callbacks:{ label: ctx=>' '+ctx.dataset.label+': £'+ctx.parsed.y.toLocaleString() }}},
+      scales:{
+        x:{ ticks:{ color:'#94A3B8', autoSkip:false, maxRotation:0, callback:(v,i)=>labels[i]||null }, grid:{ color:'rgba(0,0,0,0.04)'}},
+        y:{ ticks:{ color:'#94A3B8', callback: v=>v>=0?'£'+v.toLocaleString():'-£'+Math.abs(v).toLocaleString()}, grid:{ color:'rgba(0,0,0,0.06)'}}
+      }
+    }
+  });
+}
+
+
+const mobModalContent = {
+  pwa: {
+    title: '📱 PWA — Progressive Web App',
+    subtitle: 'Best fit for GoodPoint at MVP stage',
+    body: `
+      <p style="margin-bottom:12px">A PWA is a website that behaves like a native app — it runs in the browser, can be added to the home screen, works offline, and accesses the device camera. <strong>No app store required.</strong></p>
+      <div class="modal-row"><span class="mk">Build cost</span><span class="mv">£15K – £60K</span></div>
+      <div class="modal-row"><span class="mk">Time to market</span><span class="mv">6 – 12 weeks</span></div>
+      <div class="modal-row"><span class="mk">Maintenance / yr</span><span class="mv">£3K – £10K</span></div>
+      <div class="modal-row"><span class="mk">Camera access</span><span class="mv">✅ Yes (modern browsers)</span></div>
+      <div class="modal-row"><span class="mk">App Store listing</span><span class="mv">❌ Not available</span></div>
+      <div class="modal-row"><span class="mk">B2B adoption rate</span><span class="mv">~84% (no install barrier)</span></div>
+      <div class="modal-row"><span class="mk">GDPR control</span><span class="mv">✅ Full — no store policies</span></div>
+      <div class="modal-row"><span class="mk">Best for GoodPoint</span><span class="mv">✅ Now — student submission MVP</span></div>
+      <p style="margin-top:12px;font-size:12px;color:#64748B"><strong>Why now?</strong> Students submit handwritten STEM scripts by photographing them. A PWA handles this natively in any mobile browser — no installation friction, no App Store approval, full GDPR control. Gradescope proved the model (3,000+ submissions in 2 months). This is GoodPoint\'s lowest-risk mobile entry point.</p>`
+  },
+  cross: {
+    title: '⚙️ Cross-Platform — React Native / Flutter',
+    subtitle: 'Right after product-market fit is confirmed',
+    body: `
+      <p style="margin-bottom:12px">A single codebase compiled into native iOS and Android apps. Frameworks like <strong>React Native</strong> (Meta) and <strong>Flutter</strong> (Google) allow one team to ship to both platforms simultaneously, cutting cost vs. fully separate native builds by 30–40%.</p>
+      <div class="modal-row"><span class="mk">Build cost</span><span class="mv">£50K – £120K</span></div>
+      <div class="modal-row"><span class="mk">Time to market</span><span class="mv">3 – 6 months</span></div>
+      <div class="modal-row"><span class="mk">Maintenance / yr</span><span class="mv">£8K – £20K</span></div>
+      <div class="modal-row"><span class="mk">Camera access</span><span class="mv">✅ Full native access</span></div>
+      <div class="modal-row"><span class="mk">App Store listing</span><span class="mv">✅ iOS + Android</span></div>
+      <div class="modal-row"><span class="mk">B2B adoption rate</span><span class="mv">~50–60%</span></div>
+      <div class="modal-row"><span class="mk">GDPR control</span><span class="mv">⚠️ Partial — store policies apply</span></div>
+      <div class="modal-row"><span class="mk">Best for GoodPoint</span><span class="mv">⏳ After ARR > £150K</span></div>
+      <p style="margin-top:12px;font-size:12px;color:#64748B"><strong>Why wait?</strong> App Store presence opens institutional discoverability and signals product maturity to procurement committees. But the £50K+ investment only makes sense once the PWA has validated mobile adoption. Use the PWA to prove demand, then migrate to cross-platform.</p>`
+  },
+  native: {
+    title: '🏗️ Native iOS + Android',
+    subtitle: 'Reserved for institutional scale — Series A+',
+    body: `
+      <p style="margin-bottom:12px">Fully separate codebases written in Swift (iOS) and Kotlin (Android). Delivers the highest performance, deepest device integration, and best user experience — but at the highest cost and longest timeline.</p>
+      <div class="modal-row"><span class="mk">Build cost</span><span class="mv">£70K – £180K+</span></div>
+      <div class="modal-row"><span class="mk">Time to market</span><span class="mv">6 – 12 months</span></div>
+      <div class="modal-row"><span class="mk">Maintenance / yr</span><span class="mv">£15K – £35K</span></div>
+      <div class="modal-row"><span class="mk">Camera access</span><span class="mv">✅ Best quality</span></div>
+      <div class="modal-row"><span class="mk">App Store listing</span><span class="mv">✅ iOS + Android</span></div>
+      <div class="modal-row"><span class="mk">B2B adoption rate</span><span class="mv">~28% (install barrier)</span></div>
+      <div class="modal-row"><span class="mk">GDPR control</span><span class="mv">⚠️ Partial — store policies apply</span></div>
+      <div class="modal-row"><span class="mk">Best for GoodPoint</span><span class="mv">🔴 Series A+ only</span></div>
+      <p style="margin-top:12px;font-size:12px;color:#64748B"><strong>Gradescope precedent:</strong> Turnitin went native only after Gradescope reached <strong>3.6 million students across 2,600 institutions</strong>. At that scale, the investment is justified by brand credibility and institutional procurement requirements. For GoodPoint today, native would burn runway before proving ROI.</p>`
+  }
+};
+
+function openMobModal(scenario) {
+  const m = mobModalContent[scenario];
+  if (!m) return;
+  document.getElementById('mob-modal-title').textContent  = m.title;
+  document.getElementById('mob-modal-subtitle').textContent = m.subtitle;
+  document.getElementById('mob-modal-body').innerHTML = m.body;
+  document.getElementById('mob-modal').classList.add('open');
+}
+
+function closeMobModal() {
+  document.getElementById('mob-modal').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobModal(); });
+
 </script>
+
+<!-- ═══════════════════════════════════════════════════ MOBILE APP ROI TAB -->
+<div class="pane" id="pane-mobile">
+<div class="main">
+
+  <!-- Header -->
+  <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#0891B2 0%,#0E7490 100%);border:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:17px;font-weight:600;color:#fff">Mobile App — Cost vs. Return Analysis</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.8);margin-top:4px">3 build scenarios · connected to your simulator data · industry benchmarks from Gradescope, EdTech 2022–2026</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="tier-btn" onclick="switchTab('sim')" style="font-size:12px;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff">← Back to simulator</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strategic context -->
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <p class="section-label">Why mobile matters for GoodPoint</p>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div class="be-row"><span class="be-label">Primary use case</span><span class="badge badge-green">Student photo submission of handwritten STEM scripts</span></div>
+        <div class="be-row"><span class="be-label">Competitor precedent</span><span class="badge badge-blue">Gradescope: 3,000+ submissions in first 2 months</span></div>
+        <div class="be-row"><span class="be-label">GoodPoint edge</span><span class="badge badge-green">STEM handwriting — most natural on mobile camera</span></div>
+        <div class="be-row"><span class="be-label">B2B engagement (PWA vs native)</span><span class="badge badge-amber">84% vs 28% — no install barrier wins in B2B</span></div>
+        <div class="be-row"><span class="be-label">EdTech market CAGR 2025–2032</span><span class="badge badge-blue">14% — mobile learning 15.9% of all investment</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <p class="section-label">Current simulator baseline (live from Simulator tab)</p>
+      <div id="mob-baseline"></div>
+    </div>
+  </div>
+
+  <!-- Build scenario selector -->
+  <div class="card" style="margin-bottom:16px">
+    <p class="section-label">Build scenario</p>
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="tier-btn active" id="mob-pwa" onclick="setMobScenario('pwa')">PWA (Progressive Web App) <span onclick="event.stopPropagation();openMobModal('pwa')" style="margin-left:5px;opacity:.6;cursor:pointer;font-size:13px" title="Learn more">ⓘ</span></button>
+      <button class="tier-btn " id="mob-cross" onclick="setMobScenario('cross')">Cross-platform (React Native / Flutter) <span onclick="event.stopPropagation();openMobModal('cross')" style="margin-left:5px;opacity:.6;cursor:pointer;font-size:13px" title="Learn more">ⓘ</span></button>
+      <button class="tier-btn " id="mob-native" onclick="setMobScenario('native')">Native iOS + Android <span onclick="event.stopPropagation();openMobModal('native')" style="margin-left:5px;opacity:.6;cursor:pointer;font-size:13px" title="Learn more">ⓘ</span></button>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:12px">
+      <div class="metric">
+        <div class="lbl">Build cost range</div>
+        <div class="val" id="mob-build-cost" style="font-size:18px">£15K–£60K</div>
+        <div class="sub" id="mob-build-sub">Single codebase · 6–12 weeks</div>
+      </div>
+      <div class="metric">
+        <div class="lbl">Annual maintenance</div>
+        <div class="val" id="mob-maint-cost" style="font-size:18px">£4K–£10K/yr</div>
+        <div class="sub">~15–20% of build cost / year</div>
+      </div>
+      <div class="metric">
+        <div class="lbl">Time to market</div>
+        <div class="val" id="mob-ttm" style="font-size:18px">6–12 weeks</div>
+        <div class="sub" id="mob-ttm-sub">No app store approval needed</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px">
+      <div>
+        <div class="slider-row"><label>Build cost mid-point (£)</label><input type="range" min="10000" max="200000" step="2500" id="mobBuildCost" value="35000" oninput="updateMobile()"><span class="readout" id="mobBuildCostOut">£35,000</span></div>
+        <div class="slider-row"><label>Maintenance / yr (£)</label><input type="range" min="2000" max="40000" step="1000" id="mobMaint" value="7000" oninput="updateMobile()"><span class="readout" id="mobMaintOut">£7,000</span></div>
+        <div class="slider-row"><label>Amortise over (years)</label><input type="range" min="1" max="5" step="1" id="mobAmort" value="3" oninput="updateMobile()"><span class="readout" id="mobAmortOut">3 yrs</span></div>
+      </div>
+      <div>
+        <div class="slider-row"><label>Script volume uplift (%)</label><input type="range" min="0" max="80" step="5" id="mobVolumeUplift" value="25" oninput="updateMobile()"><span class="readout" id="mobVolumeUpliftOut">25%</span></div>
+        <div class="slider-row"><label>Churn reduction (pp)</label><input type="range" min="0" max="2" step="0.1" id="mobChurnReduction" value="0.5" oninput="updateMobile()"><span class="readout" id="mobChurnReductionOut">0.5 pp</span></div>
+        <div class="slider-row"><label>New customers via app (mo)</label><input type="range" min="0" max="5" step="0.5" id="mobNewCust" value="0.5" oninput="updateMobile()"><span class="readout" id="mobNewCustOut">0.5</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI results -->
+  <div class="grid-4" style="margin-bottom:16px" id="mob-kpi"></div>
+
+  <!-- ROI summary + recommendation -->
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <p class="section-label">ROI breakdown</p>
+      <div id="mob-roi-breakdown"></div>
+    </div>
+    <div class="card">
+      <p class="section-label">Scenario recommendation</p>
+      <div id="mob-recommendation"></div>
+    </div>
+  </div>
+
+  <!-- Benchmark table -->
+  <div class="card" style="margin-bottom:16px">
+    <p class="section-label">Industry benchmarks & case studies</p>
+    <table class="comp-table" style="table-layout:fixed;width:100%">
+      <thead>
+        <tr>
+          <th style="width:14%">Company</th>
+          <th style="width:12%">App type</th>
+          <th style="width:10%">Build cost (est.)</th>
+          <th style="width:15%">Primary use case</th>
+          <th style="width:18%">Measured outcome</th>
+          <th style="width:13%">Relevance to GoodPoint</th>
+          <th style="width:18%">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gradescope</strong><br><span style="font-size:11px;color:#94A3B8">EdTech HE</span></td>
+          <td>Native iOS + Android</td>
+          <td>Est. £100K+</td>
+          <td>Student assignment photo submission</td>
+          <td><span class="badge badge-green">3,000+ submissions in 2 months</span></td>
+          <td><span class="badge badge-green">Direct — same use case</span></td>
+          <td><a href="https://www.turnitin.com/press/gradescope-mobile" target="_blank" class="source-link">↗ turnitin.com (Jul 2022)</a></td>
+        </tr>
+        <tr style="background:#F8FAFC">
+          <td><strong>B2B Portal</strong><br><span style="font-size:11px;color:#94A3B8">Distribution</span></td>
+          <td>PWA replacing native</td>
+          <td>~£40K est.</td>
+          <td>Sales rep + partner access</td>
+          <td><span class="badge badge-green">84% engagement vs 28% native · £170K saved</span></td>
+          <td><span class="badge badge-blue">High — B2B no-install logic</span></td>
+          <td><a href="https://www.askantech.com/progressive-web-apps-2026-pwa-vs-native-enterprise/" target="_blank" class="source-link">↗ askantech.com (Mar 2026)</a></td>
+        </tr>
+        <tr>
+          <td><strong>Distribution Co.</strong><br><span style="font-size:11px;color:#94A3B8">4,500 reps</span></td>
+          <td>PWA (unified)</td>
+          <td>Est. £60K</td>
+          <td>Replace native iOS + Android</td>
+          <td><span class="badge badge-green">57% cost reduction · 98% adoption · £2.8M revenue uplift</span></td>
+          <td><span class="badge badge-amber">Medium — scale too large</span></td>
+          <td><a href="https://www.askantech.com/progressive-web-apps-2026-pwa-vs-native-enterprise/" target="_blank" class="source-link">↗ askantech.com (Mar 2026)</a></td>
+        </tr>
+        <tr style="background:#F8FAFC">
+          <td><strong>News Platform</strong><br><span style="font-size:11px;color:#94A3B8">Media</span></td>
+          <td>PWA</td>
+          <td>Est. £25K</td>
+          <td>Mobile content delivery</td>
+          <td><span class="badge badge-green">550% mobile engagement · 380K SEO visitors/mo · 56% cost vs native</span></td>
+          <td><span class="badge badge-amber">Medium — SEO less relevant</span></td>
+          <td><a href="https://www.askantech.com/progressive-web-apps-2026-pwa-vs-native-enterprise/" target="_blank" class="source-link">↗ askantech.com (Mar 2026)</a></td>
+        </tr>
+        <tr>
+          <td><strong>Generic B2B SaaS</strong><br><span style="font-size:11px;color:#94A3B8">Industry avg.</span></td>
+          <td>Cross-platform</td>
+          <td>£50K–£120K</td>
+          <td>Customer-facing mobile layer</td>
+          <td><span class="badge badge-blue">10% conversion uplift via AI personalisation</span></td>
+          <td><span class="badge badge-blue">High — direct benchmark</span></td>
+          <td><a href="https://www.saashero.net/content/2026-b2b-saas-conversion-benchmarks/" target="_blank" class="source-link">↗ saashero.net (2026)</a></td>
+        </tr>
+        <tr style="background:#F8FAFC">
+          <td><strong>EdTech sector</strong><br><span style="font-size:11px;color:#94A3B8">Market data</span></td>
+          <td>Mobile-first</td>
+          <td>—</td>
+          <td>Learning &amp; assessment delivery</td>
+          <td><span class="badge badge-blue">14% CAGR 2025–2032 · mobile = 15.9% of all EdTech investment</span></td>
+          <td><span class="badge badge-green">Direct — GoodPoint in this sector</span></td>
+          <td><a href="https://spdload.com/blog/educational-app-development/" target="_blank" class="source-link">↗ spdload.com (Mar 2026)</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Scenario comparison chart -->
+  <div class="card" style="margin-bottom:16px">
+    <p class="section-label">Net cumulative benefit over 3 years — all three scenarios</p>
+    <div style="position:relative;width:100%;height:240px">
+      <canvas id="mobileChart" role="img" aria-label="Cumulative net benefit chart for three mobile app scenarios over 3 years.">Mobile ROI chart.</canvas>
+    </div>
+  </div>
+
+  <!-- Strategic matrix -->
+  <div class="card" style="margin-bottom:16px">
+    <p class="section-label">Decision matrix — when to choose each approach</p>
+    <table class="comp-table" style="table-layout:fixed;width:100%">
+      <thead>
+        <tr>
+          <th style="width:16%">Criterion</th>
+          <th style="width:28%">PWA</th>
+          <th style="width:28%">Cross-platform (RN/Flutter)</th>
+          <th style="width:28%">Native iOS + Android</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Budget</strong></td><td><span class="badge badge-green">£15K–£60K</span></td><td><span class="badge badge-amber">£50K–£120K</span></td><td><span class="badge badge-red">£70K–£180K+</span></td></tr>
+        <tr style="background:#F8FAFC"><td><strong>Time to market</strong></td><td><span class="badge badge-green">6–12 weeks</span></td><td><span class="badge badge-amber">3–6 months</span></td><td><span class="badge badge-red">6–12 months</span></td></tr>
+        <tr><td><strong>Camera / photo capture</strong></td><td><span class="badge badge-green">Yes (modern browsers)</span></td><td><span class="badge badge-green">Yes — full native access</span></td><td><span class="badge badge-green">Yes — best quality</span></td></tr>
+        <tr style="background:#F8FAFC"><td><strong>App Store presence</strong></td><td><span class="badge badge-red">No</span></td><td><span class="badge badge-green">Yes</span></td><td><span class="badge badge-green">Yes</span></td></tr>
+        <tr><td><strong>B2B adoption rate</strong></td><td><span class="badge badge-green">84% (no install barrier)</span></td><td><span class="badge badge-amber">~50–60%</span></td><td><span class="badge badge-amber">~28% install rate</span></td></tr>
+        <tr style="background:#F8FAFC"><td><strong>GDPR / data control</strong></td><td><span class="badge badge-green">Full control</span></td><td><span class="badge badge-amber">Partial (store policies)</span></td><td><span class="badge badge-amber">Partial (store policies)</span></td></tr>
+        <tr><td><strong>Maintenance cost/yr</strong></td><td><span class="badge badge-green">£3K–£10K</span></td><td><span class="badge badge-amber">£8K–£20K</span></td><td><span class="badge badge-red">£15K–£35K</span></td></tr>
+        <tr style="background:#F8FAFC"><td><strong>Right for GoodPoint now?</strong></td><td><span class="badge badge-green">✓ Best fit — MVP stage</span></td><td><span class="badge badge-amber">After Series A / scale</span></td><td><span class="badge badge-red">Only at institutional scale</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+
+<div class="modal-overlay" id="mob-modal" onclick="if(event.target===this)closeMobModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeMobModal()">✕</button>
+    <div class="modal-title" id="mob-modal-title"></div>
+    <div class="modal-subtitle" id="mob-modal-subtitle"></div>
+    <div class="modal-body" id="mob-modal-body"></div>
+  </div>
+</div>
 </body>
 </html>
