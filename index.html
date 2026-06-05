@@ -1233,6 +1233,22 @@ function calcGrowth(base) {
 
 function renderGrowthStats(g) {
   if (!g || g.totalNewCust === undefined) return;
+
+  // Update growth slider readouts
+  const gReadouts = {
+    freeATAUsersOut:         gv('freeATAUsers',50),
+    ataConvRateOut:          gv('ataConvRate',7).toFixed(1)+'%',
+    ataCostPerUserOut:       '£'+gv('ataCostPerUser',0.80).toFixed(2),
+    refereeCreditOut:        gv('refereeCredits',50),
+    referralInvitesOut:      gv('referralInvites',0.3).toFixed(1),
+    referralConvRateOut:     gv('referralConvRate',8).toFixed(1)+'%',
+    creditsPerReferralOut:   gv('creditsPerReferral',150),
+    referralChurnDiscountOut:gv('referralChurnDiscount',0.4).toFixed(1)+' pp'
+  };
+  Object.entries(gReadouts).forEach(([id,val]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  });
   const fmtG = n => Math.abs(n)>=1000 ? '£'+(n/1000).toFixed(1)+'K' : '£'+n.toFixed(2);
 
   // ATA stats
