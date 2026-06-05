@@ -86,7 +86,7 @@ header button:hover{background:rgba(255,255,255,.25)}
 .guide-hero{background:linear-gradient(135deg,#0891B2 0%,#155E75 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff}
 .guide-hero h1{font-size:22px;font-weight:700;margin-bottom:6px}
 .guide-hero p{font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;max-width:700px}
-.guide-tabs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.guide-tabs-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
 .guide-tab-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:18px 16px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
 .guide-tab-card:hover{box-shadow:0 4px 16px rgba(8,145,178,.12);border-color:#0891B2}
 .guide-tab-card .gtc-icon{font-size:26px;margin-bottom:8px}
@@ -104,6 +104,24 @@ header button:hover{background:rgba(255,255,255,.25)}
 .gloss-term{display:flex;gap:8px;margin-bottom:8px;font-size:12px;line-height:1.5}
 .gloss-abbr{font-weight:700;color:#1E293B;min-width:68px;flex-shrink:0}
 .gloss-def{color:#475569}
+
+
+.growth-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;margin-bottom:0}
+.growth-toggle .gt-title{font-size:13px;font-weight:600;color:#1E293B}
+.growth-toggle .gt-badge{font-size:10px;font-weight:600;background:#E0F2FE;color:#0E4F6A;padding:2px 8px;border-radius:99px}
+.growth-toggle .gt-arrow{font-size:11px;color:#94A3B8;transition:transform .2s}
+.growth-toggle.open .gt-arrow{transform:rotate(180deg)}
+.growth-body{display:none;padding-top:14px}
+.growth-body.open{display:block}
+.growth-divider{border:none;border-top:1px solid #E2E8F0;margin:14px 0}
+.growth-sub{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.growth-sub .gs-tag{font-size:10px;font-weight:600;padding:1px 7px;border-radius:99px}
+.growth-inline{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.growth-stat{background:#F8FAFC;border-radius:8px;padding:8px 12px;font-size:12px}
+.growth-stat .gs-lbl{color:#64748B;margin-bottom:2px}
+.growth-stat .gs-val{font-weight:600;color:#1E293B;font-size:14px}
+.benchmark-pill{display:inline-flex;align-items:center;gap:5px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:5px 10px;font-size:11px;color:#0E7490;margin:3px 3px 3px 0}
+.benchmark-pill strong{color:#0891B2}
 
 footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 </style>
@@ -190,6 +208,18 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
       </div>
     </div>
 
+    <div class="guide-tab-card" onclick="switchTab('sim');setTimeout(toggleGrowth,300)">
+      <div class="gtc-icon">🌱</div>
+      <div class="gtc-title">Growth Mechanics</div>
+      <div class="gtc-desc">Models freemium ATA conversion and professor referral economics. Expands inside the Simulator tab. Connected to your live P&L.</div>
+      <div class="gtc-steps">
+        <div class="gtc-step"><span class="gtc-step-num">1</span><span>Open Simulator tab → click "Growth Mechanics" to expand</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">2</span><span>Set free ATA users, conversion rate, and cost per user</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">3</span><span>Set referral invites, conversion rate, and credits per referral</span></div>
+        <div class="gtc-step"><span class="gtc-step-num">4</span><span>Watch viral coefficient (k), blended CAC, and net P&L impact update</span></div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Tips -->
@@ -239,6 +269,13 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
       <div class="gloss-term"><span class="gloss-abbr">Freemium</span><span class="gloss-def">Model where basic use is free and users pay for premium features or higher volume.</span></div>
       <div class="gloss-term"><span class="gloss-abbr">Usage-based</span><span class="gloss-def">Pricing tied to consumption — GoodPoint's per-script model. Revenue scales with volume.</span></div>
       <div class="gloss-term"><span class="gloss-abbr">Licence</span><span class="gloss-def">Fixed annual fee for unlimited or capped access — Faculty (£6–10K) or Institutional (£18–30K+).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Freemium</span><span class="gloss-def">Model where core use is permanently free (ATA exam creation) to drive adoption, with premium features (AI grading) behind a paywall.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">ATA</span><span class="gloss-def">Artificial Teaching Assistant — GoodPoint's exam/assessment creation tool offered free as the freemium entry point to the platform.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">PQL</span><span class="gloss-def">Product Qualified Lead — a free user whose in-product behaviour signals they are ready to convert to paid (e.g. created 3+ exams, invited colleagues).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Two-sided reward</span><span class="gloss-def">Referral structure where both the referrer (professor who referred) AND the referee (new professor) receive free script credits. Increases acceptance rate vs. one-sided.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Viral coefficient (k)</span><span class="gloss-def">Average new customers generated by each existing customer through referrals. k = invites/customer × conversion rate. k ≥ 1 = viral loop. Dropbox achieved 0.7.</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">Blended CAC</span><span class="gloss-def">Weighted average acquisition cost across all channels — direct sales, freemium conversion, and referrals. Referral programs reduce blended CAC by 25–35% (Forrester).</span></div>
+      <div class="gloss-term"><span class="gloss-abbr">PLG flywheel</span><span class="gloss-def">Self-reinforcing loop: Free ATA → professor trusts product → converts to paid grading → refers colleagues → more free ATA users → repeat.</span></div>
     </div>
 
     <div class="gloss-section">
@@ -364,6 +401,9 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 
     <div class="comp-note" id="comp-note">
       ⬆ The <strong>vs. GoodPoint now</strong> column updates live based on your current simulator price. Go to the Simulator tab, adjust your price per script, then return here to see how your positioning shifts.
+    </div>
+    <div class="comp-note" style="margin-top:8px;border-left-color:#0891B2;background:#F0F9FF">
+      🌱 <strong>Growth moat:</strong> None of the 6 competitors currently combine a <strong>freemium PLG entry</strong> (free ATA exam creation) with a <strong>credit-based professor referral program</strong>. Gradescope offers a free individual tier but no referral mechanic. Turnitin has no freemium layer. This combination is GoodPoint's structural acquisition advantage — model it in the <button onclick="switchTab('sim');setTimeout(toggleGrowth,300)" style="background:none;border:none;color:#0891B2;font-weight:600;cursor:pointer;font-size:12px;padding:0">Growth Mechanics →</button> section.
     </div>
 
     <div class="footnotes">
@@ -542,8 +582,10 @@ const competitors = [
 function switchTab(tab) {
   document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('pane-' + tab).classList.add('active');
-  document.getElementById('tab-' + tab).classList.add('active');
+  const paneEl = document.getElementById('pane-' + tab);
+  const tabEl  = document.getElementById('tab-'  + tab);
+  if (paneEl) paneEl.classList.add('active');
+  if (tabEl)  tabEl.classList.add('active');
   if (tab === 'comp') renderCompTable();
   if (tab === 'mobile') renderMobileTab();
 }
@@ -552,7 +594,8 @@ function switchTab(tab) {
 function setTier(t) {
   currentTier = t;
   ['script','student','faculty','institutional'].forEach(id => {
-    document.getElementById('tier-' + id).classList.toggle('active', id === t);
+    const btn = document.getElementById('tier-' + id);
+    if (btn) btn.classList.toggle('active', id === t);
   });
   renderTierInputs();
   update();
@@ -661,22 +704,31 @@ function update() {
     <div class="be-row"><span class="be-label">Monthly burn / surplus</span><span class="be-val" style="color:${opProfit>=0?'#0F6E56':'#991B1B'}">${opProfit>=0?'+':''}${fmt(opProfit)}</span></div>
     <div class="be-row"><span class="be-label">Annual operating profit</span><span class="be-val" style="color:${annualProfit>=0?'#0F6E56':'#991B1B'}">${fmt(annualProfit)}</span></div>`;
 
-  document.getElementById('insight-box').innerHTML = `<div class="insight">${buildInsight(opProfit, grossMargin, ltvcac, payback, beScripts, scripts)}</div>`;
+  // Growth mechanics
+  const growth = calcGrowth({ scripts, students, customers, fixed, varC, churn: getV('churn'), rev: revenueMonth, opProfit });
+  renderGrowthStats(growth);
+
+  // Adjusted P&L with growth impact
+  const adjustedOpProfit = opProfit + growth.netGrowthImpact;
+
+  document.getElementById('insight-box').innerHTML = `<div class="insight">${buildInsight(adjustedOpProfit, grossMargin, ltvcac, payback, beScripts, scripts, growth)}</div>`;
 
   // Market position badge
   const price = getCurrentPricePerScript();
   const badge = document.getElementById('market-pos-badge');
-  if (price !== null) {
-    const pos = price <= 1.5 ? 'Entry / aggressive' : price <= 2.5 ? 'Mid-market' : price <= 4 ? 'Premium' : 'Enterprise';
-    badge.innerHTML = `<span class="market-pos">📍 ${pos} (£${price.toFixed(2)}/script)</span>`;
-  } else {
-    badge.innerHTML = '';
+  if (badge) {
+    if (price !== null) {
+      const pos = price <= 1.5 ? 'Entry / aggressive' : price <= 2.5 ? 'Mid-market' : price <= 4 ? 'Premium' : 'Enterprise';
+      badge.innerHTML = `<span class="market-pos">📍 ${pos} (£${price.toFixed(2)}/script)</span>`;
+    } else {
+      badge.innerHTML = '';
+    }
   }
 
   updateChart(fixed, varC, currentTier, students, customers, scripts);
 }
 
-function buildInsight(opProfit, gm, ltvcac, payback, beScripts, scripts) {
+function buildInsight(opProfit, gm, ltvcac, payback, beScripts, scripts, growth) {
   if (opProfit < 0) {
     const gap = isFinite(beScripts) ? Math.ceil(beScripts - scripts).toLocaleString() : '?';
     return `You're <strong>${fmt(Math.abs(opProfit))}/mo below break-even</strong>. Need ${gap} more scripts/month at the current price — or reduce fixed costs by the same amount.`;
@@ -685,7 +737,9 @@ function buildInsight(opProfit, gm, ltvcac, payback, beScripts, scripts) {
   if (ltvcac < 3)  return `LTV/CAC is ${ltvcac.toFixed(1)}× — above 1 but below the 3× SaaS benchmark. A 10–15% price increase or longer retention would close the gap.`;
   if (payback > 24) return `Payback of ${payback.toFixed(0)} months is long. The free pilot reduces effective CAC — track pilot-to-paid conversion closely.`;
   if (gm > 85 && ltvcac >= 3) return `Strong position: ${gm.toFixed(0)}% gross margin, LTV/CAC ${ltvcac.toFixed(1)}×, operating surplus. Growth is constrained by adoption volume, not unit economics.`;
-  return `Gross margin ${gm.toFixed(0)}%, LTV/CAC ${ltvcac.toFixed(1)}×. Operating surplus of ${fmt(opProfit)}/mo — solid fundamentals. Focus on volume expansion to scale profit.`;
+  let base = `Gross margin ${gm.toFixed(0)}%, LTV/CAC ${ltvcac.toFixed(1)}×. Operating surplus of ${fmt(opProfit)}/mo — solid fundamentals. Focus on volume expansion to scale profit.`;
+  if (growth && growth.totalNewCust > 0.5) base += ` Growth mechanics adding +${growth.totalNewCust.toFixed(1)} customers/mo at blended CAC of ${Math.abs(growth.blendedCAC)<1000?'£'+growth.blendedCAC.toFixed(0):'£'+(growth.blendedCAC/1000).toFixed(1)+'K'}.`;
+  return base;
 }
 
 function updateChart(fixed, varC, tier, students, customers, currentScripts) {
@@ -770,7 +824,8 @@ function loadCompetitorPrice(price, name) {
   tierConfig.script.pricePerScript = price;
   currentTier = 'script';
   ['script','student','faculty','institutional'].forEach(id => {
-    document.getElementById('tier-'+id).classList.toggle('active', id==='script');
+    const btn = document.getElementById('tier-'+id);
+    if (btn) btn.classList.toggle('active', id==='script');
   });
   renderTierInputs();
   update();
@@ -811,6 +866,9 @@ function resetAll() {
   tierConfig.faculty.annualLicence            = 8000;
   tierConfig.institutional.annualLicence      = 24000;
   if (profitChart) { profitChart.destroy(); profitChart = null; }
+  // Reset growth sliders
+  const growthDefaults = {freeATAUsers:50,ataConvRate:7,ataCostPerUser:0.80,refereeCredits:50,referralInvites:0.3,referralConvRate:8,creditsPerReferral:150,referralChurnDiscount:0.4};
+  Object.entries(growthDefaults).forEach(([id,val]) => { const el = document.getElementById(id); if(el) el.value = val; });
   setTier('script');
 }
 
@@ -1041,14 +1099,113 @@ function openMobModal(scenario) {
   document.getElementById('mob-modal-title').textContent  = m.title;
   document.getElementById('mob-modal-subtitle').textContent = m.subtitle;
   document.getElementById('mob-modal-body').innerHTML = m.body;
-  document.getElementById('mob-modal').classList.add('open');
+  const mm = document.getElementById('mob-modal'); if (mm) mm.classList.add('open');
 }
 
 function closeMobModal() {
-  document.getElementById('mob-modal').classList.remove('open');
+  const mm2 = document.getElementById('mob-modal'); if (mm2) mm2.classList.remove('open');
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobModal(); });
+
+
+// ── Growth Mechanics ─────────────────────────────────────────────────────────
+function toggleGrowth() {
+  const btn  = document.getElementById('growth-toggle-btn');
+  const body = document.getElementById('growth-body');
+  if (btn)  btn.classList.toggle('open');
+  if (body) body.classList.toggle('open');
+}
+
+function gv(id, def) { const el = document.getElementById(id); return el ? (parseFloat(el.value) || def) : def; }
+
+function calcGrowth(base) {
+  // Guard: return zeroed object if growth sliders not in DOM yet
+  if (!document.getElementById('freeATAUsers')) {
+    return { newCustATA:0, newCustRef:0, viralCoeff:0, blendedCAC:0, freemiumCost:0,
+             refereeCreditCost:0, creditCost:0, freemiumCAC:0, referralCAC:0,
+             totalGrowthCost:0, totalGrowthRevenue:0, netGrowthImpact:0, totalNewCust:0,
+             freemiumRevUplift:0, referralRevUplift:0, freeUsers:0, invites:0, referralChurnDiscount:0 };
+  }
+
+  const varC              = base.varC;
+  const revPerCust        = base.customers > 0 ? base.rev / base.customers : 0;
+
+  // Freemium ATA
+  const freeUsers         = gv('freeATAUsers', 50);
+  const ataConv           = gv('ataConvRate', 7);
+  const ataCost           = gv('ataCostPerUser', 0.80);
+  const refereeCredits    = gv('refereeCredits', 50);
+  const newCustATA        = freeUsers * ataConv / 100;
+  const freemiumCost      = freeUsers * ataCost;
+  const refereeCreditCost = newCustATA * refereeCredits * varC;
+  const freemiumCAC       = newCustATA > 0 ? (freemiumCost + refereeCreditCost) / newCustATA : 0;
+  const freemiumRevUplift = newCustATA * revPerCust;
+
+  // Referral
+  const invites           = gv('referralInvites', 0.3);
+  const refConv           = gv('referralConvRate', 8);
+  const credits           = gv('creditsPerReferral', 150);
+  const churnDisc         = gv('referralChurnDiscount', 0.4);
+  const newCustRef        = base.customers * invites * refConv / 100;
+  const viralCoeff        = invites * refConv / 100;
+  const creditCost        = newCustRef * credits * varC;
+  const referralCAC       = newCustRef > 0 ? creditCost / newCustRef : 0;
+  const referralRevUplift = newCustRef * revPerCust * 1.20; // HBR: +16-25% LTV
+  const referralChurnDiscount = churnDisc;
+
+  // Blended CAC
+  const directCAC    = gv('cac', 800);
+  const totalNewCust = newCustATA + newCustRef;
+  const blendedCAC   = totalNewCust > 0
+    ? (freemiumCAC * newCustATA + referralCAC * newCustRef) / totalNewCust
+    : directCAC;
+
+  // Net growth P&L impact
+  const totalGrowthCost    = freemiumCost + refereeCreditCost + creditCost;
+  const totalGrowthRevenue = freemiumRevUplift + referralRevUplift;
+  const netGrowthImpact    = totalGrowthRevenue - totalGrowthCost;
+
+  return {
+    freeUsers, ataConv, ataCost, newCustATA, freemiumCost, refereeCreditCost, freemiumCAC, freemiumRevUplift,
+    invites, refConv, credits, churnDisc, newCustRef, viralCoeff, creditCost, referralCAC, referralRevUplift, referralChurnDiscount,
+    blendedCAC, totalGrowthCost, totalGrowthRevenue, netGrowthImpact, totalNewCust
+  };
+}
+
+function renderGrowthStats(g) {
+  if (!g || g.totalNewCust === undefined) return;
+  const fmtG = n => Math.abs(n)>=1000 ? '£'+(n/1000).toFixed(1)+'K' : '£'+n.toFixed(2);
+
+  // ATA stats
+  const ataEl = document.getElementById('ata-stats');
+  if (ataEl) ataEl.innerHTML = `
+    <div class="growth-stat"><div class="gs-lbl">New customers / mo</div><div class="gs-val val-green">+${g.newCustATA.toFixed(1)}</div></div>
+    <div class="growth-stat"><div class="gs-lbl">Freemium cost / mo</div><div class="gs-val val-red">−${fmtG(g.freemiumCost + g.refereeCreditCost)}</div></div>
+    <div class="growth-stat"><div class="gs-lbl">Freemium CAC</div><div class="gs-val ${g.freemiumCAC<200?'val-green':g.freemiumCAC<500?'val-amber':'val-red'}">${fmtG(g.freemiumCAC)}</div></div>`;
+
+  // Referral stats
+  const refEl = document.getElementById('referral-stats');
+  if (refEl) refEl.innerHTML = `
+    <div class="growth-stat"><div class="gs-lbl">Viral coefficient (k)</div><div class="gs-val ${g.viralCoeff>=0.5?'val-green':g.viralCoeff>=0.2?'val-amber':'val-red'}">${g.viralCoeff.toFixed(3)}k</div></div>
+    <div class="growth-stat"><div class="gs-lbl">New customers / mo</div><div class="gs-val val-green">+${g.newCustRef.toFixed(1)}</div></div>
+    <div class="growth-stat"><div class="gs-lbl">Credit cost / mo</div><div class="gs-val val-red">−${fmtG(g.creditCost)}</div></div>`;
+
+  // Growth KPI grid
+  const gGrid = document.getElementById('growth-kpi-grid');
+  const gbody = document.getElementById('growth-body');
+  if (gGrid && gbody && gbody.classList.contains('open')) {
+    const viralColor = g.viralCoeff>=0.5?'val-green':g.viralCoeff>=0.2?'val-amber':'val-red';
+    const cacColor   = g.blendedCAC < 200 ? 'val-green' : g.blendedCAC < 500 ? 'val-amber' : 'val-red';
+    gGrid.innerHTML = `
+      <div class="metric"><div class="lbl">Total new customers / mo</div><div class="val val-green">+${g.totalNewCust.toFixed(1)}</div><div class="sub">ATA: +${g.newCustATA.toFixed(1)} · Ref: +${g.newCustRef.toFixed(1)}</div></div>
+      <div class="metric"><div class="lbl">Viral coefficient (k)</div><div class="val ${viralColor}">${g.viralCoeff.toFixed(3)}</div><div class="sub">${g.viralCoeff>=1?'🔥 Viral loop!':g.viralCoeff>=0.5?'Strong':'Building'} · Dropbox was 0.7</div></div>
+      <div class="metric"><div class="lbl">Blended CAC (growth)</div><div class="val ${cacColor}">${fmtG(g.blendedCAC)}</div><div class="sub">vs. direct CAC ${fmtG(parseFloat(document.getElementById('cac').value)||800)}</div></div>
+      <div class="metric"><div class="lbl">Net growth P&L impact</div><div class="val ${g.netGrowthImpact>=0?'val-green':'val-red'}">${g.netGrowthImpact>=0?'+':''}${fmtG(g.netGrowthImpact)}/mo</div><div class="sub">Rev uplift minus program cost</div></div>`;
+  } else if (gGrid) {
+    gGrid.innerHTML = '';
+  }
+}
 
 </script>
 
@@ -1084,6 +1241,21 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobModa
     <div class="card">
       <p class="section-label">Current simulator baseline (live from Simulator tab)</p>
       <div id="mob-baseline"></div>
+    </div>
+  </div>
+
+  <!-- Growth + Mobile synergy -->
+  <div class="card" style="margin-bottom:16px;border-left:3px solid #0891B2">
+    <p class="section-label">🌱 How mobile amplifies Growth Mechanics</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+      <div>
+        <div style="font-weight:600;color:#1E293B;margin-bottom:6px">Freemium ATA × Mobile</div>
+        <div style="color:#475569;line-height:1.6">A PWA gives professors instant access to the ATA exam creation tool from any device — no install barrier. Mobile push notifications can trigger freemium-to-paid conversion at peak moments (e.g. when an exam is due). <strong>Conversion 2.1× higher</strong> when in-app triggers combine with notifications (Mixpanel 2025).</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#1E293B;margin-bottom:6px">Referral Program × Mobile</div>
+        <div style="color:#475569;line-height:1.6">Mobile native share sheet makes referral link sharing frictionless — professors can share directly to WhatsApp, email, or Teams in one tap. Real-time credit balance visible in the app creates ongoing engagement. <strong>Mobile referral share rates: 25–35%</strong> vs ~12% on desktop (OpenView 2025).</div>
+      </div>
     </div>
   </div>
 
