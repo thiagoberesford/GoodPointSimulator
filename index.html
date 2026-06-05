@@ -298,7 +298,6 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
       <div class="gloss-term"><span class="gloss-abbr">SMB</span><span class="gloss-def">Small and Medium-sized Business — used to describe smaller competitor segments (e.g. CoGrader, EduSageAI).</span></div>
       <div class="gloss-term"><span class="gloss-abbr">STEM</span><span class="gloss-def">Science, Technology, Engineering, Mathematics — GoodPoint's core differentiation: handwritten STEM grading.</span></div>
       <div class="gloss-term"><span class="gloss-abbr">CAGR</span><span class="gloss-def">Compound Annual Growth Rate — EdTech market growing at 14% CAGR 2025–2032.</span></div>
-      <div class="gloss-term"><span class="gloss-abbr">SBTi</span><span class="gloss-def">Science Based Targets initiative — sustainability commitment framework referenced in hyperscaler scoring.</span></div>
     </div>
 
   </div>
@@ -732,7 +731,7 @@ function update() {
   const annualProfit  = opProfit * 12;
 
   const revPerCustomer = customers > 0 ? revenueMonth / customers : 0;
-  const ltv     = revPerCustomer * retention * (1 - churn * retention / 2);
+  const ltv     = churn > 0 ? revPerCustomer * (1 - Math.pow(1 - churn, retention)) / churn : revPerCustomer * retention;
   const ltvcac  = cac > 0 ? ltv / cac : 0;
   const payback = revPerCustomer > 0 ? cac / revPerCustomer : Infinity;
   const roi     = cac > 0 ? ((ltv - cac) / cac) * 100 : 0;
@@ -1015,14 +1014,15 @@ function updateMobile() {
   document.getElementById('mobNewCustOut').textContent      = newCustMo.toFixed(1);
 
   const newScripts      = base.scripts * (1 + volUplift/100);
-  const newCustomers    = base.customers + newCustMo*12;
+  const newCustomers    = base.customers + newCustMo;  // monthly increment only
   const newRevMonth     = calcRevenue(newScripts, base.students, newCustomers, currentTier);
   const revUpliftMonth  = newRevMonth - base.rev;
   const oldChurnRate    = base.churn/100;
   const newChurnRate    = Math.max(0, oldChurnRate - churnRed/100);
   const revPerCust      = base.customers>0 ? base.rev/base.customers : 0;
-  const oldLTV          = revPerCust * (1/Math.max(oldChurnRate,0.001));
-  const newLTV          = revPerCust * (1/Math.max(newChurnRate,0.001));
+  const retention_mo    = parseFloat(document.getElementById('retention')?.value) || 24;
+  const oldLTV          = oldChurnRate > 0 ? revPerCust * (1 - Math.pow(1-oldChurnRate, retention_mo)) / oldChurnRate : revPerCust * retention_mo;
+  const newLTV          = newChurnRate > 0 ? revPerCust * (1 - Math.pow(1-Math.max(newChurnRate,0.001), retention_mo)) / Math.max(newChurnRate,0.001) : revPerCust * retention_mo;
   const ltvUpliftTotal  = (newLTV - oldLTV) * base.customers;
   const annualBenefit   = revUpliftMonth*12 + ltvUpliftTotal/amortYears;
   const annualCost      = buildCost/amortYears + maintCost;
@@ -1209,7 +1209,14 @@ function calcGrowth(base) {
   const viralCoeff        = invites * refConv / 100;
   const creditCost        = newCustRef * credits * varC;
   const referralCAC       = newCustRef > 0 ? creditCost / newCustRef : 0;
-  const referralRevUplift = newCustRef * revPerCust * 1.20; // HBR: +16-25% LTV
+
+  // Churn discount wired in: referred customers churn less → higher LTV
+  const baseChurnRate     = Math.max((base.churn || 2) / 100, 0.001);
+  const refChurnRate      = Math.max(baseChurnRate - churnDisc / 100, 0.001);
+  const baseAvgLifetime   = 1 / baseChurnRate;           // months
+  const refAvgLifetime    = 1 / refChurnRate;            // months
+  const ltvMultiplier     = refAvgLifetime / baseAvgLifetime; // e.g. 1.25x if churn drops
+  const referralRevUplift = newCustRef * revPerCust * ltvMultiplier;
   const referralChurnDiscount = churnDisc;
 
   // Blended CAC
@@ -1227,7 +1234,8 @@ function calcGrowth(base) {
   return {
     freeUsers, ataConv, ataCost, newCustATA, freemiumCost, refereeCreditCost, freemiumCAC, freemiumRevUplift,
     invites, refConv, credits, churnDisc, newCustRef, viralCoeff, creditCost, referralCAC, referralRevUplift, referralChurnDiscount,
-    blendedCAC, totalGrowthCost, totalGrowthRevenue, netGrowthImpact, totalNewCust
+    blendedCAC, totalGrowthCost, totalGrowthRevenue, netGrowthImpact, totalNewCust,
+    ltvMultiplier, baseAvgLifetime, refAvgLifetime
   };
 }
 
@@ -1260,10 +1268,14 @@ function renderGrowthStats(g) {
 
   // Referral stats
   const refEl = document.getElementById('referral-stats');
-  if (refEl) refEl.innerHTML = `
+  if (refEl) {
+    const ltvPct = g.ltvMultiplier ? ((g.ltvMultiplier - 1) * 100).toFixed(1) : '0.0';
+    const lifetimeGain = g.refAvgLifetime && g.baseAvgLifetime ? (g.refAvgLifetime - g.baseAvgLifetime).toFixed(1) : '0';
+    refEl.innerHTML = `
     <div class="growth-stat"><div class="gs-lbl">Viral coefficient (k)</div><div class="gs-val ${g.viralCoeff>=0.5?'val-green':g.viralCoeff>=0.2?'val-amber':'val-red'}">${g.viralCoeff.toFixed(3)}k</div></div>
     <div class="growth-stat"><div class="gs-lbl">New customers / mo</div><div class="gs-val val-green">+${g.newCustRef.toFixed(1)}</div></div>
-    <div class="growth-stat"><div class="gs-lbl">Credit cost / mo</div><div class="gs-val val-red">−${fmtG(g.creditCost)}</div></div>`;
+    <div class="growth-stat"><div class="gs-lbl">Referred LTV uplift</div><div class="gs-val val-green">+${ltvPct}% LTV</div><div class="gs-sub" style="font-size:10px;color:#64748B">+${lifetimeGain} mo avg lifetime</div></div>`;
+  }
 
   // Growth KPI grid
   const gGrid = document.getElementById('growth-kpi-grid');
