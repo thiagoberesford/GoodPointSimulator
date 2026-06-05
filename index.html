@@ -348,6 +348,64 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
     </div>
   </div>
 
+
+  <!-- Growth Mechanics -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="growth-toggle" id="growth-toggle-btn" onclick="toggleGrowth()">
+      <span style="font-size:17px">&#127807;</span>
+      <span class="gt-title">Growth Mechanics</span>
+      <span class="gt-badge">Freemium ATA</span>
+      <span class="gt-badge" style="background:#FEF3C7;color:#92400E">Referral Program</span>
+      <span style="flex:1"></span>
+      <span style="font-size:12px;color:#94A3B8;margin-right:4px">Click to expand</span>
+      <span class="gt-arrow">&#9660;</span>
+    </div>
+    <div class="growth-body" id="growth-body">
+      <div class="growth-sub">&#127873; Freemium &mdash; Artificial Teaching Assistant (ATA) <span class="gs-tag" style="background:#E0F2FE;color:#0E4F6A">PLG entry</span></div>
+      <div style="font-size:12px;color:#64748B;margin-bottom:10px;line-height:1.5">The ATA exam-creation tool is offered free to professors, building trust and brand presence. Converted users then adopt GoodPoint grading (paid). Industry benchmark: <strong>5&ndash;8% free-to-paid conversion</strong> for tightly targeted B2B EdTech (Pathmonk 2026). Slack: 80% of paid workspaces started as free.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px">
+        <div>
+          <div class="slider-row"><label>Free ATA users / month</label><input type="range" min="0" max="500" step="10" id="freeATAUsers" value="50" oninput="update()"><span class="readout" id="freeATAUsersOut">50</span></div>
+          <div class="slider-row"><label>Freemium &rarr; paid conv. (%)</label><input type="range" min="1" max="25" step="0.5" id="ataConvRate" value="7" oninput="update()"><span class="readout" id="ataConvRateOut">7%</span></div>
+        </div>
+        <div>
+          <div class="slider-row"><label>ATA cost / free user / mo (&pound;)</label><input type="range" min="0.10" max="5" step="0.10" id="ataCostPerUser" value="0.80" oninput="update()"><span class="readout" id="ataCostPerUserOut">&pound;0.80</span></div>
+          <div class="slider-row"><label>Two-sided reward (referee scripts)</label><input type="range" min="0" max="200" step="10" id="refereeCredits" value="50" oninput="update()"><span class="readout" id="refereeCreditOut">50</span></div>
+        </div>
+      </div>
+      <div class="growth-inline" id="ata-stats"></div>
+      <hr class="growth-divider">
+      <div class="growth-sub">&#128279; Referral Program &mdash; Professor Credits <span class="gs-tag" style="background:#FEF3C7;color:#92400E">Credit-based</span></div>
+      <div style="font-size:12px;color:#64748B;margin-bottom:10px;line-height:1.5">Professors earn free grading scripts when a referred colleague converts to paid. Credit rewards outperform cash by 18% in SaaS (SaaSquatch). Referred customers: <strong>16&ndash;25% higher LTV, 20% less churn</strong> (HBR 2025). Referral programs reduce blended CAC by 25&ndash;35% (Forrester).</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px">
+        <div>
+          <div class="slider-row"><label>Referral invites / customer / mo</label><input type="range" min="0" max="3" step="0.1" id="referralInvites" value="0.3" oninput="update()"><span class="readout" id="referralInvitesOut">0.3</span></div>
+          <div class="slider-row"><label>Referral conversion rate (%)</label><input type="range" min="1" max="30" step="0.5" id="referralConvRate" value="8" oninput="update()"><span class="readout" id="referralConvRateOut">8%</span></div>
+        </div>
+        <div>
+          <div class="slider-row"><label>Credits / converted referral (scripts)</label><input type="range" min="50" max="500" step="25" id="creditsPerReferral" value="150" oninput="update()"><span class="readout" id="creditsPerReferralOut">150</span></div>
+          <div class="slider-row"><label>Referral churn discount (pp)</label><input type="range" min="0" max="2" step="0.1" id="referralChurnDiscount" value="0.4" oninput="update()"><span class="readout" id="referralChurnDiscountOut">0.4 pp</span></div>
+        </div>
+      </div>
+      <div class="growth-inline" id="referral-stats"></div>
+      <hr class="growth-divider">
+      <div class="growth-sub">&#128202; Industry benchmarks used</div>
+      <div>
+        <span class="benchmark-pill"><strong>5&ndash;8%</strong> B2B EdTech freemium conversion (Pathmonk 2026)</span>
+        <span class="benchmark-pill"><strong>8&ndash;9%</strong> Median SaaS free-to-paid (ChartMogul 2026)</span>
+        <span class="benchmark-pill"><strong>80%</strong> Slack paid workspaces from free (2025)</span>
+        <span class="benchmark-pill"><strong>3&ndash;7&times;</strong> ROI on B2B referral programs (SaaSquatch)</span>
+        <span class="benchmark-pill"><strong>+16&ndash;25%</strong> LTV uplift for referred customers (HBR)</span>
+        <span class="benchmark-pill"><strong>&minus;25&ndash;35%</strong> Blended CAC reduction (Forrester)</span>
+        <span class="benchmark-pill"><strong>+18%</strong> Credit rewards outperform cash (SaaSquatch)</span>
+        <span class="benchmark-pill"><strong>0.7k</strong> Dropbox viral coefficient &middot; <strong>0.4k</strong> WhatsApp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Growth KPIs -->
+  <div class="grid-4" style="margin-bottom:16px" id="growth-kpi-grid"></div>
+
   <div class="grid-4" id="kpi-grid"></div>
   <div class="grid-3" id="kpi-grid2"></div>
 
