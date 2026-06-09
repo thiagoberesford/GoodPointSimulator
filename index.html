@@ -7,170 +7,497 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F8FAFC;color:#1E293B;font-size:14px;min-height:100vh}
-a{color:#0891B2;text-decoration:none}a:hover{text-decoration:underline}
-header{background:#0891B2;padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:rgba(255,255,255,0.03);color:#E2E8F0;font-size:14px;min-height:100vh}
+a{color:#2563EB;text-decoration:none}a:hover{text-decoration:underline}
+header{background:#2563EB;padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
 .brand{font-size:20px;font-weight:600;color:#fff}.sub{font-size:12px;color:rgba(255,255,255,.75);margin-top:2px}
 header button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
 header button:hover{background:rgba(255,255,255,.25)}
-.tab-bar{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 32px;display:flex;gap:0}
-.tab-btn{padding:12px 22px;font-size:14px;font-weight:500;border:none;background:none;cursor:pointer;color:#64748B;border-bottom:2px solid transparent;font-family:inherit;transition:all .15s}
-.tab-btn.active{color:#0891B2;border-bottom-color:#0891B2}
-.tab-btn:hover:not(.active){color:#1E293B}
+.tab-bar{background:#fff;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 32px;display:flex;gap:0}
+.tab-btn{padding:12px 22px;font-size:14px;font-weight:500;border:none;background:none;cursor:pointer;color:#8B9AB0;border-bottom:2px solid transparent;font-family:inherit;transition:all .15s}
+.tab-btn.active{color:#2563EB;border-bottom-color:#2563EB}
+.tab-btn:hover:not(.active){color:#E2E8F0}
 .main{max-width:1200px;margin:0 auto;padding:24px}
 .pane{display:none}.pane.active{display:block}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 20px}
-.section-label{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#64748B;margin-bottom:14px}
-.metric{background:#F1F5F9;border-radius:8px;padding:12px 16px}
-.metric .lbl{font-size:12px;color:#64748B;margin-bottom:4px}
-.metric .val{font-size:22px;font-weight:600;color:#1E293B}
+.card{background:#fff;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#8B9AB0;margin-bottom:14px}
+.metric{background:rgba(255,255,255,0.04);border-radius:8px;padding:12px 16px}
+.metric .lbl{font-size:12px;color:#8B9AB0;margin-bottom:4px}
+.metric .val{font-size:22px;font-weight:600;color:#E2E8F0}
 .metric .sub{font-size:11px;color:#94A3B8;margin-top:3px}
 .val-green{color:#0F6E56!important}.val-amber{color:#92400E!important}.val-red{color:#991B1B!important}
 .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.slider-row label{font-size:12.5px;color:#475569;min-width:160px}
+.slider-row label{font-size:12.5px;color:#94A3B8;min-width:160px}
 .slider-row input[type=range]{flex:1;-webkit-appearance:none;height:4px;background:#CBD5E1;border-radius:4px;outline:none;cursor:pointer}
-.slider-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#0891B2;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-.slider-row .readout{font-size:13px;font-weight:600;min-width:68px;text-align:right;color:#0891B2}
+.slider-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#2563EB;cursor:pointer;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.slider-row .readout{font-size:13px;font-weight:600;min-width:68px;text-align:right;color:#2563EB}
 .tier-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.tier-btn{border:1px solid #CBD5E1;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;background:#fff;color:#475569;transition:all .12s;font-family:inherit}
-.tier-btn:hover{background:#F1F5F9}
-.tier-btn.active{background:#E0F2FE;border-color:#0891B2;color:#0E4F6A;font-weight:600}
-.be-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:#F8FAFC;border-radius:8px;margin-bottom:8px;font-size:13px}
-.be-label{color:#64748B}.be-val{font-weight:600}
+.tier-btn{border:1px solid #CBD5E1;border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;background:#fff;color:#94A3B8;transition:all .12s;font-family:inherit}
+.tier-btn:hover{background:rgba(255,255,255,0.04)}
+.tier-btn.active{background:rgba(37,99,235,0.15);border-color:#2563EB;color:#0E4F6A;font-weight:600}
+.be-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:rgba(255,255,255,0.03);border-radius:8px;margin-bottom:8px;font-size:13px}
+.be-label{color:#8B9AB0}.be-val{font-weight:600}
 .tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:99px;font-weight:600}
 .tag-green{background:#D1FAE5;color:#065F46}.tag-amber{background:#FEF3C7;color:#92400E}.tag-red{background:#FEE2E2;color:#991B1B}
-.insight{font-size:13px;color:#334155;line-height:1.6;padding:12px 16px;background:#F0F9FF;border-radius:8px;border-left:3px solid #0891B2}
+.insight{font-size:13px;color:#CBD5E1;line-height:1.6;padding:12px 16px;background:rgba(37,99,235,0.08);border-radius:8px;border-left:3px solid #0891B2}
 /* Competitor table */
 .comp-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-.comp-table th{background:#0891B2;color:#fff;padding:8px 9px;text-align:left;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;overflow:hidden}
+.comp-table th{background:#2563EB;color:#fff;padding:8px 9px;text-align:left;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;overflow:hidden}
 .comp-table th:first-child{border-radius:8px 0 0 0}
 .comp-table th:last-child{border-radius:0 8px 0 0}
-.comp-table td{padding:8px 9px;border-bottom:1px solid #E2E8F0;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0}
-.comp-table tr:nth-child(even) td{background:#F8FAFC}
-.comp-table tr:hover td{background:#F0F9FF}
-.comp-table tr.goodpoint td{background:#E0F2FE!important;font-weight:600}
+.comp-table td{padding:8px 9px;border-bottom:1px solid rgba(255,255,255,0.06);vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:0}
+.comp-table tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
+.comp-table tr:hover td{background:rgba(37,99,235,0.08)}
+.comp-table tr.goodpoint td{background:rgba(37,99,235,0.15)!important;font-weight:600}
 .badge{display:inline-block;font-size:10px;padding:2px 6px;border-radius:99px;font-weight:600;white-space:nowrap}
 .badge-red{background:#FEE2E2;color:#991B1B}
 .badge-amber{background:#FEF3C7;color:#92400E}
 .badge-green{background:#D1FAE5;color:#065F46}
-.badge-blue{background:#E0F2FE;color:#0E4F6A}
-.badge-gray{background:#F1F5F9;color:#475569}
-.sim-btn{border:1px solid #0891B2;color:#0891B2;background:#fff;border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap}
-.sim-btn:hover{background:#E0F2FE}
+.badge-blue{background:rgba(37,99,235,0.15);color:#0E4F6A}
+.badge-gray{background:rgba(255,255,255,0.04);color:#94A3B8}
+.sim-btn{border:1px solid #0891B2;color:#2563EB;background:#fff;border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap}
+.sim-btn:hover{background:rgba(37,99,235,0.15)}
 .adv-cell{font-size:12px;font-weight:600;text-align:center}
-.source-link{font-size:11px;color:#0891B2}
-.comp-note{font-size:12px;color:#64748B;margin-top:8px;line-height:1.5;padding:10px 14px;background:#F8FAFC;border-radius:8px;border-left:2px solid #CBD5E1}
+.source-link{font-size:11px;color:#2563EB}
+.comp-note{font-size:12px;color:#8B9AB0;margin-top:8px;line-height:1.5;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:2px solid #CBD5E1}
 .footnotes{margin-top:14px;padding:14px 18px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;font-size:12px;color:#78350F;line-height:1.7}
 .footnotes p{font-weight:600;margin-bottom:6px;color:#92400E}
 .footnotes li{margin-left:18px;margin-bottom:3px}
-.market-pos{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;background:#E0F2FE;color:#0E4F6A;margin-left:12px}
+.market-pos{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;background:rgba(37,99,235,0.15);color:#0E4F6A;margin-left:12px}
 
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal-box{background:#fff;border-radius:14px;padding:28px 32px;max-width:520px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.2);position:relative}
 .modal-close{position:absolute;top:14px;right:16px;font-size:20px;background:none;border:none;cursor:pointer;color:#94A3B8;line-height:1}
-.modal-close:hover{color:#1E293B}
-.modal-title{font-size:17px;font-weight:600;color:#0891B2;margin-bottom:6px}
+.modal-close:hover{color:#E2E8F0}
+.modal-title{font-size:17px;font-weight:600;color:#2563EB;margin-bottom:6px}
 .modal-subtitle{font-size:12px;color:#94A3B8;margin-bottom:16px}
-.modal-body{font-size:13px;color:#334155;line-height:1.65}
-.modal-body strong{color:#1E293B}
+.modal-body{font-size:13px;color:#CBD5E1;line-height:1.65}
+.modal-body strong{color:#E2E8F0}
 .modal-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F1F5F9}
 .modal-row:last-child{border-bottom:none}
-.modal-row .mk{font-size:12px;color:#64748B;min-width:130px}
-.modal-row .mv{font-size:12px;font-weight:600;color:#1E293B;text-align:right}
+.modal-row .mk{font-size:12px;color:#8B9AB0;min-width:130px}
+.modal-row .mv{font-size:12px;font-weight:600;color:#E2E8F0;text-align:right}
 
 
-.guide-hero{background:linear-gradient(135deg,#0891B2 0%,#155E75 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff}
+.guide-hero{background:linear-gradient(135deg,#0D1628 0%,#162040 100%);border-radius:12px;padding:28px 32px;margin-bottom:20px;color:#fff}
 .guide-hero h1{font-size:22px;font-weight:700;margin-bottom:6px}
 .guide-hero p{font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;max-width:700px}
 .guide-tabs-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
-.guide-tab-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:18px 16px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
-.guide-tab-card:hover{box-shadow:0 4px 16px rgba(8,145,178,.12);border-color:#0891B2}
+.guide-tab-card{background:#fff;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 16px;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.guide-tab-card:hover{box-shadow:0 4px 16px rgba(8,145,178,.12);border-color:#2563EB}
 .guide-tab-card .gtc-icon{font-size:26px;margin-bottom:8px}
-.guide-tab-card .gtc-title{font-size:13px;font-weight:600;color:#1E293B;margin-bottom:6px}
-.guide-tab-card .gtc-desc{font-size:12px;color:#64748B;line-height:1.5}
+.guide-tab-card .gtc-title{font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:6px}
+.guide-tab-card .gtc-desc{font-size:12px;color:#8B9AB0;line-height:1.5}
 .guide-tab-card .gtc-steps{margin-top:10px;padding-top:10px;border-top:1px solid #F1F5F9}
-.guide-tab-card .gtc-step{font-size:11.5px;color:#475569;display:flex;gap:7px;margin-bottom:5px;line-height:1.4}
-.guide-tab-card .gtc-step-num{background:#0891B2;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.guide-tab-card .gtc-step{font-size:11.5px;color:#94A3B8;display:flex;gap:7px;margin-bottom:5px;line-height:1.4}
+.guide-tab-card .gtc-step-num{background:#2563EB;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .guide-tips{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.guide-tip{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:14px 16px;font-size:12px;color:#1E293B;line-height:1.55}
-.guide-tip strong{display:block;color:#0891B2;font-size:13px;margin-bottom:4px}
+.guide-tip{background:rgba(37,99,235,0.08);border:1px solid #BAE6FD;border-radius:10px;padding:14px 16px;font-size:12px;color:#E2E8F0;line-height:1.55}
+.guide-tip strong{display:block;color:#2563EB;font-size:13px;margin-bottom:4px}
 .gloss-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
-.gloss-section{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 18px}
-.gloss-section h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#0891B2;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E0F2FE}
+.gloss-section{background:#fff;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px}
+.gloss-section h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#2563EB;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #E0F2FE}
 .gloss-term{display:flex;gap:8px;margin-bottom:8px;font-size:12px;line-height:1.5}
-.gloss-abbr{font-weight:700;color:#1E293B;min-width:68px;flex-shrink:0}
-.gloss-def{color:#475569}
+.gloss-abbr{font-weight:700;color:#E2E8F0;min-width:68px;flex-shrink:0}
+.gloss-def{color:#94A3B8}
 
 
 .growth-toggle{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;margin-bottom:0}
-.growth-toggle .gt-title{font-size:13px;font-weight:600;color:#1E293B}
-.growth-toggle .gt-badge{font-size:10px;font-weight:600;background:#E0F2FE;color:#0E4F6A;padding:2px 8px;border-radius:99px}
+.growth-toggle .gt-title{font-size:13px;font-weight:600;color:#E2E8F0}
+.growth-toggle .gt-badge{font-size:10px;font-weight:600;background:rgba(37,99,235,0.15);color:#0E4F6A;padding:2px 8px;border-radius:99px}
 .growth-toggle .gt-arrow{font-size:11px;color:#94A3B8;transition:transform .2s}
 .growth-toggle.open .gt-arrow{transform:rotate(180deg)}
 .growth-body{display:none;padding-top:14px}
 .growth-body.open{display:block}
 .growth-divider{border:none;border-top:1px solid #E2E8F0;margin:14px 0}
-.growth-sub{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.growth-sub{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8B9AB0;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .growth-sub .gs-tag{font-size:10px;font-weight:600;padding:1px 7px;border-radius:99px}
 .growth-inline{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.growth-stat{background:#F8FAFC;border-radius:8px;padding:8px 12px;font-size:12px}
-.growth-stat .gs-lbl{color:#64748B;margin-bottom:2px}
-.growth-stat .gs-val{font-weight:600;color:#1E293B;font-size:14px}
-.benchmark-pill{display:inline-flex;align-items:center;gap:5px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:5px 10px;font-size:11px;color:#0E7490;margin:3px 3px 3px 0}
-.benchmark-pill strong{color:#0891B2}
+.growth-stat{background:rgba(255,255,255,0.03);border-radius:8px;padding:8px 12px;font-size:12px}
+.growth-stat .gs-lbl{color:#8B9AB0;margin-bottom:2px}
+.growth-stat .gs-val{font-weight:600;color:#E2E8F0;font-size:14px}
+.benchmark-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(37,99,235,0.08);border:1px solid #BAE6FD;border-radius:8px;padding:5px 10px;font-size:11px;color:#1D4ED8;margin:3px 3px 3px 0}
+.benchmark-pill strong{color:#2563EB}
 
 
 .ai-pane{max-width:1200px;margin:0 auto;padding:24px}
 .ai-prompt-bar{display:flex;gap:10px;margin-bottom:20px;align-items:center}
 .ai-prompt-bar input{flex:1;padding:10px 16px;border:1px solid #CBD5E1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
-.ai-prompt-bar input:focus{border-color:#0891B2;box-shadow:0 0 0 3px rgba(8,145,178,.1)}
-.ai-prompt-bar button{background:#0891B2;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s}
-.ai-prompt-bar button:hover{background:#0E7490}
+.ai-prompt-bar input:focus{border-color:#2563EB;box-shadow:0 0 0 3px rgba(8,145,178,.1)}
+.ai-prompt-bar button{background:#2563EB;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s}
+.ai-prompt-bar button:hover{background:#1D4ED8}
 .ai-prompt-bar button:disabled{background:#94A3B8;cursor:not-allowed}
 .ai-charts-grid{display:grid;grid-template-columns:1fr;gap:16px}
 .ai-charts-grid .ai-chart-half{grid-column:auto}
 @media(min-width:900px){.ai-charts-grid{grid-template-columns:repeat(2,1fr)}.ai-charts-grid .ai-chart-half{grid-column:auto}.ai-charts-grid .ai-chart-card:not(.ai-chart-half){grid-column:1/-1}}
-.ai-chart-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 20px;position:relative}
-.ai-chart-card .ai-chart-title{font-size:13px;font-weight:600;color:#1E293B;margin-bottom:12px;padding-right:28px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ai-chart-card{background:#fff;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;position:relative}
+.ai-chart-card .ai-chart-title{font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:12px;padding-right:28px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .ai-chart-card .ai-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:16px;color:#94A3B8;cursor:pointer;line-height:1}
-.ai-chart-card .ai-close:hover{color:#1E293B}
+.ai-chart-card .ai-close:hover{color:#E2E8F0}
 .ai-chart-card canvas{display:block}
-.ai-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #E2E8F0;margin-top:8px}
+.ai-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid rgba(255,255,255,0.08);margin-top:8px}
 .ai-table{width:100%;border-collapse:collapse;font-size:12.5px}
-.ai-table th{background:#0891B2;color:#fff;padding:9px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border-right:1px solid rgba(255,255,255,.25);white-space:nowrap}
+.ai-table th{background:#2563EB;color:#fff;padding:9px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border-right:1px solid rgba(255,255,255,.25);white-space:nowrap}
 .ai-table th:last-child{border-right:none}
-.ai-table td{padding:8px 12px;border-bottom:1px solid #E2E8F0;border-right:1px solid #F1F5F9;vertical-align:top;line-height:1.5;color:#334155}
+.ai-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.06);border-right:1px solid #F1F5F9;vertical-align:top;line-height:1.5;color:#CBD5E1}
 .ai-table td:last-child{border-right:none}
 .ai-table tr:last-child td{border-bottom:none}
-.ai-table tr:nth-child(even) td{background:#F8FAFC}
-.ai-table tr:hover td{background:#F0F9FF}
-.ai-text-content{font-size:13px;color:#334155;line-height:1.7;padding:4px 0}
+.ai-table tr:nth-child(even) td{background:rgba(255,255,255,0.03)}
+.ai-table tr:hover td{background:rgba(37,99,235,0.08)}
+.ai-text-content{font-size:13px;color:#CBD5E1;line-height:1.7;padding:4px 0}
 .ai-text-content ul,.ai-text-content ol{margin-left:20px;margin-top:6px}
 .ai-text-content li{margin-bottom:5px}
-.ai-text-content strong{color:#1E293B}
-.ai-text-content h3{font-size:13px;font-weight:600;color:#0891B2;margin:12px 0 4px}
+.ai-text-content strong{color:#E2E8F0}
+.ai-text-content h3{font-size:13px;font-weight:600;color:#2563EB;margin:12px 0 4px}
 .ai-type-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
-.ai-type-chart{background:#E0F2FE;color:#0E4F6A}
+.ai-type-chart{background:rgba(37,99,235,0.15);color:#0E4F6A}
 .ai-type-table{background:#D1FAE5;color:#065F46}
 .ai-type-text{background:#FEF3C7;color:#92400E}
-.ai-loading{display:flex;align-items:center;gap:10px;color:#64748B;font-size:13px;padding:12px 16px;background:#F8FAFC;border-radius:8px;margin-bottom:12px}
-.ai-loading .ai-spinner{width:16px;height:16px;border:2px solid #E2E8F0;border-top-color:#0891B2;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+.ai-loading{display:flex;align-items:center;gap:10px;color:#8B9AB0;font-size:13px;padding:12px 16px;background:rgba(255,255,255,0.03);border-radius:8px;margin-bottom:12px}
+.ai-loading .ai-spinner{width:16px;height:16px;border:2px solid #E2E8F0;border-top-color:#2563EB;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 .ai-error{background:#FEE2E2;color:#991B1B;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px}
-.ai-context-badge{display:inline-flex;align-items:center;gap:5px;background:#E0F2FE;color:#0E4F6A;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;margin-bottom:14px}
+.ai-context-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(37,99,235,0.15);color:#0E4F6A;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;margin-bottom:14px}
 .ai-empty{text-align:center;padding:60px 20px;color:#94A3B8}
 .ai-empty .ai-empty-icon{font-size:48px;margin-bottom:16px}
 .ai-empty p{font-size:14px;line-height:1.6}
 .ai-suggestions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.ai-suggest-btn{background:#F1F5F9;border:1px solid #E2E8F0;border-radius:20px;padding:5px 14px;font-size:12px;color:#475569;cursor:pointer;font-family:inherit;transition:all .12s}
-.ai-suggest-btn:hover{background:#E0F2FE;border-color:#0891B2;color:#0E4F6A}align-items:center;gap:10px;color:#64748B;font-size:13px;padding:12px 16px;background:#F8FAFC;border-radius:8px;margin-bottom:12px}
-.ai-loading .ai-spinner{width:16px;height:16px;border:2px solid #E2E8F0;border-top-color:#0891B2;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}color:#991B1B;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px}align-items:center;gap:5px;background:#E0F2FE;color:#0E4F6A;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;margin-bottom:14px}
+.ai-suggest-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:5px 14px;font-size:12px;color:#94A3B8;cursor:pointer;font-family:inherit;transition:all .12s}
+.ai-suggest-btn:hover{background:rgba(37,99,235,0.15);border-color:#2563EB;color:#0E4F6A}align-items:center;gap:10px;color:#8B9AB0;font-size:13px;padding:12px 16px;background:rgba(255,255,255,0.03);border-radius:8px;margin-bottom:12px}
+.ai-loading .ai-spinner{width:16px;height:16px;border:2px solid #E2E8F0;border-top-color:#2563EB;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}color:#991B1B;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px}align-items:center;gap:5px;background:rgba(37,99,235,0.15);color:#0E4F6A;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;margin-bottom:14px}
+
+
+.suggest-btn{position:absolute;top:12px;right:42px;background:none;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:3px 8px;font-size:11px;color:#94A3B8;cursor:pointer;font-family:inherit;transition:all .15s;z-index:1}
+.suggest-btn:hover{background:#FEF3C7;border-color:#F59E0B;color:#92400E}
+.fi-card{background:#fff;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:flex-start;gap:14px;margin-bottom:10px;transition:box-shadow .15s}
+.fi-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.fi-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.fi-body{flex:1;min-width:0}
+.fi-title{font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:3px}
+.fi-desc{font-size:12px;color:#8B9AB0;line-height:1.5}
+.fi-meta{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+.fi-tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px}
+.fi-tag-page{background:rgba(37,99,235,0.15);color:#0E4F6A}
+.fi-tag-user{background:#FEF3C7;color:#92400E}
+.fi-status{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;flex-shrink:0;margin-left:auto}
+.fi-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#8B9AB0;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.fi-section-title span{flex:1;height:1px;background:#E2E8F0;display:inline-block}
+.fi-empty{text-align:center;padding:28px;color:#94A3B8;font-size:13px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px dashed #E2E8F0}
+.suggest-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:2000;align-items:center;justify-content:center}
+.suggest-modal.open{display:flex}
+.suggest-box{background:#fff;border-radius:12px;padding:24px 28px;width:90%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.suggest-box h3{font-size:15px;font-weight:600;color:#E2E8F0;margin-bottom:4px}
+.suggest-box p{font-size:12px;color:#8B9AB0;margin-bottom:14px}
+.suggest-box textarea{width:100%;border:1px solid #CBD5E1;border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;resize:vertical;min-height:90px;outline:none;transition:border-color .15s}
+.suggest-box textarea:focus{border-color:#2563EB}
+.suggest-box-btns{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+.suggest-box-btns button{border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid rgba(255,255,255,0.08)}
+.suggest-submit{background:#2563EB;color:#fff;border-color:#2563EB!important}
+.suggest-submit:hover{background:#1D4ED8}
+.suggest-cancel{background:#fff;color:#94A3B8}
+.suggest-cancel:hover{background:rgba(255,255,255,0.04)}
 
 footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ZANISTA DARK THEME OVERRIDE
+   Pure black background · Dark navy cards · Electric blue accents
+   Matching zanista.ai/products design language
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+body {
+  background: #000000 !important;
+  color: #E2E8F0 !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+header {
+  background: #000000 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+.brand { color: #FFFFFF !important; font-size: 18px !important; }
+.sub   { color: #94A3B8 !important; }
+header button {
+  background: rgba(37,99,235,0.15) !important;
+  border: 1px solid rgba(37,99,235,0.4) !important;
+  color: #93C5FD !important;
+}
+header button:hover { background: rgba(37,99,235,0.3) !important; }
+
+/* ── Tab bar ─────────────────────────────────────────────────────────────── */
+.tab-bar {
+  background: #000000 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  padding: 0 24px !important;
+}
+.tab-btn { color: #94A3B8 !important; }
+.tab-btn:hover:not(.active) { color: #94A3B8 !important; }
+.tab-btn.active { color: #2563EB !important; border-bottom-color: #2563EB !important; }
+
+/* ── Main pane bg ────────────────────────────────────────────────────────── */
+.main, .ai-pane { background: transparent !important; }
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+.card {
+  background: #0D1628 !important;
+  position: relative !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4) !important;
+}
+
+/* ── Metrics ─────────────────────────────────────────────────────────────── */
+.metric {
+  background: rgba(255,255,255,0.04) !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+.metric .lbl { color: #94A3B8 !important; }
+.metric .val { color: #F1F5F9 !important; }
+.metric .sub { color: #8B9AB0 !important; }
+
+/* ── Section labels ──────────────────────────────────────────────────────── */
+.section-label { color: #8B9AB0 !important; padding-right: 120px !important; }
+
+/* ── Sliders ─────────────────────────────────────────────────────────────── */
+.slider-row label { color: #94A3B8 !important; }
+.slider-row input[type=range] { background: rgba(255,255,255,0.1) !important; }
+.slider-row input[type=range]::-webkit-slider-thumb { background: #2563EB !important; border-color: #000 !important; }
+.slider-row .readout { color: #60A5FA !important; }
+
+/* ── Tier buttons ────────────────────────────────────────────────────────── */
+.tier-btn {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #94A3B8 !important;
+}
+.tier-btn:hover { background: rgba(255,255,255,0.08) !important; color: #E2E8F0 !important; }
+.tier-btn.active {
+  background: rgba(37,99,235,0.2) !important;
+  border-color: #2563EB !important;
+  color: #93C5FD !important;
+}
+
+/* ── Break-even rows ─────────────────────────────────────────────────────── */
+.be-row {
+  background: rgba(255,255,255,0.03) !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+.be-label { color: #94A3B8 !important; }
+.be-val   { color: #E2E8F0 !important; }
+
+/* ── Insight box ─────────────────────────────────────────────────────────── */
+.insight {
+  background: rgba(37,99,235,0.08) !important;
+  border-left-color: #2563EB !important;
+  color: #CBD5E1 !important;
+}
+
+/* ── Tags / badges ───────────────────────────────────────────────────────── */
+.tag-green { background: rgba(16,185,129,0.15) !important; color: #34D399 !important; }
+.tag-amber { background: rgba(245,158,11,0.15) !important; color: #FCD34D !important; }
+.tag-red   { background: rgba(239,68,68,0.15)  !important; color: #FCA5A5 !important; }
+.badge-green  { background: rgba(16,185,129,0.15)  !important; color: #34D399 !important; }
+.badge-amber  { background: rgba(245,158,11,0.15)  !important; color: #FCD34D !important; }
+.badge-red    { background: rgba(239,68,68,0.15)   !important; color: #FCA5A5 !important; }
+.badge-blue   { background: rgba(37,99,235,0.2)    !important; color: #93C5FD !important; }
+.badge-gray   { background: rgba(255,255,255,0.06) !important; color: #94A3B8 !important; }
+.val-green    { color: #34D399 !important; }
+.val-amber    { color: #FCD34D !important; }
+.val-red      { color: #FCA5A5 !important; }
+
+/* ── Competitor table ────────────────────────────────────────────────────── */
+.comp-table-wrap, .ai-table-wrap { border-color: rgba(255,255,255,0.08) !important; }
+.comp-table th, .ai-table th { background: #2563EB !important; }
+.comp-table td, .ai-table td {
+  background: transparent !important;
+  border-bottom-color: rgba(255,255,255,0.05) !important;
+  border-right-color: rgba(255,255,255,0.04) !important;
+  color: #CBD5E1 !important;
+}
+.comp-table tr:nth-child(even) td,
+.ai-table tr:nth-child(even) td { background: rgba(255,255,255,0.02) !important; }
+.comp-table tr:hover td,
+.ai-table tr:hover td { background: rgba(37,99,235,0.08) !important; }
+.comp-table tr.goodpoint td { background: rgba(37,99,235,0.12) !important; }
+.source-link { color: #60A5FA !important; }
+.sim-btn {
+  border-color: #2563EB !important;
+  color: #93C5FD !important;
+  background: rgba(37,99,235,0.1) !important;
+}
+.sim-btn:hover { background: rgba(37,99,235,0.25) !important; }
+.market-pos { background: rgba(37,99,235,0.2) !important; color: #93C5FD !important; }
+
+/* ── Footnotes ───────────────────────────────────────────────────────────── */
+.footnotes {
+  background: rgba(245,158,11,0.08) !important;
+  border-color: rgba(245,158,11,0.3) !important;
+  color: #FCD34D !important;
+}
+.footnotes p { color: #FCD34D !important; }
+.footnotes a { color: #60A5FA !important; }
+.comp-note {
+  background: rgba(255,255,255,0.03) !important;
+  border-left-color: #2563EB !important;
+  color: #94A3B8 !important;
+}
+
+/* ── Guide tab ───────────────────────────────────────────────────────────── */
+.guide-hero {
+  background: linear-gradient(135deg, #0D1628 0%, #162040 100%) !important;
+  border: 1px solid rgba(37,99,235,0.3) !important;
+}
+.guide-tab-card {
+  background: #0D1628 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.guide-tab-card:hover { border-color: #2563EB !important; box-shadow: 0 4px 20px rgba(37,99,235,0.2) !important; }
+.gtc-title { color: #E2E8F0 !important; }
+.gtc-desc  { color: #94A3B8 !important; }
+.gtc-step  { color: #94A3B8 !important; }
+.gtc-steps { border-top-color: rgba(255,255,255,0.06) !important; }
+.guide-tip {
+  background: rgba(37,99,235,0.08) !important;
+  border-color: rgba(37,99,235,0.2) !important;
+  color: #CBD5E1 !important;
+}
+.guide-tip strong { color: #60A5FA !important; }
+.gloss-section {
+  background: #0D1628 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.gloss-section h3 {
+  color: #60A5FA !important;
+  border-bottom-color: rgba(37,99,235,0.2) !important;
+}
+.gloss-abbr { color: #E2E8F0 !important; }
+.gloss-def  { color: #94A3B8 !important; }
+
+/* ── Growth mechanics ────────────────────────────────────────────────────── */
+.gt-title { color: #E2E8F0 !important; }
+.gt-badge { background: rgba(37,99,235,0.2) !important; color: #93C5FD !important; }
+.growth-body { border-top-color: rgba(255,255,255,0.06) !important; }
+.growth-divider { border-top-color: rgba(255,255,255,0.06) !important; }
+.growth-sub { color: #94A3B8 !important; }
+.growth-stat {
+  background: rgba(255,255,255,0.03) !important;
+  border: none !important;
+}
+.growth-stat .gs-lbl { color: #94A3B8 !important; }
+.growth-stat .gs-val { color: #E2E8F0 !important; }
+.benchmark-pill {
+  background: rgba(37,99,235,0.1) !important;
+  border-color: rgba(37,99,235,0.2) !important;
+  color: #93C5FD !important;
+}
+
+/* ── Mobile tab ──────────────────────────────────────────────────────────── */
+.mob-kpi .lbl { color: #94A3B8 !important; }
+.mob-kpi .val { color: #E2E8F0 !important; }
+
+/* ── Modal (mobile scenarios) ────────────────────────────────────────────── */
+.modal-box {
+  background: #0D1628 !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+.modal-title    { color: #60A5FA !important; }
+.modal-subtitle { color: #94A3B8 !important; }
+.modal-body     { color: #CBD5E1 !important; }
+.modal-close    { color: #8B9AB0 !important; }
+.modal-close:hover { color: #E2E8F0 !important; }
+.modal-row { border-bottom-color: rgba(255,255,255,0.06) !important; }
+.mk  { color: #94A3B8 !important; }
+.mv  { color: #E2E8F0 !important; }
+
+/* ── Future improvements ─────────────────────────────────────────────────── */
+.fi-card {
+  background: #0D1628 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.fi-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important; }
+.fi-title { color: #E2E8F0 !important; }
+.fi-desc  { color: #94A3B8 !important; }
+.fi-tag-page { background: rgba(37,99,235,0.15) !important; color: #93C5FD !important; }
+.fi-tag-user { background: rgba(245,158,11,0.15) !important; color: #FCD34D !important; }
+.fi-section-title { color: #8B9AB0 !important; }
+.fi-section-title span { background: rgba(255,255,255,0.06) !important; }
+.fi-empty {
+  background: rgba(255,255,255,0.02) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  color: #8B9AB0 !important;
+}
+
+/* ── Suggest modal ───────────────────────────────────────────────────────── */
+.suggest-box {
+  background: #0D1628 !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+.suggest-box h3 { color: #E2E8F0 !important; }
+.suggest-box p  { color: #94A3B8 !important; }
+.suggest-box textarea {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #E2E8F0 !important;
+}
+.suggest-box textarea:focus { border-color: #2563EB !important; }
+.suggest-box textarea::placeholder { color: #8B9AB0 !important; }
+.suggest-cancel {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #94A3B8 !important;
+}
+.suggest-cancel:hover { background: rgba(255,255,255,0.08) !important; }
+.suggest-submit { background: #2563EB !important; border-color: #2563EB !important; }
+.suggest-submit:hover { background: #1D4ED8 !important; }
+.sec-btn{flex:1;padding:7px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:#94A3B8;transition:all .15s}
+.sec-btn.active{background:rgba(37,99,235,0.2);border-color:#2563EB;color:#93C5FD}
+.sec-btn:hover:not(.active){background:rgba(255,255,255,0.08);color:#E2E8F0}
+.suggest-btn { border: none !important; color: #8B9AB0 !important; background: transparent !important; }
+.suggest-btn:hover { background: rgba(245,158,11,0.1) !important; border-color: rgba(245,158,11,0.4) !important; color: #FCD34D !important; }
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: #1E3A8A; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #2563EB; }
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+footer { color: #CBD5E1 !important; border-top: 1px solid rgba(255,255,255,0.04); }
+
+/* ── Text overrides ──────────────────────────────────────────────────────── */
+h1, h2, h3, .brand, .guide-hero h1 { color: #FFFFFF !important; }
+p, li, span:not(.badge):not(.tag):not(.fi-tag):not(.gtc-step-num):not(.gt-badge):not(.market-pos):not(.benchmark-pill):not(.fi-status) { color: inherit; }
+strong { color: #E2E8F0 !important; }
+a { color: #60A5FA !important; }
+a:hover { color: #93C5FD !important; }
+
+/* ── Primary blue CTA buttons ────────────────────────────────────────────── */
+.guide-hero button[style*="background:#2563EB"],
+button[style*="background:#2563EB"] {
+  background: #2563EB !important;
+  border-color: #2563EB !important;
+}
+
+/* ── GTCStep number circles ──────────────────────────────────────────────── */
+.gtc-step-num { background: #2563EB !important; }
+
+/* ── Input fields ────────────────────────────────────────────────────────── */
+input[type="text"], input[type="email"] {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: #E2E8F0 !important;
+}
+input::placeholder { color: #8B9AB0 !important; }
+input:focus { border-color: #2563EB !important; }
+
 </style>
 </head>
 <body>
@@ -187,7 +514,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
   <button class="tab-btn" id="tab-sim" onclick="switchTab('sim')">📊 Scenario Simulator</button>
   <button class="tab-btn" id="tab-comp" onclick="switchTab('comp')">🏆 Competitor Benchmarking</button>
   <button class="tab-btn" id="tab-mobile" onclick="switchTab('mobile')">📱 Mobile App ROI</button>
-  <button class="tab-btn" id="tab-ai" onclick="switchTab('ai')">🤖 AI Chart Builder</button>
+  <button class="tab-btn" id="tab-future" onclick="switchTab('future')">🚀 Future Improvements</button>
 </div>
 
 
@@ -351,7 +678,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
   </div>
 
   <div style="text-align:center;padding:8px 0 4px">
-    <button class="tier-btn" onclick="switchTab('sim')" style="font-size:13px;padding:10px 28px;background:#0891B2;color:#fff;border-color:#0891B2">Start with the Simulator →</button>
+    <button class="tier-btn" onclick="switchTab('sim')" style="font-size:13px;padding:10px 28px;background:#2563EB;color:#fff;border-color:#2563EB">Start with the Simulator →</button>
   </div>
 
 </div>
@@ -363,6 +690,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 
   <div class="grid-2">
     <div class="card">
+      <button class="suggest-btn" onclick="openSuggest('Cost Structure','Scenario Simulator')">💡 Suggest improvement</button>
       <p class="section-label">Cost structure</p>
       <div class="slider-row"><label>Fixed cost / month (£)</label><input type="range" min="1000" max="20000" step="500" id="fixedCost" value="5000" oninput="update()"><span class="readout" id="fixedCostOut">£5,000</span></div>
       <div class="slider-row"><label>Variable cost / script (£)</label><input type="range" min="0.01" max="0.5" step="0.01" id="varCost" value="0.12" oninput="update()"><span class="readout" id="varCostOut">£0.12</span></div>
@@ -370,6 +698,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
       <div class="slider-row"><label>Avg. retention (months)</label><input type="range" min="6" max="60" step="1" id="retention" value="24" oninput="update()"><span class="readout" id="retentionOut">24 mo</span></div>
     </div>
     <div class="card">
+      <button class="suggest-btn" onclick="openSuggest('Active Pricing Tier','Scenario Simulator')">💡 Suggest improvement</button>
       <p class="section-label">Active pricing tier <span id="market-pos-badge"></span></p>
       <div class="tier-btns">
         <button class="tier-btn active" id="tier-script" onclick="setTier('script')">Per-script</button>
@@ -382,6 +711,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
   </div>
 
   <div class="card" style="margin-bottom:16px">
+    <button class="suggest-btn" onclick="openSuggest('Volume & Demand','Scenario Simulator')">💡 Suggest improvement</button>
     <p class="section-label">Volume & demand</p>
     <div class="grid-2" style="margin-bottom:0;gap:0 40px">
       <div>
@@ -408,8 +738,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
       <span class="gt-arrow">&#9660;</span>
     </div>
     <div class="growth-body" id="growth-body">
-      <div class="growth-sub">&#127873; Freemium &mdash; Artificial Teaching Assistant (ATA) <span class="gs-tag" style="background:#E0F2FE;color:#0E4F6A">PLG entry</span></div>
-      <div style="font-size:12px;color:#64748B;margin-bottom:10px;line-height:1.5">The ATA exam-creation tool is offered free to professors, building trust and brand presence. Converted users then adopt GoodPoint grading (paid). Industry benchmark: <strong>5&ndash;8% free-to-paid conversion</strong> for tightly targeted B2B EdTech (Pathmonk 2026). Slack: 80% of paid workspaces started as free.</div>
+      <div class="growth-sub">&#127873; Freemium &mdash; Artificial Teaching Assistant (ATA) <span class="gs-tag" style="background:rgba(37,99,235,0.15);color:#0E4F6A">PLG entry</span></div>
+      <div style="font-size:12px;color:#8B9AB0;margin-bottom:10px;line-height:1.5">The ATA exam-creation tool is offered free to professors, building trust and brand presence. Converted users then adopt GoodPoint grading (paid). Industry benchmark: <strong>5&ndash;8% free-to-paid conversion</strong> for tightly targeted B2B EdTech (Pathmonk 2026). Slack: 80% of paid workspaces started as free.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px">
         <div>
           <div class="slider-row"><label>Free ATA users / month</label><input type="range" min="0" max="500" step="10" id="freeATAUsers" value="50" oninput="update()"><span class="readout" id="freeATAUsersOut">50</span></div>
@@ -423,7 +753,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
       <div class="growth-inline" id="ata-stats"></div>
       <hr class="growth-divider">
       <div class="growth-sub">&#128279; Referral Program &mdash; Professor Credits <span class="gs-tag" style="background:#FEF3C7;color:#92400E">Credit-based</span></div>
-      <div style="font-size:12px;color:#64748B;margin-bottom:10px;line-height:1.5">Professors earn free grading scripts when a referred colleague converts to paid. Credit rewards outperform cash by 18% in SaaS (SaaSquatch). Referred customers: <strong>16&ndash;25% higher LTV, 20% less churn</strong> (HBR 2025). Referral programs reduce blended CAC by 25&ndash;35% (Forrester).</div>
+      <div style="font-size:12px;color:#8B9AB0;margin-bottom:10px;line-height:1.5">Professors earn free grading scripts when a referred colleague converts to paid. Credit rewards outperform cash by 18% in SaaS (SaaSquatch). Referred customers: <strong>16&ndash;25% higher LTV, 20% less churn</strong> (HBR 2025). Referral programs reduce blended CAC by 25&ndash;35% (Forrester).</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px">
         <div>
           <div class="slider-row"><label>Referral invites / customer / mo</label><input type="range" min="0" max="3" step="0.1" id="referralInvites" value="0.3" oninput="update()"><span class="readout" id="referralInvitesOut">0.3</span></div>
@@ -457,14 +787,15 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
   <div class="grid-3" id="kpi-grid2"></div>
 
   <div class="grid-2" style="margin-bottom:16px">
-    <div class="card"><p class="section-label">Break-even & runway</p><div id="breakeven-section"></div></div>
+    <div class="card" style="position:relative"><p class="section-label">Break-even & runway</p><button class="suggest-btn" onclick="openSuggest('Break-even & Runway','Scenario Simulator')">💡 Suggest improvement</button><div id="breakeven-section"></div></div>
     <div class="card"><p class="section-label">Scenario insight</p><div id="insight-box"></div></div>
   </div>
 
   <div class="card">
+    <button class="suggest-btn" onclick="openSuggest('Profit Curve Chart','Scenario Simulator')">💡 Suggest improvement</button>
     <p class="section-label">Monthly profit curve — scripts/month vs operating profit</p>
-    <div style="display:flex;gap:20px;margin-bottom:10px;font-size:12px;color:#64748B">
-      <span><span style="width:10px;height:10px;border-radius:2px;background:#0891B2;display:inline-block;margin-right:5px;vertical-align:middle"></span>Operating profit (£/mo)</span>
+    <div style="display:flex;gap:20px;margin-bottom:10px;font-size:12px;color:#8B9AB0">
+      <span><span style="width:10px;height:10px;border-radius:2px;background:#2563EB;display:inline-block;margin-right:5px;vertical-align:middle"></span>Operating profit (£/mo)</span>
       <span><span style="width:10px;height:10px;border-radius:50%;background:#F59E0B;display:inline-block;margin-right:5px;vertical-align:middle"></span>Current scenario</span>
     </div>
     <div style="position:relative;width:100%;height:240px">
@@ -483,8 +814,9 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 <div class="main">
 
   <div class="card" style="margin-bottom:16px">
-    <p class="section-label">Competitive landscape — AI grading & assessment platforms</p>
-    <p style="font-size:13px;color:#475569;margin-bottom:16px;line-height:1.6">Prices sourced from public pricing pages, procurement records, and industry reports. Click <strong>Simulate</strong> on any competitor row to load a suggested competitive GoodPoint price into the simulator and see the unit economics side by side.</p>
+    <button class="suggest-btn" onclick="openSuggest('Competitor Table','Competitor Benchmarking')">💡 Suggest improvement</button>
+    <p class="section-label" style="padding-right:130px">Competitive landscape — AI grading & assessment platforms</p>
+    <p style="font-size:13px;color:#94A3B8;margin-bottom:16px;line-height:1.6">Prices sourced from public pricing pages, procurement records, and industry reports. Click <strong>Simulate</strong> on any competitor row to load a suggested competitive GoodPoint price into the simulator and see the unit economics side by side.</p>
 
     <table class="comp-table" id="comp-table">
       <thead>
@@ -507,8 +839,8 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
     <div class="comp-note" id="comp-note">
       ⬆ The <strong>vs. GoodPoint now</strong> column updates live based on your current simulator price. Go to the Simulator tab, adjust your price per script, then return here to see how your positioning shifts.
     </div>
-    <div class="comp-note" style="margin-top:8px;border-left-color:#0891B2;background:#F0F9FF">
-      🌱 <strong>Growth moat:</strong> None of the 6 competitors currently combine a <strong>freemium PLG entry</strong> (free ATA exam creation) with a <strong>credit-based professor referral program</strong>. Gradescope offers a free individual tier but no referral mechanic. Turnitin has no freemium layer. This combination is GoodPoint's structural acquisition advantage — model it in the <button onclick="switchTab('sim');setTimeout(toggleGrowth,300)" style="background:none;border:none;color:#0891B2;font-weight:600;cursor:pointer;font-size:12px;padding:0">Growth Mechanics →</button> section.
+    <div class="comp-note" style="margin-top:8px;border-left-color:#2563EB;background:rgba(37,99,235,0.08)">
+      🌱 <strong>Growth moat:</strong> None of the 6 competitors currently combine a <strong>freemium PLG entry</strong> (free ATA exam creation) with a <strong>credit-based professor referral program</strong>. Gradescope offers a free individual tier but no referral mechanic. Turnitin has no freemium layer. This combination is GoodPoint's structural acquisition advantage — model it in the <button onclick="switchTab('sim');setTimeout(toggleGrowth,300)" style="background:none;border:none;color:#2563EB;font-weight:600;cursor:pointer;font-size:12px;padding:0">Growth Mechanics →</button> section.
     </div>
 
     <div class="footnotes">
@@ -525,6 +857,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
   <div class="grid-2" style="margin-bottom:16px">
     <div class="card">
       <p class="section-label">Positioning summary</p>
+      <button class="suggest-btn" onclick="openSuggest('Positioning Summary','Competitor Benchmarking')">💡 Suggest improvement</button>
       <div id="pos-summary"></div>
     </div>
     <div class="card">
@@ -693,7 +1026,7 @@ function switchTab(tab) {
   if (tabEl)  tabEl.classList.add('active');
   if (tab === 'comp') renderCompTable();
   if (tab === 'mobile') renderMobileTab();
-  if (tab === 'ai') updateAIContextBadge();
+  if (tab === 'future') { renderRoadmap(); }
 }
 
 // ── Tier logic ────────────────────────────────────────────────────────────
@@ -812,7 +1145,6 @@ function update() {
 
   // Growth mechanics
   const growth = calcGrowth({ scripts, students, customers, fixed, varC, churn: getV('churn'), rev: revenueMonth, opProfit });
-  updateAIContextBadge();
   renderGrowthStats(growth);
 
   // Adjusted P&L with growth impact
@@ -863,7 +1195,7 @@ function updateChart(fixed, varC, tier, students, customers, currentScripts) {
       data: {
         labels: volumes,
         datasets: [
-          { label: 'Operating profit', data: profits, borderColor: '#0891B2', backgroundColor: 'rgba(8,145,178,0.07)', fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 },
+          { label: 'Operating profit', data: profits, borderColor: '#2563EB', backgroundColor: 'rgba(8,145,178,0.07)', fill: true, tension: 0.35, pointRadius: 0, borderWidth: 2 },
           { label: 'Current', data: volumes.map((v,i) => i===closest?profits[closest]:null), pointRadius: volumes.map((v,i) => i===closest?8:0), pointBackgroundColor: '#F59E0B', pointBorderColor: '#fff', pointBorderWidth: 2, borderColor: 'transparent', showLine: false }
         ]
       },
@@ -955,7 +1287,7 @@ function renderPosSummary(currentPrice) {
     <div class="be-row"><span class="be-label">Price-similar to</span><span class="be-val val-amber">${similar} of 6 competitors</span></div>
     <div class="be-row"><span class="be-label">Pricier than (est.)</span><span class="be-val val-red">${pricier} of 6 competitors</span></div>
     <div class="be-row" style="margin-top:8px"><span class="be-label">Your current price</span><span class="be-val">${price!==null?'£'+price.toFixed(2)+'/script':'Licence tier'}</span></div>
-    <p style="font-size:12px;color:#64748B;margin-top:10px;line-height:1.5">Comparisons are approximate — competitor prices use different units (per-student vs per-script). Use as directional signal only.</p>`;
+    <p style="font-size:12px;color:#8B9AB0;margin-top:10px;line-height:1.5">Comparisons are approximate — competitor prices use different units (per-student vs per-script). Use as directional signal only.</p>`;
 }
 
 // ── Reset ─────────────────────────────────────────────────────────────────
@@ -1120,9 +1452,9 @@ function updateMobileChart(buildCost, maintCost, monthlyBenefit, ltvUplift, year
   const canvas = document.getElementById('mobileChart');
   if (!canvas) return;
   const scenarios = [
-    { label:'PWA',            color:'#0891B2', bMult:0.45, mMult:0.5 },
-    { label:'Cross-platform', color:'#0E7490', bMult:1.0,  mMult:1.0 },
-    { label:'Native',         color:'#155E75', bMult:1.8,  mMult:1.8 }
+    { label:'PWA',            color:'#2563EB', bMult:0.45, mMult:0.5 },
+    { label:'Cross-platform', color:'#1D4ED8', bMult:1.0,  mMult:1.0 },
+    { label:'Native',         color:'#1E3A8A', bMult:1.8,  mMult:1.8 }
   ];
   const months = Array.from({length:37},(_,i)=>i);
   const labels = months.map(m => m===0?'Now':m===6?'6mo':m===12?'1yr':m===18?'18mo':m===24?'2yr':m===30?'30mo':m===36?'3yr':'');
@@ -1167,7 +1499,7 @@ const mobModalContent = {
       <div class="modal-row"><span class="mk">B2B adoption rate</span><span class="mv">~84% (no install barrier)</span></div>
       <div class="modal-row"><span class="mk">GDPR control</span><span class="mv">✅ Full — no store policies</span></div>
       <div class="modal-row"><span class="mk">Best for GoodPoint</span><span class="mv">✅ Now — student submission MVP</span></div>
-      <p style="margin-top:12px;font-size:12px;color:#64748B"><strong>Why now?</strong> Students submit handwritten STEM scripts by photographing them. A PWA handles this natively in any mobile browser — no installation friction, no App Store approval, full GDPR control. Gradescope proved the model (3,000+ submissions in 2 months). This is GoodPoint\'s lowest-risk mobile entry point.</p>`
+      <p style="margin-top:12px;font-size:12px;color:#8B9AB0"><strong>Why now?</strong> Students submit handwritten STEM scripts by photographing them. A PWA handles this natively in any mobile browser — no installation friction, no App Store approval, full GDPR control. Gradescope proved the model (3,000+ submissions in 2 months). This is GoodPoint\'s lowest-risk mobile entry point.</p>`
   },
   cross: {
     title: '⚙️ Cross-Platform — React Native / Flutter',
@@ -1182,7 +1514,7 @@ const mobModalContent = {
       <div class="modal-row"><span class="mk">B2B adoption rate</span><span class="mv">~50–60%</span></div>
       <div class="modal-row"><span class="mk">GDPR control</span><span class="mv">⚠️ Partial — store policies apply</span></div>
       <div class="modal-row"><span class="mk">Best for GoodPoint</span><span class="mv">⏳ After ARR > £150K</span></div>
-      <p style="margin-top:12px;font-size:12px;color:#64748B"><strong>Why wait?</strong> App Store presence opens institutional discoverability and signals product maturity to procurement committees. But the £50K+ investment only makes sense once the PWA has validated mobile adoption. Use the PWA to prove demand, then migrate to cross-platform.</p>`
+      <p style="margin-top:12px;font-size:12px;color:#8B9AB0"><strong>Why wait?</strong> App Store presence opens institutional discoverability and signals product maturity to procurement committees. But the £50K+ investment only makes sense once the PWA has validated mobile adoption. Use the PWA to prove demand, then migrate to cross-platform.</p>`
   },
   native: {
     title: '🏗️ Native iOS + Android',
@@ -1197,7 +1529,7 @@ const mobModalContent = {
       <div class="modal-row"><span class="mk">B2B adoption rate</span><span class="mv">~28% (install barrier)</span></div>
       <div class="modal-row"><span class="mk">GDPR control</span><span class="mv">⚠️ Partial — store policies apply</span></div>
       <div class="modal-row"><span class="mk">Best for GoodPoint</span><span class="mv">🔴 Series A+ only</span></div>
-      <p style="margin-top:12px;font-size:12px;color:#64748B"><strong>Gradescope precedent:</strong> Turnitin went native only after Gradescope reached <strong>3.6 million students across 2,600 institutions</strong>. At that scale, the investment is justified by brand credibility and institutional procurement requirements. For GoodPoint today, native would burn runway before proving ROI.</p>`
+      <p style="margin-top:12px;font-size:12px;color:#8B9AB0"><strong>Gradescope precedent:</strong> Turnitin went native only after Gradescope reached <strong>3.6 million students across 2,600 institutions</strong>. At that scale, the investment is justified by brand credibility and institutional procurement requirements. For GoodPoint today, native would burn runway before proving ROI.</p>`
   }
 };
 
@@ -1324,7 +1656,7 @@ function renderGrowthStats(g) {
     refEl.innerHTML = `
     <div class="growth-stat"><div class="gs-lbl">Viral coefficient (k)</div><div class="gs-val ${g.viralCoeff>=0.5?'val-green':g.viralCoeff>=0.2?'val-amber':'val-red'}">${g.viralCoeff.toFixed(3)}k</div></div>
     <div class="growth-stat"><div class="gs-lbl">New customers / mo</div><div class="gs-val val-green">+${g.newCustRef.toFixed(1)}</div></div>
-    <div class="growth-stat"><div class="gs-lbl">Referred LTV uplift</div><div class="gs-val val-green">+${ltvPct}% LTV</div><div class="gs-sub" style="font-size:10px;color:#64748B">+${lifetimeGain} mo avg lifetime</div></div>`;
+    <div class="growth-stat"><div class="gs-lbl">Referred LTV uplift</div><div class="gs-val val-green">+${ltvPct}% LTV</div><div class="gs-sub" style="font-size:10px;color:#8B9AB0">+${lifetimeGain} mo avg lifetime</div></div>`;
   }
 
   // Growth KPI grid
@@ -1460,7 +1792,7 @@ Given a user request, return ONLY a valid JSON object with this exact structure:
 Rules:
 - Return RAW JSON ONLY. No markdown fences, no prose, no explanation outside the JSON.
 - Choose outputType based on the request: charts for trends/comparisons with numbers, tables for structured multi-column data, text for lists/summaries/analysis.
-- For charts: populate chartConfig with real Chart.js v4 syntax. Set options.responsive=true, options.maintainAspectRatio=false. Use colours: "#0891B2","#0E7490","#155E75","#F59E0B","#059669","#DC2626".
+- For charts: populate chartConfig with real Chart.js v4 syntax. Set options.responsive=true, options.maintainAspectRatio=false. Use colours: "#2563EB","#1D4ED8","#1E3A8A","#F59E0B","#059669","#DC2626".
 - For tables: keep rows concise. Max 8 columns. Use real data from the simulator context provided.
 - For text/lists: use clean HTML only — <p>, <ul>, <ol>, <li>, <strong>, <h3>. No inline styles.
 - Only include the key relevant to the outputType (chartConfig OR table OR html). Include all three keys but leave the unused ones as null.
@@ -1483,19 +1815,19 @@ Rules:
 User request: ${prompt}`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('/.netlify/functions/ai-generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMsg }]
-      })
+      body: JSON.stringify({ system: systemPrompt, user: userMsg })
     });
 
-    const data    = await response.json();
-    const raw     = data?.content?.[0]?.text || '';
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || 'Server error ' + response.status);
+    }
+
+    const data = await response.json();
+    const raw  = data?.text || '';
     const result = extractJSON(raw);
 
     status.innerHTML = '';
@@ -1604,7 +1936,7 @@ function removeAIChart(id) {
 
 const VALID_CHART_TYPES = ['bar','line','pie','doughnut','radar','polarArea','bubble','scatter'];
 const KNOWN_PLUGINS     = ['legend','tooltip','title']; // only safe built-ins
-const PALETTE = ['#0891B2','#0E7490','#155E75','#F59E0B','#059669','#DC2626','#7C3AED','#EA580C','#0284C7','#16A34A'];
+const PALETTE = ['#2563EB','#1D4ED8','#1E3A8A','#F59E0B','#059669','#DC2626','#7C3AED','#EA580C','#0284C7','#16A34A'];
 
 function sanitizeChartConfig(cfg) {
   if (!cfg || typeof cfg !== 'object') throw new Error('Config is not an object');
@@ -1795,6 +2127,119 @@ function extractJSON(raw) {
   throw new Error('Could not parse response as JSON');
 }
 
+
+// ── Future Improvements ──────────────────────────────────────────────────────
+let userSuggestions = [];
+let currentSuggestContext = { title: '', page: '' };
+
+const roadmapSim = [
+  { title:'Profit curve — break-even marker',   status:'🚧', statusLabel:'In progress',         desc:'Visual annotation on the profit curve marking the exact break-even volume with a dashed line and label.' },
+  { title:'Shareable URL with saved state',      status:'📋', statusLabel:'Planned',             desc:'Generate a URL that encodes all slider values so scenarios can be shared with colleagues without re-entering data.' },
+  { title:'Side-by-side tier comparison mode',   status:'📋', statusLabel:'Planned',             desc:'Show two pricing tiers simultaneously on the same KPI grid to compare economics directly.' },
+  { title:'Sensitivity analysis mode',           status:'📋', statusLabel:'Planned',             desc:'Vary one input across a range and see how all KPIs respond simultaneously — e.g. profit at every price point from £1 to £5.' },
+  { title:'Competitor table — sort & filter',    status:'📋', statusLabel:'Planned',             desc:'Click column headers to sort by threat level, price, or GDPR status. Filter by segment (HE only, SMB only).' },
+  { title:'Export charts as PNG / PDF',          status:'📋', statusLabel:'Planned',             desc:'One-click download of any chart or table as a high-resolution image or PDF for presentations.' },
+  { title:'Growth mechanics — conversion funnel',status:'📋', statusLabel:'Planned',             desc:'Visual funnel: free ATA users → activated → converted → retained, with drop-off rates at each stage.' },
+  { title:'CSV / Excel data import',             status:'💭', statusLabel:'Under consideration', desc:'Upload historical revenue or cost data to calibrate simulator defaults against real figures.' },
+  { title:'Multi-currency support (EUR, USD)',   status:'💭', statusLabel:'Under consideration', desc:'Toggle between GBP, EUR, and USD with automatic conversion using live exchange rates.' },
+  { title:'Annotations on charts',              status:'💭', statusLabel:'Under consideration', desc:'Click any point on a chart to add a sticky note — useful for marking decisions during a demo.' },
+  { title:'Dark mode toggle',                    status:'✅', statusLabel:'Implemented',         desc:'Zanista dark theme applied across all tabs, cards, charts, and tables.' },
+  { title:'PDF report generation',              status:'🔮', statusLabel:'Future / stretch',     desc:'Generate a branded PDF summary of the current simulator state for investor or team presentations.' },
+  { title:'Simulator as mobile PWA',            status:'🔮', statusLabel:'Future / stretch',     desc:'Convert the simulator itself into a PWA so it can be pinned to a phone home screen.' },
+];
+
+const roadmapProduct = [
+  { title:'LMS integration (Canvas, Moodle)',    status:'📋', statusLabel:'Planned',             desc:'Native integration with university LMS platforms to push grades and feedback directly into course gradebooks.' },
+  { title:'DPIA compliance checklist',           status:'📋', statusLabel:'Planned',             desc:'Built-in DPIA template pre-filled for GoodPoint use case to accelerate university procurement approval.' },
+  { title:'Institutional onboarding workflow',   status:'📋', statusLabel:'Planned',             desc:'Guided setup flow for IT/admin teams including data processing agreement, SSO config, and pilot cohort setup.' },
+  { title:'Batch script upload & processing',    status:'🚧', statusLabel:'In progress',         desc:'Upload a ZIP of scanned scripts and receive all grades + feedback in a single batch, with progress indicator.' },
+  { title:'Lecturer feedback customisation',     status:'📋', statusLabel:'Planned',             desc:'Allow lecturers to define rubric weightings, feedback tone, and marking criteria per module.' },
+  { title:'Student-facing feedback portal',      status:'💭', statusLabel:'Under consideration', desc:'A lightweight portal where students can view their AI-generated feedback and flag queries to their lecturer.' },
+  { title:'Handwriting quality indicator',       status:'💭', statusLabel:'Under consideration', desc:'Flag scripts where handwriting confidence is below threshold, prompting manual review before grade release.' },
+  { title:'Multi-institution dashboard',         status:'🔮', statusLabel:'Future / stretch',    desc:'Central admin view for institutions with multiple faculties, showing usage, volume, and cost across departments.' },
+  { title:'Grade audit trail & version history', status:'🔮', statusLabel:'Future / stretch',    desc:'Full audit log of AI-generated grades with version history — required for formal appeals processes.' },
+  { title:'Mobile app for script submission',    status:'📋', statusLabel:'Planned',             desc:'PWA or native app allowing students to photograph and submit handwritten scripts from their phone camera.' },
+];
+
+const statusOrder = { '✅':0, '🚧':1, '📋':2, '💭':3, '🔮':4 };
+
+function renderRoadmap() {
+  const el = document.getElementById('fi-roadmap-list');
+  if (!el) return;
+  const sorted = [...roadmapItems].sort((a,b) => (statusOrder[a.status]||9) - (statusOrder[b.status]||9));
+  el.innerHTML = sorted.map(item => `
+    <div class="fi-card">
+      <div class="fi-icon">${item.status}</div>
+      <div class="fi-body">
+        <div class="fi-title">${item.title}</div>
+        <div class="fi-desc">${item.desc}</div>
+        <div class="fi-meta">
+          <span class="fi-tag fi-tag-page">${item.page}</span>
+        </div>
+      </div>
+      <div class="fi-status" style="color:${item.status==='✅'?'#059669':item.status==='🚧'?'#D97706':item.status==='📋'?'#2563EB':'#94A3B8'}">
+        ${item.statusLabel}
+      </div>
+    </div>`).join('');
+}
+
+// renderUserSuggestions merged into renderRoadmap
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+let currentSection = 'sim';
+function setSection(s) {
+  currentSection = s;
+  document.getElementById('sec-btn-sim').classList.toggle('active', s==='sim');
+  document.getElementById('sec-btn-product').classList.toggle('active', s==='product');
+}
+function openSuggest(title, page) {
+  currentSuggestContext = { title, page };
+  const lbl = document.getElementById('suggest-context-label');
+  if (lbl) lbl.textContent = 'Improvement for: ' + title + ' (' + page + ')';
+  const ta = document.getElementById('suggest-text');
+  if (ta) ta.value = '';
+  // Auto-select section based on page
+  setSection(page === 'Mobile App ROI' || page === 'Competitor Benchmarking' ? 'product' : 'sim');
+  const modal = document.getElementById('suggest-modal');
+  if (modal) modal.classList.add('open');
+  setTimeout(() => { if (ta) ta.focus(); }, 100);
+}
+
+function closeSuggest() {
+  const modal = document.getElementById('suggest-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+function submitSuggest() {
+  const ta   = document.getElementById('suggest-text');
+  const text = ta?.value?.trim();
+  if (!text) { ta?.focus(); return; }
+  userSuggestions.unshift({ text, title: currentSuggestContext.title, page: currentSuggestContext.page, section: currentSection });
+  closeSuggest();
+  if (document.getElementById('fi-combined-sim')) renderRoadmap();
+  // Flash the Future tab to signal success
+  const tabBtn = document.getElementById('tab-future');
+  if (tabBtn) {
+    tabBtn.style.color = '#059669';
+    tabBtn.textContent = '🚀 Future Improvements ✓';
+    setTimeout(() => { tabBtn.style.color=''; tabBtn.textContent='🚀 Future Improvements'; }, 2500);
+  }
+}
+
+function removeUserSuggestion(idx) {
+  userSuggestions.splice(idx, 1);
+  if (document.getElementById('fi-combined-sim')) renderRoadmap();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSuggest();
+});
+
+// Future tab rendering is wired directly into switchTab below
+
 </script>
 
 <!-- ═══════════════════════════════════════════════════ MOBILE APP ROI TAB -->
@@ -1802,7 +2247,7 @@ function extractJSON(raw) {
 <div class="main">
 
   <!-- Header -->
-  <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#0891B2 0%,#0E7490 100%);border:none">
+  <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#0D1628 0%,#162040 100%);border:none">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
       <div>
         <div style="font-size:17px;font-weight:600;color:#fff">Mobile App — Cost vs. Return Analysis</div>
@@ -1837,12 +2282,12 @@ function extractJSON(raw) {
     <p class="section-label">🌱 How mobile amplifies Growth Mechanics</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
       <div>
-        <div style="font-weight:600;color:#1E293B;margin-bottom:6px">Freemium ATA × Mobile</div>
-        <div style="color:#475569;line-height:1.6">A PWA gives professors instant access to the ATA exam creation tool from any device — no install barrier. Mobile push notifications can trigger freemium-to-paid conversion at peak moments (e.g. when an exam is due). <strong>Conversion 2.1× higher</strong> when in-app triggers combine with notifications (Mixpanel 2025).</div>
+        <div style="font-weight:600;color:#E2E8F0;margin-bottom:6px">Freemium ATA × Mobile</div>
+        <div style="color:#94A3B8;line-height:1.6">A PWA gives professors instant access to the ATA exam creation tool from any device — no install barrier. Mobile push notifications can trigger freemium-to-paid conversion at peak moments (e.g. when an exam is due). <strong>Conversion 2.1× higher</strong> when in-app triggers combine with notifications (Mixpanel 2025).</div>
       </div>
       <div>
-        <div style="font-weight:600;color:#1E293B;margin-bottom:6px">Referral Program × Mobile</div>
-        <div style="color:#475569;line-height:1.6">Mobile native share sheet makes referral link sharing frictionless — professors can share directly to WhatsApp, email, or Teams in one tap. Real-time credit balance visible in the app creates ongoing engagement. <strong>Mobile referral share rates: 25–35%</strong> vs ~12% on desktop (OpenView 2025).</div>
+        <div style="font-weight:600;color:#E2E8F0;margin-bottom:6px">Referral Program × Mobile</div>
+        <div style="color:#94A3B8;line-height:1.6">Mobile native share sheet makes referral link sharing frictionless — professors can share directly to WhatsApp, email, or Teams in one tap. Real-time credit balance visible in the app creates ongoing engagement. <strong>Mobile referral share rates: 25–35%</strong> vs ~12% on desktop (OpenView 2025).</div>
       </div>
     </div>
   </div>
@@ -1928,7 +2373,7 @@ function extractJSON(raw) {
           <td><span class="badge badge-green">Direct — same use case</span></td>
           <td><a href="https://www.turnitin.com/press/gradescope-mobile" target="_blank" class="source-link">↗ turnitin.com (Jul 2022)</a></td>
         </tr>
-        <tr style="background:#F8FAFC">
+        <tr style="background:rgba(255,255,255,0.03)">
           <td><strong>B2B Portal</strong><br><span style="font-size:11px;color:#94A3B8">Distribution</span></td>
           <td>PWA replacing native</td>
           <td>~£40K est.</td>
@@ -1946,7 +2391,7 @@ function extractJSON(raw) {
           <td><span class="badge badge-amber">Medium — scale too large</span></td>
           <td><a href="https://www.askantech.com/progressive-web-apps-2026-pwa-vs-native-enterprise/" target="_blank" class="source-link">↗ askantech.com (Mar 2026)</a></td>
         </tr>
-        <tr style="background:#F8FAFC">
+        <tr style="background:rgba(255,255,255,0.03)">
           <td><strong>News Platform</strong><br><span style="font-size:11px;color:#94A3B8">Media</span></td>
           <td>PWA</td>
           <td>Est. £25K</td>
@@ -1964,7 +2409,7 @@ function extractJSON(raw) {
           <td><span class="badge badge-blue">High — direct benchmark</span></td>
           <td><a href="https://www.saashero.net/content/2026-b2b-saas-conversion-benchmarks/" target="_blank" class="source-link">↗ saashero.net (2026)</a></td>
         </tr>
-        <tr style="background:#F8FAFC">
+        <tr style="background:rgba(255,255,255,0.03)">
           <td><strong>EdTech sector</strong><br><span style="font-size:11px;color:#94A3B8">Market data</span></td>
           <td>Mobile-first</td>
           <td>—</td>
@@ -1979,6 +2424,7 @@ function extractJSON(raw) {
 
   <!-- Scenario comparison chart -->
   <div class="card" style="margin-bottom:16px">
+    <button class="suggest-btn" onclick="openSuggest('Mobile ROI Chart','Mobile App ROI')">💡 Suggest improvement</button>
     <p class="section-label">Net cumulative benefit over 3 years — all three scenarios</p>
     <div style="position:relative;width:100%;height:240px">
       <canvas id="mobileChart" role="img" aria-label="Cumulative net benefit chart for three mobile app scenarios over 3 years.">Mobile ROI chart.</canvas>
@@ -1987,6 +2433,7 @@ function extractJSON(raw) {
 
   <!-- Strategic matrix -->
   <div class="card" style="margin-bottom:16px">
+    <button class="suggest-btn" onclick="openSuggest('Decision Matrix Table','Mobile App ROI')">💡 Suggest improvement</button>
     <p class="section-label">Decision matrix — when to choose each approach</p>
     <table class="comp-table" style="table-layout:fixed;width:100%">
       <thead>
@@ -1999,13 +2446,13 @@ function extractJSON(raw) {
       </thead>
       <tbody>
         <tr><td><strong>Budget</strong></td><td><span class="badge badge-green">£15K–£60K</span></td><td><span class="badge badge-amber">£50K–£120K</span></td><td><span class="badge badge-red">£70K–£180K+</span></td></tr>
-        <tr style="background:#F8FAFC"><td><strong>Time to market</strong></td><td><span class="badge badge-green">6–12 weeks</span></td><td><span class="badge badge-amber">3–6 months</span></td><td><span class="badge badge-red">6–12 months</span></td></tr>
+        <tr style="background:rgba(255,255,255,0.03)"><td><strong>Time to market</strong></td><td><span class="badge badge-green">6–12 weeks</span></td><td><span class="badge badge-amber">3–6 months</span></td><td><span class="badge badge-red">6–12 months</span></td></tr>
         <tr><td><strong>Camera / photo capture</strong></td><td><span class="badge badge-green">Yes (modern browsers)</span></td><td><span class="badge badge-green">Yes — full native access</span></td><td><span class="badge badge-green">Yes — best quality</span></td></tr>
-        <tr style="background:#F8FAFC"><td><strong>App Store presence</strong></td><td><span class="badge badge-red">No</span></td><td><span class="badge badge-green">Yes</span></td><td><span class="badge badge-green">Yes</span></td></tr>
+        <tr style="background:rgba(255,255,255,0.03)"><td><strong>App Store presence</strong></td><td><span class="badge badge-red">No</span></td><td><span class="badge badge-green">Yes</span></td><td><span class="badge badge-green">Yes</span></td></tr>
         <tr><td><strong>B2B adoption rate</strong></td><td><span class="badge badge-green">84% (no install barrier)</span></td><td><span class="badge badge-amber">~50–60%</span></td><td><span class="badge badge-amber">~28% install rate</span></td></tr>
-        <tr style="background:#F8FAFC"><td><strong>GDPR / data control</strong></td><td><span class="badge badge-green">Full control</span></td><td><span class="badge badge-amber">Partial (store policies)</span></td><td><span class="badge badge-amber">Partial (store policies)</span></td></tr>
+        <tr style="background:rgba(255,255,255,0.03)"><td><strong>GDPR / data control</strong></td><td><span class="badge badge-green">Full control</span></td><td><span class="badge badge-amber">Partial (store policies)</span></td><td><span class="badge badge-amber">Partial (store policies)</span></td></tr>
         <tr><td><strong>Maintenance cost/yr</strong></td><td><span class="badge badge-green">£3K–£10K</span></td><td><span class="badge badge-amber">£8K–£20K</span></td><td><span class="badge badge-red">£15K–£35K</span></td></tr>
-        <tr style="background:#F8FAFC"><td><strong>Right for GoodPoint now?</strong></td><td><span class="badge badge-green">✓ Best fit — MVP stage</span></td><td><span class="badge badge-amber">After Series A / scale</span></td><td><span class="badge badge-red">Only at institutional scale</span></td></tr>
+        <tr style="background:rgba(255,255,255,0.03)"><td><strong>Right for GoodPoint now?</strong></td><td><span class="badge badge-green">✓ Best fit — MVP stage</span></td><td><span class="badge badge-amber">After Series A / scale</span></td><td><span class="badge badge-red">Only at institutional scale</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -2022,46 +2469,55 @@ function extractJSON(raw) {
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ AI CHART BUILDER TAB -->
-<div class="pane" id="pane-ai">
-<div class="ai-pane">
-
-  <div style="margin-bottom:16px">
-    <div style="font-size:18px;font-weight:600;color:#1E293B;margin-bottom:4px">🤖 AI Chart Builder</div>
-    <div style="font-size:13px;color:#64748B">Describe any chart in plain English — it generates instantly using your current simulator data as context. Charts are cleared on refresh.</div>
-  </div>
-
-  <div class="ai-context-badge" id="ai-context-badge">📊 Loaded: simulator data not yet read — go to Simulator tab first</div>
-
-  <div class="ai-suggestions">
-    <button class="ai-suggest-btn" onclick="usePrompt('Bar chart comparing revenue across all 4 pricing tiers at current volume')">Revenue by tier</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Line chart showing how LTV changes as churn rate increases from 1% to 10%')">LTV vs churn</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Pie chart showing cost breakdown: fixed costs, variable costs, and gross profit')">Cost breakdown</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Bar chart comparing freemium CAC vs referral CAC vs direct CAC')">CAC comparison</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Line chart showing cumulative profit over 24 months at current settings')">Profit over 24 months</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Create a table comparing all 6 competitors with their pricing model, entry price, STEM capability, and threat level')">Competitor table</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Create a table showing all 4 pricing tiers with their price, target buyer, and pros and cons')">Pricing tiers table</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Write a short analysis of the current scenario: is GoodPoint profitable, what are the top 3 risks, and what should be prioritised next?')">Scenario analysis</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('List the top 5 actions GoodPoint should take to reach break-even faster based on current numbers')">Action items</button>
-    <button class="ai-suggest-btn" onclick="usePrompt('Bar chart comparing GoodPoint price vs all 6 competitors entry prices')">vs competitors chart</button>
-  </div>
-
-  <div class="ai-prompt-bar">
-    <input type="text" id="ai-prompt-input" placeholder="e.g. compare competitors as a table, list top 3 risks, show revenue by tier as a bar chart..." onkeydown="if(event.key==='Enter')generateContent()">
-    <button id="ai-generate-btn" onclick="generateContent()">Generate ✦</button>
-  </div>
-
-  <div id="ai-status"></div>
-
-  <div id="ai-charts-grid" class="ai-charts-grid">
-    <div class="ai-empty" id="ai-empty-state" style="grid-column:1/-1">
-      <div class="ai-empty-icon">📈</div>
-      <p><strong>No charts yet.</strong><br>Type a description above or click a suggestion to generate your first chart.<br><span style="font-size:12px">Charts use your live simulator data as context — adjust sliders in the Simulator tab to update the data source.</span></p>
+<!-- Suggest improvement modal -->
+<div class="suggest-modal" id="suggest-modal" onclick="if(event.target===this)closeSuggest()">
+  <div class="suggest-box">
+    <h3>💡 Suggest an improvement</h3>
+    <p id="suggest-context-label">What would you like to see improved or added?</p>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <button id="sec-btn-sim" class="sec-btn active" onclick="setSection('sim')">📊 Pricing Simulator</button>
+      <button id="sec-btn-product" class="sec-btn" onclick="setSection('product')">🚀 GoodPoint</button>
+    </div>
+    <textarea id="suggest-text" placeholder="e.g. Add a comparison line showing industry average, include a downloadable CSV export, show percentage change vs previous month..."></textarea>
+    <div class="suggest-box-btns">
+      <button class="suggest-cancel" onclick="closeSuggest()">Cancel</button>
+      <button class="suggest-submit" onclick="submitSuggest()">Add to list →</button>
     </div>
   </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ FUTURE IMPROVEMENTS TAB -->
+<div class="pane" id="pane-future">
+<div class="main">
+
+  <div style="margin-bottom:20px">
+    <div style="font-size:18px;font-weight:600;color:#E2E8F0;margin-bottom:4px">🚀 Future Improvements</div>
+    <div style="font-size:13px;color:#8B9AB0">Click <strong>💡 Suggest improvement</strong> on any chart or table to add your own requests. Pre-populated items reflect planned product roadmap improvements.</div>
+  </div>
+
+  <!-- Status legend -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;font-size:12px">
+    <span>✅ <strong>Implemented</strong></span>
+    <span>🚧 <strong>In progress</strong></span>
+    <span>📋 <strong>Planned</strong></span>
+    <span>💭 <strong>Under consideration</strong></span>
+    <span>🔮 <strong>Future / stretch</strong></span>
+  </div>
+
+  <!-- Pricing Simulator section -->
+  <div class="fi-section-title">📊 Pricing Simulator <span></span></div>
+  <div id="fi-combined-sim">
+    <div class="fi-empty" id="fi-empty-sim">No suggestions yet — click <strong>💡 Suggest improvement</strong> on any chart or table in the Simulator tab.</div>
+  </div>
+
+  <!-- GoodPoint section -->
+  <div class="fi-section-title" style="margin-top:28px">🚀 GoodPoint <span></span></div>
+  <div id="fi-combined-product">
+    <div class="fi-empty" id="fi-empty-product">No suggestions yet — click <strong>💡 Suggest improvement</strong> and select "GoodPoint".</div>
+  </div>
 
 </div>
 </div>
 
+</div>
 </body>
-</html>
