@@ -123,6 +123,53 @@ header button:hover{background:rgba(255,255,255,.25)}
 .benchmark-pill{display:inline-flex;align-items:center;gap:5px;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:8px;padding:5px 10px;font-size:11px;color:#0E7490;margin:3px 3px 3px 0}
 .benchmark-pill strong{color:#0891B2}
 
+
+.ai-pane{max-width:1200px;margin:0 auto;padding:24px}
+.ai-prompt-bar{display:flex;gap:10px;margin-bottom:20px;align-items:center}
+.ai-prompt-bar input{flex:1;padding:10px 16px;border:1px solid #CBD5E1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
+.ai-prompt-bar input:focus{border-color:#0891B2;box-shadow:0 0 0 3px rgba(8,145,178,.1)}
+.ai-prompt-bar button{background:#0891B2;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s}
+.ai-prompt-bar button:hover{background:#0E7490}
+.ai-prompt-bar button:disabled{background:#94A3B8;cursor:not-allowed}
+.ai-charts-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.ai-charts-grid .ai-chart-half{grid-column:auto}
+@media(min-width:900px){.ai-charts-grid{grid-template-columns:repeat(2,1fr)}.ai-charts-grid .ai-chart-half{grid-column:auto}.ai-charts-grid .ai-chart-card:not(.ai-chart-half){grid-column:1/-1}}
+.ai-chart-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px 20px;position:relative}
+.ai-chart-card .ai-chart-title{font-size:13px;font-weight:600;color:#1E293B;margin-bottom:12px;padding-right:28px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ai-chart-card .ai-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:16px;color:#94A3B8;cursor:pointer;line-height:1}
+.ai-chart-card .ai-close:hover{color:#1E293B}
+.ai-chart-card canvas{display:block}
+.ai-table-wrap{overflow-x:auto;border-radius:8px;border:1px solid #E2E8F0;margin-top:8px}
+.ai-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.ai-table th{background:#0891B2;color:#fff;padding:9px 12px;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border-right:1px solid rgba(255,255,255,.25);white-space:nowrap}
+.ai-table th:last-child{border-right:none}
+.ai-table td{padding:8px 12px;border-bottom:1px solid #E2E8F0;border-right:1px solid #F1F5F9;vertical-align:top;line-height:1.5;color:#334155}
+.ai-table td:last-child{border-right:none}
+.ai-table tr:last-child td{border-bottom:none}
+.ai-table tr:nth-child(even) td{background:#F8FAFC}
+.ai-table tr:hover td{background:#F0F9FF}
+.ai-text-content{font-size:13px;color:#334155;line-height:1.7;padding:4px 0}
+.ai-text-content ul,.ai-text-content ol{margin-left:20px;margin-top:6px}
+.ai-text-content li{margin-bottom:5px}
+.ai-text-content strong{color:#1E293B}
+.ai-text-content h3{font-size:13px;font-weight:600;color:#0891B2;margin:12px 0 4px}
+.ai-type-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.ai-type-chart{background:#E0F2FE;color:#0E4F6A}
+.ai-type-table{background:#D1FAE5;color:#065F46}
+.ai-type-text{background:#FEF3C7;color:#92400E}
+.ai-loading{display:flex;align-items:center;gap:10px;color:#64748B;font-size:13px;padding:12px 16px;background:#F8FAFC;border-radius:8px;margin-bottom:12px}
+.ai-loading .ai-spinner{width:16px;height:16px;border:2px solid #E2E8F0;border-top-color:#0891B2;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-error{background:#FEE2E2;color:#991B1B;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px}
+.ai-context-badge{display:inline-flex;align-items:center;gap:5px;background:#E0F2FE;color:#0E4F6A;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;margin-bottom:14px}
+.ai-empty{text-align:center;padding:60px 20px;color:#94A3B8}
+.ai-empty .ai-empty-icon{font-size:48px;margin-bottom:16px}
+.ai-empty p{font-size:14px;line-height:1.6}
+.ai-suggestions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.ai-suggest-btn{background:#F1F5F9;border:1px solid #E2E8F0;border-radius:20px;padding:5px 14px;font-size:12px;color:#475569;cursor:pointer;font-family:inherit;transition:all .12s}
+.ai-suggest-btn:hover{background:#E0F2FE;border-color:#0891B2;color:#0E4F6A}align-items:center;gap:10px;color:#64748B;font-size:13px;padding:12px 16px;background:#F8FAFC;border-radius:8px;margin-bottom:12px}
+.ai-loading .ai-spinner{width:16px;height:16px;border:2px solid #E2E8F0;border-top-color:#0891B2;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}color:#991B1B;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:12px}align-items:center;gap:5px;background:#E0F2FE;color:#0E4F6A;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;margin-bottom:14px}
+
 footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
 </style>
 </head>
@@ -140,6 +187,7 @@ footer{text-align:center;padding:16px;font-size:11px;color:#94A3B8}
   <button class="tab-btn" id="tab-sim" onclick="switchTab('sim')">📊 Scenario Simulator</button>
   <button class="tab-btn" id="tab-comp" onclick="switchTab('comp')">🏆 Competitor Benchmarking</button>
   <button class="tab-btn" id="tab-mobile" onclick="switchTab('mobile')">📱 Mobile App ROI</button>
+  <button class="tab-btn" id="tab-ai" onclick="switchTab('ai')">🤖 AI Chart Builder</button>
 </div>
 
 
@@ -645,6 +693,7 @@ function switchTab(tab) {
   if (tabEl)  tabEl.classList.add('active');
   if (tab === 'comp') renderCompTable();
   if (tab === 'mobile') renderMobileTab();
+  if (tab === 'ai') updateAIContextBadge();
 }
 
 // ── Tier logic ────────────────────────────────────────────────────────────
@@ -763,6 +812,7 @@ function update() {
 
   // Growth mechanics
   const growth = calcGrowth({ scripts, students, customers, fixed, varC, churn: getV('churn'), rev: revenueMonth, opProfit });
+  updateAIContextBadge();
   renderGrowthStats(growth);
 
   // Adjusted P&L with growth impact
@@ -1293,6 +1343,458 @@ function renderGrowthStats(g) {
   }
 }
 
+
+// ── AI Chart Builder ─────────────────────────────────────────────────────────
+let aiCharts = [];
+let aiChartCount = 0;
+
+function getSimContext() {
+  try {
+    const scripts   = parseFloat(document.getElementById('scripts')?.value) || 2000;
+    const price     = tierConfig.script.pricePerScript || 2.5;
+    const customers = parseFloat(document.getElementById('customers')?.value) || 5;
+    const fixed     = parseFloat(document.getElementById('fixedCost')?.value) || 5000;
+    const varC      = parseFloat(document.getElementById('varCost')?.value) || 0.12;
+    const churn     = parseFloat(document.getElementById('churn')?.value) || 2;
+    const retention = parseFloat(document.getElementById('retention')?.value) || 24;
+    const cac       = parseFloat(document.getElementById('cac')?.value) || 800;
+    const students  = parseFloat(document.getElementById('students')?.value) || 1000;
+    const rev       = calcRevenue(scripts, students, customers, currentTier);
+    const cogs      = varC * scripts;
+    const gp        = rev - cogs;
+    const gm        = rev > 0 ? (gp/rev*100).toFixed(1) : 0;
+    const op        = gp - fixed;
+    const churnRate = churn/100;
+    const rpc       = customers > 0 ? rev/customers : 0;
+    const ltv       = churnRate > 0 ? rpc*(1-Math.pow(1-churnRate,retention))/churnRate : rpc*retention;
+    const ltvcac    = cac > 0 ? ltv/cac : 0;
+    const ppu       = currentTier==='script' ? price : (rev/Math.max(scripts,1));
+    const be        = (ppu-varC) > 0 ? Math.round(fixed/(ppu-varC)) : null;
+
+    // Growth
+    const freeUsers  = gv('freeATAUsers',50);
+    const ataConv    = gv('ataConvRate',7);
+    const ataCost    = gv('ataCostPerUser',0.80);
+    const refInvites = gv('referralInvites',0.3);
+    const refConv    = gv('referralConvRate',8);
+    const refCredits = gv('creditsPerReferral',150);
+    const newCustATA = freeUsers*ataConv/100;
+    const newCustRef = customers*refInvites*refConv/100;
+    const viralCoeff = refInvites*refConv/100;
+    const freemiumCAC = newCustATA>0 ? (freeUsers*ataCost)/(newCustATA) : 0;
+    const referralCAC = newCustRef>0 ? (newCustRef*refCredits*varC)/newCustRef : 0;
+
+    // Revenue by tier at current volume
+    const tierRevs = {
+      'Per-script': scripts * price,
+      'Per-student': students * (tierConfig.student?.pricePerStudent||12) / 12,
+      'Faculty licence': customers * (tierConfig.faculty?.annualLicence||8000) / 12,
+      'Institutional': customers * (tierConfig.institutional?.annualLicence||24000) / 12
+    };
+    const tierBreakEvens = {
+      'Per-script': (ppu-varC)>0?Math.round(fixed/(price-varC)):null,
+      'Per-student': Math.round(fixed/((tierConfig.student?.pricePerStudent||12)/12/Math.max(students/customers,1)-varC)),
+      'Faculty licence': Math.round((fixed*12)/(tierConfig.faculty?.annualLicence||8000)),
+      'Institutional': Math.round((fixed*12)/(tierConfig.institutional?.annualLicence||24000))
+    };
+
+    return {
+      currentTier, scripts, price, customers, fixed, varC, churn, retention, cac, students,
+      revenue: Math.round(rev), cogs: Math.round(cogs), grossProfit: Math.round(gp),
+      grossMarginPct: parseFloat(gm), operatingProfit: Math.round(op),
+      annualRevenue: Math.round(rev*12), annualProfit: Math.round(op*12),
+      churnPct: churn, ltv: Math.round(ltv), ltvcac: parseFloat(ltvcac.toFixed(2)),
+      cacPaybackMonths: rpc>0?parseFloat((cac/rpc).toFixed(1)):null,
+      breakEvenScripts: be, roi: cac>0?parseFloat(((ltv-cac)/cac*100).toFixed(0)):0,
+      growth: {
+        newCustATA: parseFloat(newCustATA.toFixed(2)),
+        newCustRef: parseFloat(newCustRef.toFixed(2)),
+        viralCoeff: parseFloat(viralCoeff.toFixed(3)),
+        freemiumCAC: Math.round(freemiumCAC),
+        referralCAC: Math.round(referralCAC),
+        directCAC: cac
+      },
+      tierRevenues: tierRevs,
+      tierBreakEvens,
+      competitors: competitors.filter(x=>!x.isGoodPoint).map(x=>({name:x.name,entryNum:x.entryNum,segment:x.segment}))
+    };
+  } catch(e) { return {}; }
+}
+
+function updateAIContextBadge() {
+  const el = document.getElementById('ai-context-badge');
+  if (!el) return;
+  const ctx = getSimContext();
+  if (ctx.revenue) {
+    el.textContent = '📊 Context: ' + currentTier + ' · £' + (ctx.revenue/1000).toFixed(1) + 'K/mo revenue · ' + (ctx.scripts||0).toLocaleString() + ' scripts/mo · ' + (ctx.customers||0) + ' customers';
+  }
+}
+
+function usePrompt(text) {
+  const input = document.getElementById('ai-prompt-input');
+  if (input) { input.value = text; input.focus(); }
+}
+
+async function generateContent() {
+  const input  = document.getElementById('ai-prompt-input');
+  const btn    = document.getElementById('ai-generate-btn');
+  const status = document.getElementById('ai-status');
+  const prompt = input?.value?.trim();
+  if (!prompt) { input?.focus(); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+  status.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div>Thinking...</div>';
+
+  const ctx = getSimContext();
+
+  const systemPrompt = `You are a data assistant for GoodPoint, a B2B EdTech SaaS pricing simulator.
+Given a user request, return ONLY a valid JSON object with this exact structure:
+{
+  "outputType": "chart" | "table" | "text",
+  "title": "short descriptive title (max 60 chars)",
+  "chartConfig": { ...Chart.js v4 config with type/data/options keys... },
+  "table": { "headers": ["col1","col2",...], "rows": [["val","val"],[...]] },
+  "html": "<p>formatted HTML string for text or list output</p>"
+}
+Rules:
+- Return RAW JSON ONLY. No markdown fences, no prose, no explanation outside the JSON.
+- Choose outputType based on the request: charts for trends/comparisons with numbers, tables for structured multi-column data, text for lists/summaries/analysis.
+- For charts: populate chartConfig with real Chart.js v4 syntax. Set options.responsive=true, options.maintainAspectRatio=false. Use colours: "#0891B2","#0E7490","#155E75","#F59E0B","#059669","#DC2626".
+- For tables: keep rows concise. Max 8 columns. Use real data from the simulator context provided.
+- For text/lists: use clean HTML only — <p>, <ul>, <ol>, <li>, <strong>, <h3>. No inline styles.
+- Only include the key relevant to the outputType (chartConfig OR table OR html). Include all three keys but leave the unused ones as null.
+- Use the simulator data provided to populate real numbers.`;
+
+  const userMsg = `Simulator state:
+- Active tier: ${ctx.currentTier} · Price/script: £${ctx.price}
+- Scripts/month: ${(ctx.scripts||0).toLocaleString()} · Customers: ${ctx.customers}
+- Fixed costs/month: £${ctx.fixed} · Variable cost/script: £${ctx.varC}
+- Monthly revenue: £${ctx.revenue} · COGS: £${ctx.cogs}
+- Gross profit: £${ctx.grossProfit} (${ctx.grossMarginPct}% margin)
+- Operating profit/month: £${ctx.operatingProfit} · Annual: £${ctx.annualProfit}
+- Churn: ${ctx.churnPct}%/mo · Retention: ${ctx.retention}mo
+- CAC: £${ctx.cac} · LTV: £${ctx.ltv} · LTV:CAC: ${ctx.ltvcac}×
+- Break-even: ${ctx.breakEvenScripts} scripts/mo · ROI: ${ctx.roi}%
+- Revenue by tier: Per-script £${Math.round(ctx.tierRevenues?.['Per-script']||0)}/mo, Per-student £${Math.round(ctx.tierRevenues?.['Per-student']||0)}/mo, Faculty £${Math.round(ctx.tierRevenues?.['Faculty licence']||0)}/mo, Institutional £${Math.round(ctx.tierRevenues?.['Institutional']||0)}/mo
+- Growth: freemium +${ctx.growth?.newCustATA} cust/mo (CAC £${ctx.growth?.freemiumCAC}), referral +${ctx.growth?.newCustRef} cust/mo (CAC £${ctx.growth?.referralCAC}), viral k=${ctx.growth?.viralCoeff}
+- Competitors: ${ctx.competitors?.map(x=>x.name+' £'+x.entryNum+'/script-equiv').join(', ')}
+
+User request: ${prompt}`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMsg }]
+      })
+    });
+
+    const data    = await response.json();
+    const raw     = data?.content?.[0]?.text || '';
+    const result = extractJSON(raw);
+
+    status.innerHTML = '';
+    renderAIContent(result, prompt);
+    input.value = '';
+
+  } catch(err) {
+    const msg = err.message?.includes('JSON') 
+      ? 'Response format error — try rephrasing your request.'
+      : 'Generation failed: ' + err.message;
+    status.innerHTML = '<div class="ai-error">⚠ ' + msg + '</div>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Generate ✦';
+  }
+}
+
+async function renderAIContent(result, prompt) {
+  const grid  = document.getElementById('ai-charts-grid');
+  const empty = document.getElementById('ai-empty-state');
+  if (empty) empty.style.display = 'none';
+
+  aiChartCount++;
+  const id    = 'ai-chart-' + aiChartCount;
+  const title = (result.title || prompt).substring(0, 70);
+  const type  = result.outputType || 'text';
+
+  const typeBadge = type === 'chart'
+    ? '<span class="ai-type-badge ai-type-chart">Chart</span>'
+    : type === 'table'
+    ? '<span class="ai-type-badge ai-type-table">Table</span>'
+    : '<span class="ai-type-badge ai-type-text">Text</span>';
+
+  const card = document.createElement('div');
+  card.className = 'ai-chart-card';
+  card.id = id + '-card';
+  card.style.gridColumn = (type !== 'chart') ? '1 / -1' : '1 / -1'; // all full width for readability
+  // Charts use half width only on wider screens via CSS
+  if (type === 'chart') card.classList.add('ai-chart-half');
+
+  let innerContent = '';
+  if (type === 'chart') {
+    innerContent = `<div id="${id}-wrap" style="position:relative;height:280px;width:100%"><canvas id="${id}" role="img" aria-label="${title}"></canvas></div>`;
+  } else if (type === 'table' && result.table) {
+    const headers = result.table.headers || [];
+    const rows    = result.table.rows    || [];
+    const thead   = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+    const tbody   = rows.map(r => '<tr>' + r.map(cell => `<td>${String(cell)}</td>`).join('') + '</tr>').join('');
+    innerContent  = `<div class="ai-table-wrap"><table class="ai-table"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+  } else {
+    innerContent = `<div class="ai-text-content">${result.html || '<p>No content returned.</p>'}</div>`;
+  }
+
+  card.innerHTML = `
+    <div class="ai-chart-title">${typeBadge}${title}</div>
+    <button class="ai-close" onclick="removeAIChart('${id}')" title="Remove">✕</button>
+    ${innerContent}`;
+  grid.appendChild(card);
+
+  if (type === 'chart' && result.chartConfig) {
+    try {
+      const cfg = sanitizeChartConfig(result.chartConfig);
+      const canvas = document.getElementById(id);
+      if (!canvas) throw new Error('Canvas element not found');
+      // Verify the wrap container has real dimensions before rendering
+      const wrap = document.getElementById(id + '-wrap');
+      if (wrap && wrap.offsetWidth === 0) {
+        await new Promise(r => requestAnimationFrame(r));
+      }
+      const chart = new Chart(canvas, cfg);
+      // Sanity check: if all data values are zero/empty, show a note
+      const allZero = cfg.data.datasets.every(ds => (ds.data||[]).every(v => !v || v === 0));
+      if (allZero) {
+        const wrap2 = document.getElementById(id + '-wrap');
+        if (wrap2) wrap2.insertAdjacentHTML('afterend', '<div style="font-size:11px;color:#94A3B8;margin-top:4px;text-align:center">⚠ All data values are zero — the chart may be empty. Check your prompt or simulator data.</div>');
+      }
+      aiCharts.push({ id, chart });
+    } catch(e) {
+      console.error('Chart error:', e);
+      const wrap = document.getElementById(id + '-wrap');
+      if (wrap) {
+        wrap.innerHTML = '<div class="ai-error" style="padding:14px;margin:0">⚠ Chart render error: ' + e.message + '<br><span style="font-size:11px;color:#991B1B">Try rephrasing — e.g. \'show as a bar chart\' or \'line chart comparing X and Y\'.</span></div>';
+        wrap.style.height = 'auto';
+      }
+    }
+  } else {
+    aiCharts.push({ id, chart: null });
+  }
+}
+
+function removeAIChart(id) {
+  const entry = aiCharts.find(c => c.id === id);
+  if (entry?.chart) entry.chart.destroy();
+  aiCharts = aiCharts.filter(c => c.id !== id);
+  const card = document.getElementById(id + '-card');
+  if (card) card.remove();
+  if (aiCharts.length === 0) {
+    const empty = document.getElementById('ai-empty-state');
+    if (empty) empty.style.display = 'block';
+  }
+}
+
+
+// ── Chart.js Config Sanitizer ─────────────────────────────────────────────
+// Handles all known failure modes from Claude-generated configs
+
+const VALID_CHART_TYPES = ['bar','line','pie','doughnut','radar','polarArea','bubble','scatter'];
+const KNOWN_PLUGINS     = ['legend','tooltip','title']; // only safe built-ins
+const PALETTE = ['#0891B2','#0E7490','#155E75','#F59E0B','#059669','#DC2626','#7C3AED','#EA580C','#0284C7','#16A34A'];
+
+function sanitizeChartConfig(cfg) {
+  if (!cfg || typeof cfg !== 'object') throw new Error('Config is not an object');
+
+  // ── 1. Validate / fix chart type ────────────────────────────────────────
+  if (!cfg.type) cfg.type = 'bar';
+  cfg.type = String(cfg.type).toLowerCase().trim();
+  if (cfg.type === 'horizontalbar') {
+    cfg.type = 'bar';
+    cfg.options = cfg.options || {};
+    cfg.options.indexAxis = 'y';
+  }
+  if (!VALID_CHART_TYPES.includes(cfg.type)) {
+    console.warn('Unknown chart type:', cfg.type, '— falling back to bar');
+    cfg.type = 'bar';
+  }
+
+  // ── 2. Fix data structure ────────────────────────────────────────────────
+  cfg.data = cfg.data || {};
+  if (!Array.isArray(cfg.data.labels))   cfg.data.labels   = [];
+  if (!Array.isArray(cfg.data.datasets)) cfg.data.datasets = [];
+  if (cfg.data.datasets.length === 0)    cfg.data.datasets = [{ label: 'Value', data: [] }];
+
+  // ── 3. Fix each dataset ──────────────────────────────────────────────────
+  cfg.data.datasets = cfg.data.datasets.map((ds, i) => {
+    if (!ds || typeof ds !== 'object') ds = {};
+    if (!Array.isArray(ds.data)) ds.data = [];
+
+    // Remove string-valued callbacks (Chart.js can't handle them)
+    ['backgroundColor','borderColor','pointBackgroundColor','pointBorderColor'].forEach(key => {
+      if (typeof ds[key] === 'string' && ds[key].trim().startsWith('function')) {
+        delete ds[key];
+      }
+    });
+
+    // Assign palette colours if missing
+    const col = PALETTE[i % PALETTE.length];
+    if (!ds.borderColor)     ds.borderColor = col;
+    if (!ds.backgroundColor) {
+      ds.backgroundColor = (cfg.type === 'line')
+        ? col + '22'
+        : (cfg.type === 'bar' ? col + 'CC' : PALETTE.map(p => p + 'CC'));
+    }
+    if (cfg.type === 'line') {
+      if (ds.tension === undefined) ds.tension = 0.3;
+      if (ds.fill   === undefined) ds.fill   = false;
+      if (ds.pointRadius === undefined) ds.pointRadius = 3;
+    }
+    return ds;
+  });
+
+  // Ensure labels match longest dataset length
+  const maxLen = Math.max(...cfg.data.datasets.map(d => (d.data||[]).length), 0);
+  if (cfg.data.labels.length < maxLen) {
+    cfg.data.labels = Array.from({length: maxLen}, (_, i) => cfg.data.labels[i] || 'Item ' + (i+1));
+  }
+
+  // ── 4. Migrate v3 scales → v4 ────────────────────────────────────────────
+  cfg.options = cfg.options || {};
+  const scales = cfg.options.scales || {};
+
+  if (scales.xAxes || scales.yAxes) {
+    const newScales = {};
+    // Preserve any v4 keys already present
+    Object.keys(scales).filter(k => !['xAxes','yAxes'].includes(k)).forEach(k => newScales[k] = scales[k]);
+    // Migrate v3 xAxes[0] → x
+    if (Array.isArray(scales.xAxes) && scales.xAxes[0]) {
+      const xSrc = scales.xAxes[0];
+      newScales.x = newScales.x || {};
+      if (xSrc.ticks?.beginAtZero !== undefined) {
+        newScales.x.beginAtZero = xSrc.ticks.beginAtZero;
+      }
+      if (xSrc.scaleLabel?.labelString) {
+        newScales.x.title = { display: true, text: xSrc.scaleLabel.labelString };
+      }
+    }
+    // Migrate v3 yAxes[0] → y
+    if (Array.isArray(scales.yAxes) && scales.yAxes[0]) {
+      const ySrc = scales.yAxes[0];
+      newScales.y = newScales.y || {};
+      if (ySrc.ticks?.beginAtZero !== undefined) {
+        newScales.y.beginAtZero = ySrc.ticks.beginAtZero;
+      }
+      if (ySrc.scaleLabel?.labelString) {
+        newScales.y.title = { display: true, text: ySrc.scaleLabel.labelString };
+      }
+    }
+    cfg.options.scales = newScales;
+  }
+
+  // ── 5. Strip unknown plugins ─────────────────────────────────────────────
+  if (cfg.options.plugins && typeof cfg.options.plugins === 'object') {
+    const safePlugins = {};
+    KNOWN_PLUGINS.forEach(k => {
+      if (cfg.options.plugins[k] !== undefined) safePlugins[k] = cfg.options.plugins[k];
+    });
+    cfg.options.plugins = safePlugins;
+  }
+
+  // ── 5b. Sanitize scale types — only safe built-ins (no 'time', 'timeseries' etc.) ──
+  const SAFE_SCALE_TYPES = ['linear','logarithmic','category','radialLinear'];
+  if (cfg.options.scales && typeof cfg.options.scales === 'object') {
+    Object.keys(cfg.options.scales).forEach(axisKey => {
+      const axis = cfg.options.scales[axisKey];
+      if (!axis || typeof axis !== 'object') {
+        delete cfg.options.scales[axisKey];
+        return;
+      }
+      // Strip unknown scale types — they cause the Function.prototype.call crash
+      if (axis.type && !SAFE_SCALE_TYPES.includes(axis.type)) {
+        console.warn('Removing unknown scale type:', axis.type, 'on axis:', axisKey);
+        delete axis.type;
+      }
+      // 'logarithmic' requires all values > 0 — switch to linear if any zeros exist
+      if (axis.type === 'logarithmic') {
+        const hasZero = cfg.data.datasets.some(ds => (ds.data||[]).some(v => !v || v <= 0));
+        if (hasZero) { delete axis.type; }
+      }
+      // Strip function-valued tick/callback properties
+      ['callback','filter','format'].forEach(fn => {
+        if (axis.ticks && typeof axis.ticks[fn] === 'string') delete axis.ticks[fn];
+        if (typeof axis[fn] === 'string') delete axis[fn];
+      });
+    });
+  }
+
+  // ── 5c. Strip dataset-level type overrides if invalid ─────────────────────
+  cfg.data.datasets.forEach(ds => {
+    if (ds.type && !VALID_CHART_TYPES.includes(String(ds.type).toLowerCase())) {
+      delete ds.type;
+    }
+    // Strip ALL callback-style string properties on dataset
+    Object.keys(ds).forEach(k => {
+      if (typeof ds[k] === 'string' && ds[k].trim().startsWith('function')) delete ds[k];
+      if (typeof ds[k] === 'string' && ds[k].trim().startsWith('(')) delete ds[k]; // arrow fn
+    });
+    // Strip animation callbacks
+    if (ds.animation && typeof ds.animation === 'object') delete ds.animation;
+  });
+
+  // ── 5d. Strip top-level animation callbacks ────────────────────────────────
+  if (cfg.options.animation && typeof cfg.options.animation === 'object') {
+    Object.keys(cfg.options.animation).forEach(k => {
+      if (typeof cfg.options.animation[k] === 'function' ||
+          typeof cfg.options.animation[k] === 'string') delete cfg.options.animation[k];
+    });
+  }
+
+  // ── 6. Force safe globals ────────────────────────────────────────────────
+  cfg.options.responsive          = true;
+  cfg.options.maintainAspectRatio = false;
+  cfg.options.plugins             = cfg.options.plugins || {};
+  cfg.options.plugins.legend      = cfg.options.plugins.legend || { position: 'top' };
+
+  // ── 7. Remove any top-level function references ────────────────────────────
+  Object.keys(cfg).forEach(k => {
+    if (typeof cfg[k] === 'function') delete cfg[k];
+  });
+
+  // ── 8. Coerce data values to numbers ─────────────────────────────────────
+  cfg.data.datasets.forEach(ds => {
+    if (Array.isArray(ds.data)) {
+      ds.data = ds.data.map(v => {
+        if (v === null || v === undefined) return 0;
+        if (typeof v === 'object' && (v.x !== undefined || v.y !== undefined)) return v; // bubble/scatter
+        const n = parseFloat(String(v).replace(/[^0-9.\-]/g, ''));
+        return isNaN(n) ? 0 : n;
+      });
+    }
+  });
+
+  return cfg;
+}
+
+// ── JSON extraction helper (handles partial markdown, trailing text) ────────
+function extractJSON(raw) {
+  // Try direct parse first
+  try { return JSON.parse(raw); } catch(_) {}
+  // Strip markdown fences
+  const stripped = raw.replace(/```json|```/gi, '').trim();
+  try { return JSON.parse(stripped); } catch(_) {}
+  // Try to find the first {...} block
+  const start = stripped.indexOf('{');
+  const end   = stripped.lastIndexOf('}');
+  if (start !== -1 && end > start) {
+    try { return JSON.parse(stripped.slice(start, end + 1)); } catch(_) {}
+  }
+  throw new Error('Could not parse response as JSON');
+}
+
 </script>
 
 <!-- ═══════════════════════════════════════════════════ MOBILE APP ROI TAB -->
@@ -1519,5 +2021,47 @@ function renderGrowthStats(g) {
     <div class="modal-body" id="mob-modal-body"></div>
   </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════ AI CHART BUILDER TAB -->
+<div class="pane" id="pane-ai">
+<div class="ai-pane">
+
+  <div style="margin-bottom:16px">
+    <div style="font-size:18px;font-weight:600;color:#1E293B;margin-bottom:4px">🤖 AI Chart Builder</div>
+    <div style="font-size:13px;color:#64748B">Describe any chart in plain English — it generates instantly using your current simulator data as context. Charts are cleared on refresh.</div>
+  </div>
+
+  <div class="ai-context-badge" id="ai-context-badge">📊 Loaded: simulator data not yet read — go to Simulator tab first</div>
+
+  <div class="ai-suggestions">
+    <button class="ai-suggest-btn" onclick="usePrompt('Bar chart comparing revenue across all 4 pricing tiers at current volume')">Revenue by tier</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Line chart showing how LTV changes as churn rate increases from 1% to 10%')">LTV vs churn</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Pie chart showing cost breakdown: fixed costs, variable costs, and gross profit')">Cost breakdown</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Bar chart comparing freemium CAC vs referral CAC vs direct CAC')">CAC comparison</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Line chart showing cumulative profit over 24 months at current settings')">Profit over 24 months</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Create a table comparing all 6 competitors with their pricing model, entry price, STEM capability, and threat level')">Competitor table</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Create a table showing all 4 pricing tiers with their price, target buyer, and pros and cons')">Pricing tiers table</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Write a short analysis of the current scenario: is GoodPoint profitable, what are the top 3 risks, and what should be prioritised next?')">Scenario analysis</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('List the top 5 actions GoodPoint should take to reach break-even faster based on current numbers')">Action items</button>
+    <button class="ai-suggest-btn" onclick="usePrompt('Bar chart comparing GoodPoint price vs all 6 competitors entry prices')">vs competitors chart</button>
+  </div>
+
+  <div class="ai-prompt-bar">
+    <input type="text" id="ai-prompt-input" placeholder="e.g. compare competitors as a table, list top 3 risks, show revenue by tier as a bar chart..." onkeydown="if(event.key==='Enter')generateContent()">
+    <button id="ai-generate-btn" onclick="generateContent()">Generate ✦</button>
+  </div>
+
+  <div id="ai-status"></div>
+
+  <div id="ai-charts-grid" class="ai-charts-grid">
+    <div class="ai-empty" id="ai-empty-state" style="grid-column:1/-1">
+      <div class="ai-empty-icon">📈</div>
+      <p><strong>No charts yet.</strong><br>Type a description above or click a suggestion to generate your first chart.<br><span style="font-size:12px">Charts use your live simulator data as context — adjust sliders in the Simulator tab to update the data source.</span></p>
+    </div>
+  </div>
+
+</div>
+</div>
+
 </body>
 </html>
