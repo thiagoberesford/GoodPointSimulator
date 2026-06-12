@@ -757,10 +757,13 @@ footer{margin-left:0!important;padding:14px 28px!important}
 
   <!-- Pricing UK + NA -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-    <div style="background:#0D1628;border:1px solid rgba(37,99,235,0.25);border-radius:14px;padding:18px;position:relative"><button class="suggest-btn" onclick="openSuggest('UK Pricing','Go-To-Market')">💡 Suggest improvement</button>
+    <div style="background:#0D1628;border:1px solid rgba(37,99,235,0.25);border-radius:14px;padding:18px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2563EB">Pricing · live from Simulator</div>
-        <button onclick="navigateTo('simulator')" style="font-size:10px;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#93C5FD;padding:3px 8px;border-radius:5px;cursor:pointer;font-family:inherit">Edit in Simulator →</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button onclick="openSuggest('UK Pricing','Go-To-Market')" style="background:none;border:none;color:#475569;font-size:11px;cursor:pointer;font-family:inherit;padding:2px 4px;transition:color .15s" onmouseover="this.style.color='#FCD34D'" onmouseout="this.style.color='#475569'" title="Suggest improvement">💡</button>
+          <button onclick="navigateTo('simulator')" style="font-size:10px;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#93C5FD;padding:3px 8px;border-radius:5px;cursor:pointer;font-family:inherit">Edit in Simulator →</button>
+        </div>
       </div>
       <table style="width:100%;font-size:13px;border-collapse:collapse" id="gtm-price-table">
         <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
