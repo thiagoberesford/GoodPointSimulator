@@ -92,9 +92,9 @@ header button:hover{background:rgba(255,255,255,.25)}
 .guide-tab-card .gtc-icon{font-size:26px;margin-bottom:8px}
 .guide-tab-card .gtc-title{font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:6px}
 .guide-tab-card .gtc-desc{font-size:12px;color:#8B9AB0;line-height:1.5}
-.guide-tab-card .gtc-steps{margin-top:10px;padding-top:10px;border-top:1px solid #F1F5F9}
-.guide-tab-card .gtc-step{font-size:11.5px;color:#94A3B8;display:flex;gap:7px;margin-bottom:5px;line-height:1.4}
-.guide-tab-card .gtc-step-num{background:#2563EB;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.guide-tab-card .gtc-steps{margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06)}
+.guide-tab-card .gtc-step{font-size:11.5px;color:#94A3B8;display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;line-height:1.5}
+.guide-tab-card .gtc-step-num{background:#2563EB;color:#fff;border-radius:50%;width:18px;height:18px;min-width:18px;min-height:18px;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;line-height:1}
 .guide-tips{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 .guide-tip{background:rgba(37,99,235,0.08);border:1px solid #BAE6FD;border-radius:10px;padding:14px 16px;font-size:12px;color:#E2E8F0;line-height:1.55}
 .guide-tip strong{display:block;color:#2563EB;font-size:13px;margin-bottom:4px}
@@ -487,7 +487,7 @@ button[style*="background:#2563EB"] {
 }
 
 /* ── GTCStep number circles ──────────────────────────────────────────────── */
-.gtc-step-num { background: #2563EB !important; }
+.gtc-step-num { background: #2563EB !important; width:18px !important; height:18px !important; min-width:18px !important; min-height:18px !important; display:flex !important; align-items:center !important; justify-content:center !important; flex-shrink:0 !important; border-radius:50% !important; font-size:9px !important; font-weight:700 !important; color:#fff !important; margin-top:2px !important; line-height:1 !important; }
 
 /* ── Input fields ────────────────────────────────────────────────────────── */
 input[type="text"], input[type="email"] {
@@ -497,6 +497,74 @@ input[type="text"], input[type="email"] {
 }
 input::placeholder { color: #8B9AB0 !important; }
 input:focus { border-color: #2563EB !important; }
+
+
+/* ═══════════════════════════════════════════════ SIDEBAR LAYOUT */
+html,body{height:100%;margin:0}
+body{display:flex!important;flex-direction:row!important;align-items:flex-start!important;background:#000!important}
+
+#sidebar{width:232px;min-width:232px;min-height:100vh;height:100vh;background:#06080F;border-right:1px solid rgba(255,255,255,0.07);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:200;display:flex;flex-direction:column}
+
+#content-area{margin-left:232px;flex:1;min-height:100vh;background:#000;display:flex;flex-direction:column}
+
+/* hide old header + tab-bar */
+header{display:none!important}
+.tab-bar{display:none!important}
+
+/* brand */
+.sb-brand{padding:22px 18px 16px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sb-brand .sb-product{font-size:15px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.sb-brand .sb-tagline{font-size:11px;color:#334155;margin-top:3px;line-height:1.4}
+
+/* nav */
+.sb-nav{padding:10px 0;flex:1}
+.sb-divider{height:1px;background:rgba(255,255,255,0.05);margin:6px 14px}
+
+/* leaf items */
+.sb-item{display:flex;align-items:center;padding:9px 18px;font-size:13px;color:#94A3B8;cursor:pointer;transition:all .15s;position:relative;border-radius:0;user-select:none}
+.sb-item:hover{color:#E2E8F0;background:rgba(255,255,255,0.03)}
+.sb-item.active{color:#2563EB;background:rgba(37,99,235,0.08)}
+.sb-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:#2563EB;border-radius:0 2px 2px 0}
+
+/* group titles */
+.sb-group{margin-top:2px}
+.sb-group-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#64748B;cursor:pointer;transition:color .15s;user-select:none}
+.sb-group-hdr:hover{color:#94A3B8}
+.sb-group-hdr .sb-arrow{font-size:9px;color:#64748B;transition:transform .2s}
+.sb-group-hdr.open .sb-arrow{transform:rotate(180deg)}
+
+/* sub items (depth 1) */
+.sb-sub{overflow:hidden;max-height:0;transition:max-height .3s ease}
+.sb-sub.open{max-height:400px}
+.sb-sub-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 18px 8px 28px;font-size:12.5px;color:#8B9AB0;cursor:pointer;transition:all .15s;user-select:none}
+.sb-sub-hdr:hover{color:#CBD5E1}
+.sb-sub-hdr.active{color:#60A5FA}
+.sb-sub-hdr .sb-arrow{font-size:9px;transition:transform .2s}
+.sb-sub-hdr.open .sb-arrow{transform:rotate(180deg)}
+
+/* leaf items (depth 2) */
+.sb-leaf-sub{overflow:hidden;max-height:0;transition:max-height .25s ease}
+.sb-leaf-sub.open{max-height:200px}
+.sb-leaf{display:flex;align-items:center;padding:7px 18px 7px 42px;font-size:12.5px;color:#8B9AB0;cursor:pointer;transition:all .15s;position:relative}
+.sb-leaf:hover{color:#E2E8F0;background:rgba(255,255,255,0.02)}
+.sb-leaf.active{color:#2563EB}
+.sb-leaf.active::before{content:'';position:absolute;left:28px;top:50%;transform:translateY(-50%);width:3px;height:3px;background:#2563EB;border-radius:50%}
+
+/* footer */
+.sb-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,0.05)}
+.sb-footer p{font-size:10px;color:#475569;line-height:1.5}
+
+/* fix main area */
+.main{max-width:none!important;padding:20px 28px!important}
+.ai-pane{max-width:none!important;padding:20px 28px!important}
+footer{margin-left:0!important;padding:14px 28px!important}
+
+/* fix text truncation in competitor table */
+.comp-table td{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-width:none!important;word-break:normal!important}
+.comp-table th{white-space:normal!important;overflow:visible!important}
+
+/* responsive: table wraps properly */
+.comp-table{table-layout:auto!important}
 
 </style>
 </head>
@@ -518,6 +586,270 @@ input:focus { border-color: #2563EB !important; }
 </div>
 
 
+<div id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-product">GoodPoint</div>
+    <div class="sb-tagline">Pricing Simulator &amp;<br>Competitive Intelligence</div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-item" data-page="guide" onclick="navigateTo('guide')">Guide &amp; Glossary</div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-item" data-page="gtm" onclick="navigateTo('gtm')">Go-To-Market</div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Cost & Price expandable -->
+    <div class="sb-sub-hdr" id="cost-hdr" onclick="toggleSubGroup('cost-leaf','cost-hdr')">
+      Cost &amp; Price <span class="sb-arrow">▼</span>
+    </div>
+    <div class="sb-leaf-sub" id="cost-leaf">
+      <div class="sb-leaf" data-page="simulator" onclick="navigateTo('simulator')">Scenario Simulator</div>
+      <div class="sb-leaf" data-page="competitors" onclick="navigateTo('competitors')">Competitor Benchmarking</div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <!-- Mobile App Roadmap expandable -->
+    <div class="sb-sub-hdr" id="mobile-hdr" onclick="toggleSubGroup('mobile-leaf','mobile-hdr')">
+      Mobile App Roadmap <span class="sb-arrow">▼</span>
+    </div>
+    <div class="sb-leaf-sub" id="mobile-leaf">
+      <div class="sb-leaf" data-page="mobile" onclick="navigateTo('mobile')">App ROI Calculator</div>
+    </div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-item" data-page="future" onclick="navigateTo('future')">Future Improvements</div>
+  </nav>
+
+  <div class="sb-footer">
+    <p>Prices verified June 2026<br>For internal use</p>
+  </div>
+</div>
+<div id="content-area">
+
+<!-- ═══════════════════════════════════════════ GO-TO-MARKET TAB -->
+<div class="pane" id="pane-gtm">
+<div class="main">
+
+  <!-- Header -->
+  <div style="margin-bottom:24px">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#2563EB;margin-bottom:6px">Zanista AI · Strategy Advisory · Confidential</div>
+    <div style="font-size:24px;font-weight:700;color:#fff;margin-bottom:4px">GoodPoint Go-To-Market</div>
+    <div style="font-size:13px;color:#64748B">United Kingdom &amp; North America · 12-Month Plan · Automated STEM exam marking</div>
+  </div>
+
+  <!-- Core proposition -->
+  <div style="background:linear-gradient(135deg,#0D1628,#0A1F3A);border:1px solid rgba(37,99,235,0.3);border-radius:14px;padding:20px 24px;margin-bottom:20px;position:relative"><button class="suggest-btn" onclick="openSuggest('Core Proposition','Go-To-Market')">💡 Suggest improvement</button>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2563EB;margin-bottom:10px">Core Proposition</div>
+    <div style="font-size:15px;font-weight:600;color:#E2E8F0;margin-bottom:8px">Governance-grade automated marking — auditable, consistent, defensible at examiner review</div>
+    <div style="font-size:13px;color:#8B9AB0;line-height:1.7;margin-bottom:16px">GoodPoint uses OCR and multimodal LLMs to grade handwritten and typed STEM answers. Confidence-scored outputs flag low-certainty answers for human review; a full audit trail clears academic-integrity committees. Frees 20–40% of marking time — equivalent to £15–25K per 1,000-student module.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:22px;font-weight:700;color:#2563EB">6+</div>
+        <div style="font-size:11px;color:#64748B;margin-top:3px">UK paid logos M12</div>
+      </div>
+      <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:22px;font-weight:700;color:#34D399">£330K</div>
+        <div style="font-size:11px;color:#64748B;margin-top:3px">UK base ARR M12</div>
+      </div>
+      <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:22px;font-weight:700;color:#A78BFA">8+</div>
+        <div style="font-size:11px;color:#64748B;margin-top:3px">NA paid logos M12</div>
+      </div>
+      <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:22px;font-weight:700;color:#F59E0B">60%</div>
+        <div style="font-size:11px;color:#64748B;margin-top:3px">Pilot-to-paid conversion</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Target market -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div style="background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:18px;position:relative"><button class="suggest-btn" onclick="openSuggest('UK Target Market','Go-To-Market')">💡 Suggest improvement</button>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2563EB;margin-bottom:12px">UK Target Market</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Beachhead</span>
+          <span style="font-size:12px;color:#CBD5E1;font-weight:500;text-align:right;max-width:60%">Large-enrolment STEM depts · Russell Group + post-92</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Buyer</span>
+          <span style="font-size:12px;color:#CBD5E1;font-weight:500">PVC Education + CFO</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Expansion</span>
+          <span style="font-size:12px;color:#CBD5E1;font-weight:500">FE colleges via JISC</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">TAM</span>
+          <span style="font-size:12px;color:#2563EB;font-weight:600">24 Russell Group · ~100 post-92 · ~230 FE</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Buying language</span>
+          <span style="font-size:12px;color:#FCD34D;font-weight:500">Cost-reduction, not AI innovation</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Channel prize</span>
+          <span style="font-size:12px;color:#34D399;font-weight:500">JISC framework Lot — Nov 2026</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:18px;position:relative"><button class="suggest-btn" onclick="openSuggest('NA Target Market','Go-To-Market')">💡 Suggest improvement</button>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#A78BFA;margin-bottom:12px">North America Target Market</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Beachhead</span>
+          <span style="font-size:12px;color:#CBD5E1;font-weight:500;text-align:right;max-width:60%">Large-enrollment STEM depts · US public R1/R2</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Buyer</span>
+          <span style="font-size:12px;color:#CBD5E1;font-weight:500">Dept Chair + Dir. Assessment</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Expansion</span>
+          <span style="font-size:12px;color:#CBD5E1;font-weight:500">Community colleges · Certification bodies</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">TAM</span>
+          <span style="font-size:12px;color:#A78BFA;font-weight:600">~200 R1/R2 · ~1,100 community colleges</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Buying trigger</span>
+          <span style="font-size:12px;color:#FCD34D;font-weight:500">AI cheating driving exams back to paper</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:7px">
+          <span style="font-size:12px;color:#64748B">Approach</span>
+          <span style="font-size:12px;color:#A78BFA;font-weight:500">Founder-led design partners</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Competitor battle card -->
+  <div style="background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;margin-bottom:20px">
+    <button class="suggest-btn" onclick="openSuggest('Competitor Battle Card','Go-To-Market')">💡 Suggest improvement</button>
+    <div style="font-size:13px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px">Competitor Battle Card</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:11px;color:#475569">Live from Competitor Benchmarking — reflects current simulator price</div>
+        <button onclick="navigateTo('competitors')" style="font-size:10px;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#93C5FD;padding:3px 8px;border-radius:5px;cursor:pointer;font-family:inherit">Full table →</button>
+      </div>
+      <div style="overflow-x:auto">
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+            <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase">Competitor</th>
+            <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase">Their price</th>
+            <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase">STEM</th>
+            <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase">GDPR</th>
+            <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase">Threat</th>
+            <th style="padding:8px 12px;text-align:left;color:#34D399;font-weight:600;font-size:11px;text-transform:uppercase">vs GoodPoint now</th>
+            <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase">Source</th>
+          </tr>
+        </thead>
+        <tbody id="gtm-comp-tbody"></tbody>
+      </table>
+      </div>
+  </div>
+
+  <!-- Pricing UK + NA -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div style="background:#0D1628;border:1px solid rgba(37,99,235,0.25);border-radius:14px;padding:18px;position:relative"><button class="suggest-btn" onclick="openSuggest('UK Pricing','Go-To-Market')">💡 Suggest improvement</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2563EB">Pricing · live from Simulator</div>
+        <button onclick="navigateTo('simulator')" style="font-size:10px;background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#93C5FD;padding:3px 8px;border-radius:5px;cursor:pointer;font-family:inherit">Edit in Simulator →</button>
+      </div>
+      <table style="width:100%;font-size:13px;border-collapse:collapse" id="gtm-price-table">
+        <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+          <th style="padding:6px 0;color:#475569;font-weight:600;font-size:11px;text-align:left">Tier</th>
+          <th style="padding:6px 0;color:#475569;font-weight:600;font-size:11px;text-align:right">Current price</th>
+        </tr></thead>
+        <tbody id="gtm-price-tbody"></tbody>
+      </table>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px" id="gtm-cost-stats"></div>
+      <div style="margin-top:10px;padding:10px 12px;background:rgba(37,99,235,0.08);border-radius:8px;font-size:12px;color:#93C5FD;line-height:1.5">
+        Lead with payback — quote ROI in months (&lt;6 months at dept level). CFO language opens budgets that "AI innovation" cannot.
+      </div>
+    </div>
+    <div style="background:#0D1628;border:1px solid rgba(139,92,246,0.25);border-radius:14px;padding:18px;position:relative"><button class="suggest-btn" onclick="openSuggest('NA Pricing','Go-To-Market')">💡 Suggest improvement</button>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#A78BFA;margin-bottom:12px">Pricing · North America ($)</div>
+      <table style="width:100%;font-size:13px;border-collapse:collapse">
+        <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+          <th style="padding:6px 0;color:#475569;font-weight:600;font-size:11px;text-align:left">Tier</th>
+          <th style="padding:6px 0;color:#475569;font-weight:600;font-size:11px;text-align:right">Price</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:8px 0;color:#94A3B8">Pilot (semester 1)</td><td style="padding:8px 0;color:#A78BFA;text-align:right;font-weight:600">$4 / student / course</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:8px 0;color:#94A3B8">Department</td><td style="padding:8px 0;color:#A78BFA;text-align:right;font-weight:600">$6–8 / student</td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:8px 0;color:#94A3B8">College licence</td><td style="padding:8px 0;color:#A78BFA;text-align:right;font-weight:600">$50K / yr</td></tr>
+          <tr><td style="padding:8px 0;color:#94A3B8">Institutional</td><td style="padding:8px 0;color:#A78BFA;text-align:right;font-weight:600">$150–250K / yr</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px;padding:10px 12px;background:rgba(139,92,246,0.08);border-radius:8px;font-size:12px;color:#C4B5FD;line-height:1.5">
+        Anchor above Gradescope (~$4–7) to signal quality, not commodity. Every pilot is paid — no free institutional trials.
+      </div>
+    </div>
+  </div>
+
+  <!-- JISC + UK launch timeline -->
+  <div style="background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;margin-bottom:20px">
+    <button class="suggest-btn" onclick="openSuggest('Launch Timeline','Go-To-Market')">💡 Suggest improvement</button>
+    <div style="font-size:13px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px">UK Launch Timeline · JISC Calendar</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      <div style="border-left:2px solid #2563EB;padding-left:14px">
+        <div style="font-size:11px;font-weight:700;color:#2563EB;margin-bottom:6px">M1–M3</div>
+        <div style="font-size:11.5px;color:#64748B;line-height:1.6">Submit JISC RFI by 13 Mar 2026 · First 2 paid GoodPoint pilots · Begin 30-university target list</div>
+        <div style="margin-top:8px;font-size:10px;background:rgba(37,99,235,0.15);color:#93C5FD;padding:3px 8px;border-radius:4px;display:inline-block">Gate: RFI submitted · 2 pilots</div>
+      </div>
+      <div style="border-left:2px solid #34D399;padding-left:14px">
+        <div style="font-size:11px;font-weight:700;color:#34D399;margin-bottom:6px">M4–M6</div>
+        <div style="font-size:11.5px;color:#64748B;line-height:1.6">Convert to 5 total pilots · Hire fractional sales advisor + bid writer · First REF 2029 institutional</div>
+        <div style="margin-top:8px;font-size:10px;background:rgba(16,185,129,0.15);color:#6EE7B7;padding:3px 8px;border-radius:4px;display:inline-block">Gate: 5 pilots · tender draft v1</div>
+      </div>
+      <div style="border-left:2px solid #F59E0B;padding-left:14px">
+        <div style="font-size:11px;font-weight:700;color:#F59E0B;margin-bottom:6px">M7–M9</div>
+        <div style="font-size:11.5px;color:#64748B;line-height:1.6">Submit JISC tender Sept 2026 · Convert 3 of 5 pilots to multi-year · Publish assessment benchmarks</div>
+        <div style="margin-top:8px;font-size:10px;background:rgba(245,158,11,0.15);color:#FCD34D;padding:3px 8px;border-radius:4px;display:inline-block">Gate: bid submitted · 3 conversions</div>
+      </div>
+      <div style="border-left:2px solid #A78BFA;padding-left:14px">
+        <div style="font-size:11px;font-weight:700;color:#A78BFA;margin-bottom:6px">M10–M12</div>
+        <div style="font-size:11.5px;color:#64748B;line-height:1.6">JISC framework award (~Oct 2026) · Onboard 2–3 framework customers · Hit £330K+ GoodPoint ARR</div>
+        <div style="margin-top:8px;font-size:10px;background:rgba(139,92,246,0.15);color:#C4B5FD;padding:3px 8px;border-radius:4px;display:inline-block">Gate: Lot won · £330K ARR</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARR sensitivities -->
+  <div style="background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px">
+    <button class="suggest-btn" onclick="openSuggest('ARR Sensitivities','Go-To-Market')">💡 Suggest improvement</button>
+    <div style="font-size:13px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px">GoodPoint ARR Sensitivities · UK · Year 1</div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;font-size:12px;border-collapse:collapse">
+      <thead>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+          <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;font-size:11px;text-transform:uppercase">Driver</th>
+          <th style="padding:8px 12px;text-align:right;color:#FCA5A5;font-weight:600;font-size:11px;text-transform:uppercase">Bear</th>
+          <th style="padding:8px 12px;text-align:right;color:#34D399;font-weight:700;font-size:11px;text-transform:uppercase">Base ★</th>
+          <th style="padding:8px 12px;text-align:right;color:#FCD34D;font-weight:600;font-size:11px;text-transform:uppercase">Bull</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:7px 12px;color:#94A3B8">Paid logos (direct)</td><td style="padding:7px 12px;color:#FCA5A5;text-align:right">3</td><td style="padding:7px 12px;color:#34D399;text-align:right;font-weight:600">6</td><td style="padding:7px 12px;color:#FCD34D;text-align:right">10</td></tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02)"><td style="padding:7px 12px;color:#94A3B8">Direct GoodPoint ARR</td><td style="padding:7px 12px;color:#FCA5A5;text-align:right">£105K</td><td style="padding:7px 12px;color:#34D399;text-align:right;font-weight:600">£330K</td><td style="padding:7px 12px;color:#FCD34D;text-align:right">£750K</td></tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04)"><td style="padding:7px 12px;color:#94A3B8">JISC framework outcome</td><td style="padding:7px 12px;color:#FCA5A5;text-align:right">Not won</td><td style="padding:7px 12px;color:#34D399;text-align:right;font-weight:600">Lot won, Q4 ramp</td><td style="padding:7px 12px;color:#FCD34D;text-align:right">Lot won, fast ramp</td></tr>
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02)"><td style="padding:7px 12px;color:#94A3B8">Framework-driven ARR</td><td style="padding:7px 12px;color:#FCA5A5;text-align:right">£0</td><td style="padding:7px 12px;color:#34D399;text-align:right;font-weight:600">£150K</td><td style="padding:7px 12px;color:#FCD34D;text-align:right">£400K</td></tr>
+        <tr style="background:rgba(37,99,235,0.08)"><td style="padding:9px 12px;color:#E2E8F0;font-weight:700">Total GoodPoint ARR</td><td style="padding:9px 12px;color:#FCA5A5;text-align:right;font-weight:700">£105K</td><td style="padding:9px 12px;color:#34D399;text-align:right;font-weight:700;font-size:14px">£480K</td><td style="padding:9px 12px;color:#FCD34D;text-align:right;font-weight:700">£1.15M</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════ GUIDE TAB -->
 <div class="pane active" id="pane-guide">
 <div class="main">
@@ -538,8 +870,7 @@ input:focus { border-color: #2563EB !important; }
   <div class="guide-tabs-grid">
 
     <div class="guide-tab-card" onclick="switchTab('guide')">
-      <div class="gtc-icon">📖</div>
-      <div class="gtc-title">Guide & Glossary</div>
+            <div class="gtc-title">Guide & Glossary</div>
       <div class="gtc-desc">You are here. Explains how to use the tool and defines every acronym used across all tabs.</div>
       <div class="gtc-steps">
         <div class="gtc-step"><span class="gtc-step-num">1</span><span>Read this page once to understand the model</span></div>
@@ -548,8 +879,7 @@ input:focus { border-color: #2563EB !important; }
     </div>
 
     <div class="guide-tab-card" onclick="switchTab('sim')">
-      <div class="gtc-icon">📊</div>
-      <div class="gtc-title">Scenario Simulator</div>
+            <div class="gtc-title">Scenario Simulator</div>
       <div class="gtc-desc">The core financial model. Adjust cost structure, pricing tier, and volume to see profit, ROI, LTV, and break-even in real time.</div>
       <div class="gtc-steps">
         <div class="gtc-step"><span class="gtc-step-num">1</span><span>Set your cost structure — fixed costs, variable cost/script, CAC, retention</span></div>
@@ -560,8 +890,7 @@ input:focus { border-color: #2563EB !important; }
     </div>
 
     <div class="guide-tab-card" onclick="switchTab('comp')">
-      <div class="gtc-icon">🏆</div>
-      <div class="gtc-title">Competitor Benchmarking</div>
+            <div class="gtc-title">Competitor Benchmarking</div>
       <div class="gtc-desc">Compares GoodPoint against 6 competitors on pricing, STEM capability, GDPR, and threat level. Updates live based on your simulator price.</div>
       <div class="gtc-steps">
         <div class="gtc-step"><span class="gtc-step-num">1</span><span>Set your price in the Simulator tab first</span></div>
@@ -572,8 +901,7 @@ input:focus { border-color: #2563EB !important; }
     </div>
 
     <div class="guide-tab-card" onclick="switchTab('mobile')">
-      <div class="gtc-icon">📱</div>
-      <div class="gtc-title">Mobile App ROI</div>
+            <div class="gtc-title">Mobile App ROI</div>
       <div class="gtc-desc">Models the cost and return of building a mobile app across three scenarios: PWA, Cross-platform, and Native. Connected to your simulator baseline.</div>
       <div class="gtc-steps">
         <div class="gtc-step"><span class="gtc-step-num">1</span><span>Set your baseline in the Simulator tab first</span></div>
@@ -584,8 +912,7 @@ input:focus { border-color: #2563EB !important; }
     </div>
 
     <div class="guide-tab-card" onclick="switchTab('sim');setTimeout(toggleGrowth,300)">
-      <div class="gtc-icon">🌱</div>
-      <div class="gtc-title">Growth Mechanics</div>
+            <div class="gtc-title">Growth Mechanics</div>
       <div class="gtc-desc">Models freemium ATA conversion and professor referral economics. Expands inside the Simulator tab. Connected to your live P&L.</div>
       <div class="gtc-steps">
         <div class="gtc-step"><span class="gtc-step-num">1</span><span>Open Simulator tab → click "Growth Mechanics" to expand</span></div>
@@ -683,6 +1010,7 @@ input:focus { border-color: #2563EB !important; }
 
 </div>
 </div>
+
 
 <!-- ═══════════════════════════════════════════════════════ SIMULATOR TAB -->
 <div class="pane" id="pane-sim">
@@ -1165,6 +1493,7 @@ function update() {
   }
 
   updateChart(fixed, varC, currentTier, students, customers, scripts);
+  if (currentPage === 'gtm') renderGTMPage();
 }
 
 function buildInsight(opProfit, gm, ltvcac, payback, beScripts, scripts, growth) {
@@ -2252,6 +2581,184 @@ document.addEventListener('keydown', e => {
 
 // Future tab rendering is wired directly into switchTab below
 
+
+// ── Sidebar Navigation ────────────────────────────────────────────────────────
+var currentPage = 'guide';
+
+function navigateTo(page) {
+  // Hide all panes
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+
+  // Pane map
+  const paneMap = {
+    'guide':       'pane-guide',
+    'gtm':         'pane-gtm',
+    'simulator':   'pane-sim',
+    'competitors': 'pane-comp',
+    'mobile':      'pane-mobile',
+    'future':      'pane-future'
+  };
+  const paneId = paneMap[page];
+  if (paneId) {
+    const pane = document.getElementById(paneId);
+    if (pane) pane.classList.add('active');
+  }
+
+  // Update sidebar active states
+  document.querySelectorAll('.sb-item, .sb-leaf').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`[data-page="${page}"]`).forEach(el => el.classList.add('active'));
+
+  // Auto-expand parent groups when navigating to a child
+  if (['simulator','competitors'].includes(page)) {
+    openSubGroup('cost-leaf','cost-hdr');
+  }
+  if (page === 'mobile') {
+    openSubGroup('mobile-leaf','mobile-hdr');
+  }
+
+  // Call data renderers
+  if (page === 'gtm')         renderGTMPage();
+  if (page === 'competitors') renderCompTable();
+  if (page === 'mobile')      renderMobileTab();
+  if (page === 'future')      renderRoadmap();
+
+  currentPage = page;
+  window.scrollTo(0,0);
+}
+
+function openGroup(subId, hdrId) {
+  const sub = document.getElementById(subId);
+  const hdr = document.getElementById(hdrId);
+  if (sub) sub.classList.add('open');
+  if (hdr) hdr.classList.add('open');
+}
+
+function openSubGroup(subId, hdrId) {
+  const sub = document.getElementById(subId);
+  const hdr = document.getElementById(hdrId);
+  if (sub) sub.classList.add('open');
+  if (hdr) hdr.classList.add('open');
+}
+
+function toggleGroup(subId, hdrId) {
+  const sub = document.getElementById(subId);
+  const hdr = document.getElementById(hdrId);
+  if (!sub) return;
+  sub.classList.toggle('open');
+  if (hdr) hdr.classList.toggle('open');
+}
+
+function toggleSubGroup(subId, hdrId) {
+  const sub = document.getElementById(subId);
+  const hdr = document.getElementById(hdrId);
+  if (!sub) return;
+  sub.classList.toggle('open');
+  if (hdr) hdr.classList.toggle('open');
+}
+
+// Patch switchTab to use navigateTo (backward compatibility)
+function switchTab(tab) {
+  const map = { guide:'guide', gtm:'gtm', sim:'simulator', comp:'competitors', mobile:'mobile', future:'future' };
+  navigateTo(map[tab] || tab);
+}
+
+
+// ── GTM Page — live data from Simulator + Competitors ─────────────────────
+function renderGTMPage() {
+  renderGTMPricing();
+  renderGTMCompetitors();
+}
+
+function renderGTMPricing() {
+  const tbody  = document.getElementById('gtm-price-tbody');
+  const stats  = document.getElementById('gtm-cost-stats');
+  if (!tbody) return;
+
+  // Read live values from tierConfig + simulator sliders
+  const priceScript      = tierConfig.script?.pricePerScript      || 2.50;
+  const priceStudent     = tierConfig.student?.pricePerStudent     || 12;
+  const priceFaculty     = (tierConfig.faculty?.annualLicence      || 8000) / 1000;
+  const priceInstitutional = (tierConfig.institutional?.annualLicence || 24000) / 1000;
+  const fixed   = parseFloat(document.getElementById('fixedCost')?.value) || 5000;
+  const varC    = parseFloat(document.getElementById('varCost')?.value)   || 0.12;
+  const scripts = parseFloat(document.getElementById('scripts')?.value)   || 2000;
+  const rev     = scripts * priceScript;
+  const gm      = rev > 0 ? ((rev - varC * scripts) / rev * 100).toFixed(1) : '—';
+
+  // Active tier badge
+  const tierLabels = { script:'Per-script (active)', student:'Per-student (active)', faculty:'Faculty licence (active)', institutional:'Institutional (active)' };
+  const rows = [
+    { tier: tierLabels.script || 'Per-script',          price: '£' + priceScript.toFixed(2) + ' / script',     active: currentTier === 'script' },
+    { tier: tierLabels.student || 'Per-student',         price: '£' + priceStudent.toFixed(2) + ' / student/yr',active: currentTier === 'student' },
+    { tier: 'Faculty licence',                            price: '£' + priceFaculty.toFixed(1) + 'K / year',    active: currentTier === 'faculty' },
+    { tier: 'Institutional',                              price: '£' + priceInstitutional.toFixed(0) + 'K / year',active: currentTier === 'institutional' },
+  ];
+
+  tbody.innerHTML = rows.map((r, i) => `
+    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)${i%2===1?';background:rgba(255,255,255,0.02)':''}">
+      <td style="padding:8px 0;color:#94A3B8">
+        ${r.tier}
+        ${r.active ? '<span style="margin-left:6px;font-size:10px;background:rgba(37,99,235,0.2);color:#93C5FD;padding:1px 6px;border-radius:3px">active</span>' : ''}
+      </td>
+      <td style="padding:8px 0;color:#34D399;text-align:right;font-weight:600">${r.price}</td>
+    </tr>`).join('');
+
+  // Cost stats
+  if (stats) stats.innerHTML = `
+    <div style="background:rgba(255,255,255,0.03);border-radius:7px;padding:8px 10px;font-size:11px">
+      <div style="color:#475569;margin-bottom:2px">Fixed cost / month</div>
+      <div style="color:#CBD5E1;font-weight:600">£${(fixed/1000).toFixed(1)}K</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border-radius:7px;padding:8px 10px;font-size:11px">
+      <div style="color:#475569;margin-bottom:2px">Variable cost / script</div>
+      <div style="color:#CBD5E1;font-weight:600">£${varC.toFixed(2)}</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border-radius:7px;padding:8px 10px;font-size:11px">
+      <div style="color:#475569;margin-bottom:2px">Gross margin</div>
+      <div style="color:#34D399;font-weight:600">${gm}%</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border-radius:7px;padding:8px 10px;font-size:11px">
+      <div style="color:#475569;margin-bottom:2px">Scripts / month</div>
+      <div style="color:#CBD5E1;font-weight:600">${scripts.toLocaleString()}</div>
+    </div>`;
+}
+
+function renderGTMCompetitors() {
+  const tbody = document.getElementById('gtm-comp-tbody');
+  if (!tbody) return;
+
+  const currentPrice = (currentTier === 'script') ? tierConfig.script?.pricePerScript : null;
+
+  const rows = (typeof competitors !== 'undefined' ? competitors : [])
+    .filter(comp => !comp.isGoodPoint);
+
+  const threatColor = t => t === 'HIGH' ? '#FCA5A5' : t === 'MEDIUM' ? '#FCD34D' : '#34D399';
+  const stemColor   = t => t === 'badge-green' ? '#34D399' : t === 'badge-amber' ? '#FCD34D' : '#FCA5A5';
+  const gdprColor   = t => t === 'badge-green' ? '#34D399' : t === 'badge-amber' ? '#FCD34D' : '#64748B';
+
+  function vsGoodPoint(comp) {
+    if (currentPrice === null || !comp.entryNum) return '<span style="color:#475569">—</span>';
+    const ratio = currentPrice / comp.entryNum;
+    if (ratio < 0.8)    return `<span style="color:#34D399;font-weight:600">£${currentPrice.toFixed(2)} — ${((1-ratio)*100).toFixed(0)}% cheaper</span>`;
+    if (ratio <= 1.25)  return `<span style="color:#FCD34D;font-weight:600">£${currentPrice.toFixed(2)} — similar</span>`;
+    return `<span style="color:#FCA5A5;font-weight:600">£${currentPrice.toFixed(2)} — ${((ratio-1)*100).toFixed(0)}% pricier</span>`;
+  }
+
+  tbody.innerHTML = rows.map((comp, i) => `
+    <tr style="border-bottom:1px solid rgba(255,255,255,0.04)${i%2===1?';background:rgba(255,255,255,0.02)':''}">
+      <td style="padding:8px 12px;color:#E2E8F0;font-weight:600">
+        ${comp.name}
+        <div style="font-size:10px;color:#475569;font-weight:400">${comp.segment}</div>
+      </td>
+      <td style="padding:8px 12px;color:#94A3B8">${comp.entry}</td>
+      <td style="padding:8px 12px"><span style="color:${stemColor(comp.stemTag)};font-size:11px;font-weight:600">${comp.stem}</span></td>
+      <td style="padding:8px 12px"><span style="color:${gdprColor(comp.gdprTag)};font-size:11px;font-weight:600">${comp.gdpr}</span></td>
+      <td style="padding:8px 12px"><span style="color:${threatColor(comp.threat)};font-size:11px;font-weight:600">${comp.threat}</span></td>
+      <td style="padding:8px 12px">${vsGoodPoint(comp)}</td>
+      <td style="padding:8px 12px"><a href="${comp.sourceUrl}" target="_blank" style="color:#2563EB;font-size:11px">↗ ${comp.sourceLabel}</a></td>
+    </tr>`).join('');
+}
+
 </script>
 
 <!-- ═══════════════════════════════════════════════════ MOBILE APP ROI TAB -->
@@ -2532,4 +3039,5 @@ document.addEventListener('keydown', e => {
 </div>
 
 </div>
+</div><!-- end content-area -->
 </body>
