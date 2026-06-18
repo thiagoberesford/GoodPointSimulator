@@ -566,6 +566,51 @@ footer{margin-left:0!important;padding:14px 28px!important}
 /* responsive: table wraps properly */
 .comp-table{table-layout:auto!important}
 
+
+/* ═══════════════════════════════════════ PRESENTATION MODE */
+.preso-wrap{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;background:#000;overflow:hidden}
+.preso-topbar{padding:14px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.preso-logo{font-size:13px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.preso-counter{font-size:12px;color:#334155;font-weight:600;letter-spacing:.06em}
+.preso-exit{font-size:11px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#475569;padding:5px 12px;border-radius:6px;cursor:pointer;font-family:inherit;transition:all .15s}
+.preso-exit:hover{color:#E2E8F0;background:rgba(255,255,255,0.1)}
+.preso-progress{height:2px;background:rgba(255,255,255,0.06);flex-shrink:0}
+.preso-progress-bar{height:100%;background:#2563EB;transition:width .4s ease}
+.preso-stage{flex:1;position:relative;overflow:hidden}
+.preso-slide{position:absolute;inset:0;padding:48px 64px;display:flex;flex-direction:column;justify-content:center;opacity:0;transition:opacity .35s ease,transform .35s ease;transform:translateX(48px);pointer-events:none;overflow-y:auto}
+.preso-slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.preso-slide.exit-left{opacity:0;transform:translateX(-48px)}
+.preso-nav-bar{padding:14px 32px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.preso-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#94A3B8;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:8px}
+.preso-btn:hover{background:rgba(37,99,235,0.2);border-color:#2563EB;color:#93C5FD}
+.preso-btn:disabled{opacity:.3;cursor:not-allowed}
+.preso-dots{display:flex;gap:7px;align-items:center}
+.preso-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.12);cursor:pointer;transition:all .2s}
+.preso-dot.active{background:#2563EB;transform:scale(1.3)}
+.preso-dot:hover:not(.active){background:rgba(255,255,255,0.3)}
+/* Slide typography */
+.s-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#2563EB;margin-bottom:10px}
+.s-title{font-size:36px;font-weight:700;color:#fff;line-height:1.15;margin-bottom:8px}
+.s-subtitle{font-size:16px;color:#64748B;line-height:1.5;margin-bottom:32px}
+.s-h2{font-size:22px;font-weight:700;color:#fff;margin-bottom:6px}
+.s-body{font-size:14px;color:#8B9AB0;line-height:1.65}
+.s-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+.s-kpi{background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px 16px;text-align:center}
+.s-kpi-val{font-size:30px;font-weight:700;color:#2563EB;margin-bottom:5px}
+.s-kpi-lbl{font-size:11px;color:#475569;line-height:1.4}
+.s-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.s-3col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.s-card{background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px}
+.s-card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#2563EB;margin-bottom:10px}
+.s-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}
+.s-row:last-child{border-bottom:none}
+.s-lbl{color:#475569}
+.s-val{color:#CBD5E1;font-weight:600}
+.s-val-green{color:#34D399;font-weight:700}
+.s-val-amber{color:#FCD34D;font-weight:700}
+.s-val-red{color:#FCA5A5;font-weight:700}
+.s-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+
 </style>
 </head>
 <body>
@@ -597,7 +642,7 @@ footer{margin-left:0!important;padding:14px 28px!important}
 
     <div class="sb-divider"></div>
 
-    <div class="sb-item" data-page="gtm" onclick="navigateTo('gtm')">Go-To-Market</div>
+    <div class="sb-item" data-page="gtm" onclick="exitPresentation()">Go-To-Market</div>
 
     <div class="sb-divider"></div>
 
@@ -623,6 +668,10 @@ footer{margin-left:0!important;padding:14px 28px!important}
     <div class="sb-divider"></div>
 
     <div class="sb-item" data-page="future" onclick="navigateTo('future')">Future Improvements</div>
+
+    <div class="sb-divider"></div>
+
+    <div class="sb-item" data-page="presentation" onclick="navigateTo('presentation')" style="color:#2563EB;font-weight:600">Test Presentation</div>
   </nav>
 
   <div class="sb-footer">
@@ -2599,7 +2648,8 @@ function navigateTo(page) {
     'simulator':   'pane-sim',
     'competitors': 'pane-comp',
     'mobile':      'pane-mobile',
-    'future':      'pane-future'
+    'future':      'pane-future',
+    'presentation': 'pane-presentation'
   };
   const paneId = paneMap[page];
   if (paneId) {
@@ -2621,6 +2671,7 @@ function navigateTo(page) {
 
   // Call data renderers
   if (page === 'gtm')         renderGTMPage();
+  if (page === 'presentation') renderPresentation();
   if (page === 'competitors') renderCompTable();
   if (page === 'mobile')      renderMobileTab();
   if (page === 'future')      renderRoadmap();
@@ -2760,6 +2811,190 @@ function renderGTMCompetitors() {
       <td style="padding:8px 12px">${vsGoodPoint(comp)}</td>
       <td style="padding:8px 12px"><a href="${comp.sourceUrl}" target="_blank" style="color:#2563EB;font-size:11px">↗ ${comp.sourceLabel}</a></td>
     </tr>`).join('');
+}
+
+
+// ── Presentation ─────────────────────────────────────────────────────────────
+var presoIndex  = 0;
+var presoTotal  = 9;
+var presoActive = false;
+
+function renderPresentation() {
+  presoIndex  = 0;
+  presoActive = true;
+  buildPresoDots();
+  renderPresoSlide(0, 0);
+  renderPresoLiveData();
+  document.addEventListener('keydown', presKeyNav);
+  // Hide sidebar and footer for true fullscreen feel
+  const sb = document.getElementById('sidebar');
+  const ft = document.querySelector('footer');
+  if (sb) sb.style.display = 'none';
+  if (ft) ft.style.display = 'none';
+  document.body.style.overflow = 'hidden';
+}
+
+function buildPresoDots() {
+  const wrap = document.getElementById('preso-dots');
+  if (!wrap) return;
+  wrap.innerHTML = Array.from({length: presoTotal}, (_, i) =>
+    `<div class="preso-dot${i===0?' active':''}" onclick="presoGo(${i})"></div>`
+  ).join('');
+}
+
+function renderPresoSlide(newIdx, oldIdx) {
+  const slides = document.querySelectorAll('.preso-slide');
+  slides.forEach(s => { s.classList.remove('active','exit-left'); });
+
+  const old = document.getElementById('slide-' + oldIdx);
+  if (old) old.classList.add('exit-left');
+
+  const curr = document.getElementById('slide-' + newIdx);
+  if (curr) {
+    // reset position before activating
+    curr.style.transform = newIdx > oldIdx ? 'translateX(48px)' : 'translateX(-48px)';
+    requestAnimationFrame(() => {
+      curr.classList.add('active');
+      curr.style.transform = '';
+    });
+  }
+
+  // Counter + progress
+  const counter = document.getElementById('preso-counter');
+  if (counter) counter.textContent = (newIdx + 1) + ' / ' + presoTotal;
+  const bar = document.getElementById('preso-bar');
+  if (bar) bar.style.width = ((newIdx + 1) / presoTotal * 100) + '%';
+
+  // Dots
+  document.querySelectorAll('.preso-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === newIdx);
+  });
+
+  // Buttons
+  const prev = document.getElementById('preso-prev');
+  const next = document.getElementById('preso-next');
+  if (prev) prev.disabled = newIdx === 0;
+  if (next) next.disabled = newIdx === presoTotal - 1;
+
+  presoIndex = newIdx;
+}
+
+function presoNav(dir) {
+  const next = Math.max(0, Math.min(presoTotal - 1, presoIndex + dir));
+  if (next !== presoIndex) renderPresoSlide(next, presoIndex);
+}
+
+function presoGo(idx) {
+  if (idx !== presoIndex) renderPresoSlide(idx, presoIndex);
+}
+
+function presKeyNav(e) {
+  if (currentPage !== 'presentation') return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  presoNav(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    presoNav(-1);
+  if (e.key === 'Escape') exitPresentation();
+}
+
+function renderPresoLiveData() {
+  // ── Slide 4: Competitors ───────────────────────────────────────────────────
+  const tbody = document.getElementById('preso-comp-body');
+  if (tbody && typeof competitors !== 'undefined') {
+    const price = (currentTier === 'script') ? (tierConfig.script?.pricePerScript || 2.5) : null;
+    const threatC = t => t==='HIGH'?'#FCA5A5':t==='MEDIUM'?'#FCD34D':'#34D399';
+    const stemC   = t => t==='badge-green'?'#34D399':t==='badge-amber'?'#FCD34D':'#FCA5A5';
+    const vsGP    = comp => {
+      if (!price || !comp.entryNum) return '<span style="color:#475569">—</span>';
+      const r = price / comp.entryNum;
+      if (r < 0.8)   return `<span style="color:#34D399;font-weight:700">£${price.toFixed(2)} cheaper</span>`;
+      if (r <= 1.25)  return `<span style="color:#FCD34D;font-weight:700">£${price.toFixed(2)} similar</span>`;
+      return `<span style="color:#FCA5A5;font-weight:700">£${price.toFixed(2)} pricier</span>`;
+    };
+    tbody.innerHTML = competitors.filter(x => !x.isGoodPoint).map((comp, i) => `
+      <tr style="border-bottom:1px solid rgba(255,255,255,0.04)${i%2?';background:rgba(255,255,255,0.02)':''}">
+        <td style="padding:9px 14px;color:#E2E8F0;font-weight:600">${comp.name}<div style="font-size:10px;color:#475569">${comp.segment}</div></td>
+        <td style="padding:9px 14px;color:#94A3B8;font-size:12px">${comp.model}</td>
+        <td style="padding:9px 14px;color:#94A3B8;font-size:12px">${comp.entry}</td>
+        <td style="padding:9px 14px"><span style="color:${stemC(comp.stemTag)};font-weight:600;font-size:12px">${comp.stem}</span></td>
+        <td style="padding:9px 14px"><span style="color:${comp.gdpr==='Yes'?'#34D399':'#FCA5A5'};font-weight:600;font-size:12px">${comp.gdpr}</span></td>
+        <td style="padding:9px 14px"><span style="color:${threatC(comp.threat)};font-weight:700;font-size:12px">${comp.threat}</span></td>
+        <td style="padding:9px 14px;font-size:12px">${vsGP(comp)}</td>
+      </tr>`).join('');
+  }
+
+  // ── Slide 5: Pricing ────────────────────────────────────────────────────────
+  const ps  = (tierConfig.script?.pricePerScript  || 2.5).toFixed(2);
+  const pst = (tierConfig.student?.pricePerStudent || 12).toFixed(2);
+  const pf  = ((tierConfig.faculty?.annualLicence  || 8000) / 1000).toFixed(1);
+  const pi  = ((tierConfig.institutional?.annualLicence || 24000) / 1000).toFixed(0);
+
+  if (document.getElementById('preso-p-script'))      document.getElementById('preso-p-script').textContent  = '£' + ps;
+  if (document.getElementById('preso-p-student'))     document.getElementById('preso-p-student').textContent = '£' + pst + '/yr';
+  if (document.getElementById('preso-p-inst'))        document.getElementById('preso-p-inst').textContent    = '£' + pi + 'K/yr';
+
+  // Active tier badge
+  ['script','student','inst'].forEach(t => {
+    const el = document.getElementById('preso-' + t + '-active');
+    if (el) el.style.display = 'none';
+  });
+  const activeMap = { script:'script', student:'student', faculty:'inst', institutional:'inst' };
+  const activeEl = document.getElementById('preso-' + (activeMap[currentTier]||'script') + '-active');
+  if (activeEl) activeEl.style.display = 'inline';
+
+  // Cost row
+  const fixed   = parseFloat(document.getElementById('fixedCost')?.value) || 5000;
+  const varC    = parseFloat(document.getElementById('varCost')?.value)   || 0.12;
+  const scripts = parseFloat(document.getElementById('scripts')?.value)   || 2000;
+  const rev     = scripts * (tierConfig.script?.pricePerScript || 2.5);
+  const gm      = rev > 0 ? ((rev - varC * scripts) / rev * 100).toFixed(1) : '—';
+  const costRow = document.getElementById('preso-cost-row');
+  if (costRow) costRow.innerHTML = [
+    { l:'Fixed cost / mo', v:'£' + (fixed/1000).toFixed(1) + 'K' },
+    { l:'Variable / script', v:'£' + varC.toFixed(2) },
+    { l:'Scripts / mo', v: scripts.toLocaleString() },
+    { l:'Gross margin', v: gm + '%' },
+  ].map(s => `<div style="background:#0D1628;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px;text-align:center"><div style="font-size:11px;color:#475569;margin-bottom:4px">${s.l}</div><div style="font-size:18px;font-weight:700;color:#34D399">${s.v}</div></div>`).join('');
+
+  // ── Slide 6: Unit Economics ─────────────────────────────────────────────────
+  const churn     = parseFloat(document.getElementById('churn')?.value) || 2;
+  const retention = parseFloat(document.getElementById('retention')?.value) || 24;
+  const cust      = parseFloat(document.getElementById('customers')?.value) || 5;
+  const cac       = parseFloat(document.getElementById('cac')?.value) || 800;
+  const fullRev   = (typeof calcRevenue === 'function') ? calcRevenue(scripts, parseFloat(document.getElementById('students')?.value)||1000, cust, currentTier) : rev;
+  const opProfit  = fullRev - varC * scripts - fixed;
+  const rpc       = cust > 0 ? fullRev / cust : 0;
+  const churnRate = churn / 100;
+  const ltv       = churnRate > 0 ? rpc * (1 - Math.pow(1 - churnRate, retention)) / churnRate : rpc * retention;
+  const ltvcac    = cac > 0 ? ltv / cac : 0;
+  const ppu       = (currentTier === 'script') ? (tierConfig.script?.pricePerScript || 2.5) : (fullRev / Math.max(scripts, 1));
+  const be        = (ppu - varC) > 0 ? Math.ceil(fixed / (ppu - varC)) : 0;
+  const fmt       = n => Math.abs(n) >= 1000 ? '£' + (n/1000).toFixed(1) + 'K' : '£' + Math.round(n);
+
+  const econGrid = document.getElementById('preso-econ-grid');
+  if (econGrid) econGrid.innerHTML = [
+    { l:'Monthly revenue',     v: fmt(fullRev),                     c: '#2563EB' },
+    { l:'Operating profit/mo', v: (opProfit >= 0 ? '+' : '') + fmt(opProfit), c: opProfit >= 0 ? '#34D399' : '#FCA5A5' },
+    { l:'Customer LTV',        v: fmt(ltv),                         c: '#A78BFA' },
+    { l:'LTV : CAC',           v: ltvcac.toFixed(1) + '×',          c: ltvcac >= 3 ? '#34D399' : ltvcac >= 1 ? '#FCD34D' : '#FCA5A5' },
+  ].map(k => `<div class="s-kpi"><div class="s-kpi-val" style="color:${k.c};font-size:26px">${k.v}</div><div class="s-kpi-lbl">${k.l}</div></div>`).join('');
+
+  const beCard = document.getElementById('preso-becard');
+  if (beCard) beCard.innerHTML = `
+    <div class="s-card-title">Break-even</div>
+    <div style="font-size:36px;font-weight:700;color:${scripts >= be ? '#34D399':'#FCA5A5'};margin:8px 0">${be.toLocaleString()} <span style="font-size:14px;color:#475569">scripts/mo</span></div>
+    <div style="font-size:12px;color:#475569">Current volume: ${scripts.toLocaleString()} scripts/mo — <span style="color:${scripts >= be ?'#34D399':'#FCA5A5'};font-weight:600">${scripts >= be ? 'above break-even ✓' : Math.abs(scripts - be).toLocaleString() + ' short'}</span></div>`;
+}
+
+
+function exitPresentation() {
+  presoActive = false;
+  document.removeEventListener('keydown', presKeyNav);
+  // Restore sidebar and footer
+  const sb = document.getElementById('sidebar');
+  const ft = document.querySelector('footer');
+  if (sb) sb.style.display = '';
+  if (ft) ft.style.display = '';
+  document.body.style.overflow = '';
+  navigateTo('gtm');
 }
 
 </script>
@@ -3042,5 +3277,270 @@ function renderGTMCompetitors() {
 </div>
 
 </div>
+<!-- ══════════════════════════════════════ PRESENTATION PANE -->
+<div class="pane" id="pane-presentation">
+  <div class="preso-wrap">
+
+    <!-- Top bar -->
+    <div class="preso-topbar">
+      <div class="preso-logo">GoodPoint</div>
+      <div class="preso-counter" id="preso-counter">1 / 9</div>
+      <button class="preso-exit" onclick="exitPresentation()">✕ Exit presentation</button>
+    </div>
+    <div class="preso-progress"><div class="preso-progress-bar" id="preso-bar" style="width:11.1%"></div></div>
+
+    <!-- Slides stage -->
+    <div class="preso-stage" id="preso-stage">
+
+      <!-- SLIDE 1: Title -->
+      <div class="preso-slide active" id="slide-0">
+        <div style="max-width:760px;margin:0 auto;text-align:center">
+          <div class="s-eyebrow">Zanista AI · Confidential · 2026</div>
+          <div class="s-title" style="font-size:52px;margin-bottom:16px">GoodPoint</div>
+          <div style="font-size:20px;color:#475569;margin-bottom:40px">Go-To-Market · Cost Model · Competitive Intelligence · Mobile Roadmap</div>
+          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+            <span style="background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#93C5FD;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600">UK &amp; North America</span>
+            <span style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#34D399;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600">12-Month Plan</span>
+            <span style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#FCD34D;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600">Live Simulator Data</span>
+          </div>
+          <div style="margin-top:48px;font-size:12px;color:#1E2A3A">Use ← → arrow keys or buttons below to navigate</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: The Problem -->
+      <div class="preso-slide" id="slide-1">
+        <div style="max-width:900px;margin:0 auto;width:100%">
+          <div class="s-eyebrow">The Problem</div>
+          <div class="s-title">Marking is broken — and getting worse</div>
+          <div class="s-2col" style="margin-top:24px">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="s-card" style="border-left:3px solid #EF4444">
+                <div class="s-card-title" style="color:#FCA5A5">UK Sector Crisis</div>
+                <div class="s-body">45% of UK universities in operating deficit. £303M in severance paid in 2024. Marking costs are unsustainable — lecturers spend 20–40% of time on grading STEM papers with no AI support.</div>
+              </div>
+              <div class="s-card" style="border-left:3px solid #F59E0B">
+                <div class="s-card-title" style="color:#FCD34D">AI Cheating Paradox</div>
+                <div class="s-body">AI essay-writing has forced universities back to paper exams — massively increasing handwritten marking volume at exactly the moment staff budgets are being cut.</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div class="s-card" style="border-left:3px solid #2563EB">
+                <div class="s-card-title" style="color:#93C5FD">The Cost</div>
+                <div class="s-body" style="font-size:15px">A 1,000-student STEM module costs <span style="color:#FCD34D;font-weight:700">£15,000–£25,000</span> in lecturer marking time per year. At scale, this is the second-largest departmental cost after salaries.</div>
+              </div>
+              <div class="s-card" style="border-left:3px solid #34D399">
+                <div class="s-card-title" style="color:#34D399">The Opportunity</div>
+                <div class="s-body">GoodPoint automates 80%+ of marking at governance-grade quality — auditable, confidence-scored, defensible at examiner review. ROI under 6 months at department level.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: GTM Strategy -->
+      <div class="preso-slide" id="slide-2">
+        <div style="max-width:920px;margin:0 auto;width:100%">
+          <div class="s-eyebrow">Go-To-Market</div>
+          <div class="s-title">Targets &amp; Channels</div>
+          <div class="s-kpi-grid" style="margin-top:24px">
+            <div class="s-kpi"><div class="s-kpi-val">6+</div><div class="s-kpi-lbl">UK paid logos by M12</div></div>
+            <div class="s-kpi"><div class="s-kpi-val" style="color:#34D399">£330K</div><div class="s-kpi-lbl">UK base ARR year 1</div></div>
+            <div class="s-kpi"><div class="s-kpi-val" style="color:#A78BFA">8+</div><div class="s-kpi-lbl">NA paid logos by M12</div></div>
+            <div class="s-kpi"><div class="s-kpi-val" style="color:#F59E0B">60%</div><div class="s-kpi-lbl">Pilot-to-paid conversion</div></div>
+          </div>
+          <div class="s-2col" style="margin-top:20px">
+            <div class="s-card">
+              <div class="s-card-title">UK — JISC Framework</div>
+              <div class="s-row"><span class="s-lbl">Beachhead</span><span class="s-val">Russell Group STEM depts</span></div>
+              <div class="s-row"><span class="s-lbl">Buyer</span><span class="s-val">PVC Education + CFO</span></div>
+              <div class="s-row"><span class="s-lbl">Channel prize</span><span class="s-val-green">JISC Lot — Nov 2026</span></div>
+              <div class="s-row"><span class="s-lbl">TAM</span><span class="s-val">24 Russell + ~100 post-92 + 230 FE</span></div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-title" style="color:#A78BFA">North America — Design Partners</div>
+              <div class="s-row"><span class="s-lbl">Beachhead</span><span class="s-val">R1/R2 public STEM depts</span></div>
+              <div class="s-row"><span class="s-lbl">Buyer</span><span class="s-val">Dept Chair + Dir. Assessment</span></div>
+              <div class="s-row"><span class="s-lbl">Trigger</span><span class="s-val-amber">AI cheating → paper exams surge</span></div>
+              <div class="s-row"><span class="s-lbl">TAM</span><span class="s-val">~200 R1/R2 + ~1,100 community colleges</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: Competitors (DYNAMIC) -->
+      <div class="preso-slide" id="slide-3">
+        <div style="max-width:960px;margin:0 auto;width:100%">
+          <div class="s-eyebrow">Competitive Intelligence</div>
+          <div class="s-title">Landscape — live from Benchmarking</div>
+          <div style="margin-top:20px;overflow-x:auto" id="preso-comp-wrap">
+            <table style="width:100%;border-collapse:collapse;font-size:13px">
+              <thead>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Competitor</th>
+                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Model</th>
+                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Entry price</th>
+                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">STEM</th>
+                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">GDPR</th>
+                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Threat</th>
+                  <th style="padding:10px 14px;text-align:left;color:#34D399;font-weight:700;font-size:11px;text-transform:uppercase">vs GoodPoint</th>
+                </tr>
+              </thead>
+              <tbody id="preso-comp-body"></tbody>
+            </table>
+          </div>
+          <div style="margin-top:16px;padding:12px 16px;background:rgba(37,99,235,0.08);border-radius:8px;font-size:12px;color:#475569">
+            GoodPoint advantage: only solution combining true STEM handwriting + governance-grade audit trail + GDPR-native architecture.
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: Pricing (DYNAMIC) -->
+      <div class="preso-slide" id="slide-4">
+        <div style="max-width:920px;margin:0 auto;width:100%">
+          <div class="s-eyebrow">Cost &amp; Price — live from Simulator</div>
+          <div class="s-title">Pricing Model</div>
+          <div class="s-3col" style="margin-top:24px">
+            <div class="s-card">
+              <div class="s-card-title">Per-script <span id="preso-script-active" style="display:none;font-size:9px;background:rgba(37,99,235,0.3);color:#93C5FD;padding:1px 5px;border-radius:3px;margin-left:4px">active</span></div>
+              <div style="font-size:32px;font-weight:700;color:#2563EB;margin:10px 0" id="preso-p-script">£2.50</div>
+              <div class="s-body">Per script graded. Aligns with marking budgets. No procurement needed at dept level.</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-title">Per-student <span id="preso-student-active" style="display:none;font-size:9px;background:rgba(37,99,235,0.3);color:#93C5FD;padding:1px 5px;border-radius:3px;margin-left:4px">active</span></div>
+              <div style="font-size:32px;font-weight:700;color:#2563EB;margin:10px 0" id="preso-p-student">£12</div>
+              <div class="s-body">Annual per-student licence. Bridges to institutional model. Predictable for finance teams.</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-title">Institutional <span id="preso-inst-active" style="display:none;font-size:9px;background:rgba(37,99,235,0.3);color:#93C5FD;padding:1px 5px;border-radius:3px;margin-left:4px">active</span></div>
+              <div style="font-size:32px;font-weight:700;color:#2563EB;margin:10px 0" id="preso-p-inst">£24K</div>
+              <div class="s-body">Annual institutional licence. Max ARR per account. JISC framework route at scale.</div>
+            </div>
+          </div>
+          <div style="margin-top:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px" id="preso-cost-row"></div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: Unit Economics (DYNAMIC) -->
+      <div class="preso-slide" id="slide-5">
+        <div style="max-width:920px;margin:0 auto;width:100%">
+          <div class="s-eyebrow">Unit Economics — live from Simulator</div>
+          <div class="s-title">The Numbers Today</div>
+          <div class="s-kpi-grid" style="margin-top:24px" id="preso-econ-grid"></div>
+          <div class="s-2col" style="margin-top:20px">
+            <div class="s-card" id="preso-becard">
+              <div class="s-card-title">Break-even</div>
+            </div>
+            <div class="s-card">
+              <div class="s-card-title">Why the margin works</div>
+              <div class="s-body" style="font-size:13px;line-height:1.7">LLM inference cost per script is ~£0.10–0.15. At £2.50/script the gross margin exceeds 90%. Profitability is driven by adoption volume — not by price level. Every additional department onboarded adds near-pure margin.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: ARR Targets -->
+      <div class="preso-slide" id="slide-6">
+        <div style="max-width:900px;margin:0 auto;width:100%">
+          <div class="s-eyebrow">Revenue Targets</div>
+          <div class="s-title">ARR Sensitivities · UK · Year 1</div>
+          <div style="margin-top:24px;overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+              <th style="padding:10px 14px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">Driver</th>
+              <th style="padding:10px 14px;text-align:right;color:#FCA5A5;font-size:11px;font-weight:700;text-transform:uppercase">Bear</th>
+              <th style="padding:10px 14px;text-align:right;color:#34D399;font-size:12px;font-weight:700;text-transform:uppercase">Base ★</th>
+              <th style="padding:10px 14px;text-align:right;color:#FCD34D;font-size:11px;font-weight:700;text-transform:uppercase">Bull</th>
+            </tr></thead>
+            <tbody>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:9px 14px;color:#94A3B8">Paid logos</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">3</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">6</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">10</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02)"><td style="padding:9px 14px;color:#94A3B8">Direct ARR</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">£105K</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">£330K</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">£750K</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:9px 14px;color:#94A3B8">JISC framework</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">Not won</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">Lot won, Q4 ramp</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">Lot won, fast ramp</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02)"><td style="padding:9px 14px;color:#94A3B8">Framework ARR</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">£0</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">£150K</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">£400K</td></tr>
+              <tr style="background:rgba(37,99,235,0.1)"><td style="padding:11px 14px;color:#fff;font-weight:700;font-size:15px">Total GoodPoint ARR</td><td style="padding:11px 14px;color:#FCA5A5;text-align:right;font-weight:700">£105K</td><td style="padding:11px 14px;color:#34D399;text-align:right;font-weight:700;font-size:18px">£480K</td><td style="padding:11px 14px;color:#FCD34D;text-align:right;font-weight:700">£1.15M</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: Mobile App Roadmap -->
+      <div class="preso-slide" id="slide-7">
+        <div style="max-width:920px;margin:0 auto;width:100%">
+          <div class="s-eyebrow">Mobile App Roadmap</div>
+          <div class="s-title">Build Scenarios &amp; Recommendation</div>
+          <div class="s-3col" style="margin-top:24px">
+            <div class="s-card" style="border-top:3px solid #34D399">
+              <div class="s-card-title" style="color:#34D399">PWA — Recommended now</div>
+              <div style="font-size:24px;font-weight:700;color:#34D399;margin:8px 0">£15K–60K</div>
+              <div class="s-row"><span class="s-lbl">Time to market</span><span class="s-val">6–12 weeks</span></div>
+              <div class="s-row"><span class="s-lbl">Camera (STEM scripts)</span><span class="s-val-green">Yes</span></div>
+              <div class="s-row"><span class="s-lbl">App Store</span><span class="s-val-red">No</span></div>
+              <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val-green">84% (no install)</span></div>
+              <div class="s-row"><span class="s-lbl">Maintenance/yr</span><span class="s-val">£3K–10K</span></div>
+              <div style="margin-top:10px;font-size:11px;background:rgba(16,185,129,0.1);color:#34D399;padding:7px 10px;border-radius:6px">Best fit for MVP stage — student script submission via phone camera</div>
+            </div>
+            <div class="s-card" style="border-top:3px solid #FCD34D">
+              <div class="s-card-title" style="color:#FCD34D">Cross-platform — Post-PMF</div>
+              <div style="font-size:24px;font-weight:700;color:#FCD34D;margin:8px 0">£50K–120K</div>
+              <div class="s-row"><span class="s-lbl">Time to market</span><span class="s-val">3–6 months</span></div>
+              <div class="s-row"><span class="s-lbl">Camera</span><span class="s-val-green">Full native</span></div>
+              <div class="s-row"><span class="s-lbl">App Store</span><span class="s-val-green">iOS + Android</span></div>
+              <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val">~50–60%</span></div>
+              <div class="s-row"><span class="s-lbl">Maintenance/yr</span><span class="s-val">£8K–20K</span></div>
+              <div style="margin-top:10px;font-size:11px;background:rgba(245,158,11,0.1);color:#FCD34D;padding:7px 10px;border-radius:6px">After ARR &gt; £150K — App Store presence signals maturity to procurement</div>
+            </div>
+            <div class="s-card" style="border-top:3px solid #475569">
+              <div class="s-card-title" style="color:#64748B">Native iOS + Android — Series A+</div>
+              <div style="font-size:24px;font-weight:700;color:#64748B;margin:8px 0">£70K–180K+</div>
+              <div class="s-row"><span class="s-lbl">Time to market</span><span class="s-val">6–12 months</span></div>
+              <div class="s-row"><span class="s-lbl">Camera</span><span class="s-val-green">Best quality</span></div>
+              <div class="s-row"><span class="s-lbl">App Store</span><span class="s-val-green">iOS + Android</span></div>
+              <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val">~28%</span></div>
+              <div class="s-row"><span class="s-lbl">Maintenance/yr</span><span class="s-val">£15K–35K</span></div>
+              <div style="margin-top:10px;font-size:11px;background:rgba(71,85,105,0.2);color:#64748B;padding:7px 10px;border-radius:6px">Gradescope went native only after 3.6M students across 2,600 institutions</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 9: Next Steps -->
+      <div class="preso-slide" id="slide-8">
+        <div style="max-width:800px;margin:0 auto;text-align:center;width:100%">
+          <div class="s-eyebrow">Next Steps</div>
+          <div class="s-title" style="font-size:42px;margin-bottom:20px">What happens next</div>
+          <div style="display:flex;flex-direction:column;gap:12px;text-align:left;max-width:600px;margin:0 auto">
+            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">1</div>
+              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Submit JISC RFI — deadline 13 March 2026</div><div style="font-size:12px;color:#475569">Opens the door to 165 universities and 230 FE colleges through the framework lot</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">2</div>
+              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Close 2 paid pilots by M3</div><div style="font-size:12px;color:#475569">Proof points required for the tender — one Russell Group and one post-92</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">3</div>
+              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Launch PWA for script submission</div><div style="font-size:12px;color:#475569">Students photograph handwritten STEM scripts. Removes friction, enables scale without hardware</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">4</div>
+              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Submit JISC tender — September 2026</div><div style="font-size:12px;color:#475569">Framework award expected October 2026. First framework customers onboarded Q4 2026</div></div>
+            </div>
+          </div>
+          <div style="margin-top:32px;font-size:13px;color:#1E2A3A">Adjust simulator assumptions and return to this presentation to see updated numbers</div>
+        </div>
+      </div>
+
+    </div><!-- end preso-stage -->
+
+    <!-- Nav bar -->
+    <div class="preso-nav-bar">
+      <button class="preso-btn" id="preso-prev" onclick="presoNav(-1)">← Previous</button>
+      <div class="preso-dots" id="preso-dots"></div>
+      <button class="preso-btn" id="preso-next" onclick="presoNav(1)">Next →</button>
+    </div>
+
+  </div>
+</div>
+
 </div><!-- end content-area -->
 </body>
