@@ -638,6 +638,10 @@ footer{margin-left:0!important;padding:14px 28px!important}
   </div>
 
   <nav class="sb-nav">
+    <div class="sb-item" data-page="presentation" onclick="navigateTo('presentation')" style="color:#2563EB;font-weight:600">Slide Deck</div>
+
+    <div class="sb-divider"></div>
+
     <div class="sb-item" data-page="guide" onclick="navigateTo('guide')">Guide &amp; Glossary</div>
 
     <div class="sb-divider"></div>
@@ -669,9 +673,6 @@ footer{margin-left:0!important;padding:14px 28px!important}
 
     <div class="sb-item" data-page="future" onclick="navigateTo('future')">Future Improvements</div>
 
-    <div class="sb-divider"></div>
-
-    <div class="sb-item" data-page="presentation" onclick="navigateTo('presentation')" style="color:#2563EB;font-weight:600">Test Presentation</div>
   </nav>
 
   <div class="sb-footer">
@@ -823,7 +824,7 @@ footer{margin-left:0!important;padding:14px 28px!important}
       </table>
       <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px" id="gtm-cost-stats"></div>
       <div style="margin-top:10px;padding:10px 12px;background:rgba(37,99,235,0.08);border-radius:8px;font-size:12px;color:#93C5FD;line-height:1.5">
-        Lead with payback — quote ROI in months (&lt;6 months at dept level). CFO language opens budgets that "AI innovation" cannot.
+        Real variable cost: £3.38/script (Azure AI processing). At £5/script: 32% gross margin. At £8/script: 58%. Lead with payback — quote ROI in months at dept level. CFO language opens budgets that "AI innovation" cannot.
       </div>
     </div>
     <div style="background:#0D1628;border:1px solid rgba(139,92,246,0.25);border-radius:14px;padding:18px;position:relative"><button class="suggest-btn" onclick="openSuggest('NA Pricing','Go-To-Market')">💡 Suggest improvement</button>
@@ -1068,12 +1069,105 @@ footer{margin-left:0!important;padding:14px 28px!important}
 <div class="pane" id="pane-sim">
 <div class="main">
 
+  <!-- ── Cost Configuration ── -->
+  <div class="card" style="margin-bottom:16px">
+    <div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleCostConfig()" id="cc-toggle-row">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#E2E8F0;margin-bottom:2px">Cost Configuration</div>
+        <div style="font-size:11px;color:#475569">Edit any field — simulator updates automatically in real time</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button onclick="event.stopPropagation();resetCostConfig()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#64748B;padding:4px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit">Reset</button>
+        <span id="cc-arrow" style="color:#475569;font-size:12px;transition:transform .2s;display:inline-block">▲</span>
+      </div>
+    </div>
+
+    <!-- Live banner — always visible -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px">
+      <div style="background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 12px;text-align:center">
+        <div style="font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Fixed cost / mo</div>
+        <div id="cc-out-fixed" style="font-size:17px;font-weight:700;color:#2563EB">£774</div>
+      </div>
+      <div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:8px;padding:10px 12px;text-align:center">
+        <div style="font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Variable / script</div>
+        <div id="cc-out-var" style="font-size:17px;font-weight:700;color:#34D399">£3.38</div>
+      </div>
+      <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px 12px;text-align:center">
+        <div style="font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Cost / class exam</div>
+        <div id="cc-out-class" style="font-size:17px;font-weight:700;color:#FCD34D">£108</div>
+      </div>
+      <div style="background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);border-radius:8px;padding:10px 12px;text-align:center">
+        <div style="font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Cost / school / yr</div>
+        <div id="cc-out-school" style="font-size:17px;font-weight:700;color:#A78BFA">£17.3K</div>
+      </div>
+    </div>
+
+    <!-- Expandable fields -->
+    <div id="cc-body" style="margin-top:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+
+        <!-- Infrastructure -->
+        <div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#2563EB;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(37,99,235,0.2)">Azure Infrastructure · £/month</div>
+          <div id="infra-fields"></div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,0.08)">
+            <span style="font-size:11px;color:#64748B;font-weight:600">Total</span>
+            <span id="cc-infra-total" style="font-size:13px;font-weight:700;color:#2563EB">£774</span>
+          </div>
+        </div>
+
+        <!-- AI API costs -->
+        <div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#34D399;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(52,211,153,0.2)">AI API — Per Exam (£)</div>
+          <div id="per-exam-fields"></div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,0.08);margin-bottom:16px">
+            <span style="font-size:11px;color:#64748B;font-weight:600">Per-exam fixed</span>
+            <span id="cc-exam-total" style="font-size:13px;font-weight:700;color:#34D399">£4.75</span>
+          </div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#A78BFA;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(139,92,246,0.2)">AI API — Per Student (£)</div>
+          <div id="per-student-fields"></div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid rgba(255,255,255,0.08)">
+            <span style="font-size:11px;color:#64748B;font-weight:600">Per-student variable</span>
+            <span id="cc-student-total" style="font-size:13px;font-weight:700;color:#A78BFA">£3.23</span>
+          </div>
+        </div>
+
+        <!-- Assumptions -->
+        <div>
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#F59E0B;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(245,158,11,0.2)">Usage Assumptions</div>
+          <div id="assumption-fields"></div>
+          <div style="margin-top:16px;background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 12px">
+            <div style="font-size:10px;color:#334155;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">How values are computed</div>
+            <div style="font-size:11px;color:#475569;line-height:1.7">
+              <div><span style="color:#8B9AB0">Variable / script</span> = per-student + (per-exam ÷ students)</div>
+              <div><span style="color:#8B9AB0">Class exam cost</span> = per-exam + (per-student × students)</div>
+              <div><span style="color:#8B9AB0">School / year</span> = class cost × classes × exams</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="grid-2">
     <div class="card">
       <button class="suggest-btn" onclick="openSuggest('Cost Structure','Scenario Simulator')">💡 Suggest improvement</button>
       <p class="section-label">Cost structure</p>
-      <div class="slider-row"><label>Fixed cost / month (£)</label><input type="range" min="1000" max="20000" step="500" id="fixedCost" value="5000" oninput="update()"><span class="readout" id="fixedCostOut">£5,000</span></div>
-      <div class="slider-row"><label>Variable cost / script (£)</label><input type="range" min="0.01" max="0.5" step="0.01" id="varCost" value="0.12" oninput="update()"><span class="readout" id="varCostOut">£0.12</span></div>
+      <div style="background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:11px">
+        <div style="font-weight:700;color:#60A5FA;margin-bottom:6px">Real cost basis — Azure East US, March 2026</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px">
+          <div style="color:#475569">Infrastructure (1 school)</div><div style="color:#93C5FD;font-weight:600;text-align:right">£774/mo</div>
+          <div style="color:#475569">→ App Gateway + AKS</div><div style="color:#64748B;text-align:right">~80%</div>
+          <div style="color:#475569">AI API (per script)</div><div style="color:#93C5FD;font-weight:600;text-align:right">£3.38/script</div>
+          <div style="color:#475569">→ Student processing</div><div style="color:#64748B;text-align:right">£3.23</div>
+          <div style="color:#475569">→ Mark scheme share</div><div style="color:#64748B;text-align:right">£0.15</div>
+          <div style="color:#475569">Per class exam (32 students)</div><div style="color:#FCD34D;font-weight:600;text-align:right">£108</div>
+        </div>
+        <div style="margin-top:6px;color:#334155;font-size:10px">Assumptions: 16 classes × 32 students/school · 60-page mark scheme · 40 questions · £1 = $1.27</div>
+      </div>
+      <div class="slider-row"><label>Fixed cost / month (£)</label><input type="range" min="500"  max="50000" step="100" id="fixedCost" value="774" oninput="update()"><span class="readout" id="fixedCostOut">£5,000</span></div>
+      <div class="slider-row"><label>Variable cost / script (£)</label><input type="range" min="0.01" max="10"  step="0.01" id="varCost"  value="3.38" oninput="update()"><span class="readout" id="varCostOut">£0.12</span></div>
       <div class="slider-row"><label>CAC per customer (£)</label><input type="range" min="0" max="5000" step="100" id="cac" value="800" oninput="update()"><span class="readout" id="cacOut">£800</span></div>
       <div class="slider-row"><label>Avg. retention (months)</label><input type="range" min="6" max="60" step="1" id="retention" value="24" oninput="update()"><span class="readout" id="retentionOut">24 mo</span></div>
     </div>
@@ -1095,7 +1189,7 @@ footer{margin-left:0!important;padding:14px 28px!important}
     <p class="section-label">Volume & demand</p>
     <div class="grid-2" style="margin-bottom:0;gap:0 40px">
       <div>
-        <div class="slider-row"><label>Scripts / month</label><input type="range" min="100" max="20000" step="100" id="scripts" value="2000" oninput="update()"><span class="readout" id="scriptsOut">2,000</span></div>
+        <div class="slider-row"><label>Scripts / month</label><input type="range" min="100" max="50000" step="100" id="scripts" value="427" oninput="update()"><span class="readout" id="scriptsOut">2,000</span></div>
         <div class="slider-row"><label>Students / year</label><input type="range" min="100" max="10000" step="100" id="students" value="1000" oninput="update()"><span class="readout" id="studentsOut">1,000</span></div>
       </div>
       <div>
@@ -1183,6 +1277,27 @@ footer{margin-left:0!important;padding:14px 28px!important}
     </div>
   </div>
 
+
+  <!-- Period chart -->
+  <div class="card" style="margin-bottom:16px;margin-top:8px;position:relative">
+    <button class="suggest-btn" onclick="openSuggest('Financial Trajectory Chart','Scenario Simulator')">💡 Suggest improvement</button>
+    <p class="section-label">Financial trajectory — 24-month projection</p>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px">
+        <label style="font-size:12px;color:#8B9AB0">Monthly customer growth</label>
+        <input type="range" min="0" max="30" step="0.5" id="growthRate" value="5" oninput="updatePeriodChart()" style="width:100px">
+        <span style="font-size:12px;color:#60A5FA;min-width:32px" id="growthRateOut">5%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <label style="font-size:12px;color:#8B9AB0">Months to show</label>
+        <input type="range" min="6" max="48" step="6" id="periodMonths" value="24" oninput="updatePeriodChart()" style="width:100px">
+        <span style="font-size:12px;color:#60A5FA;min-width:32px" id="periodMonthsOut">24</span>
+      </div>
+    </div>
+    <div style="position:relative;height:220px"><canvas id="periodChart"></canvas></div>
+    <div id="period-summary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px"></div>
+  </div>
+
   <div style="text-align:center;margin-top:16px">
     <button class="tier-btn" onclick="switchTab('comp')" style="font-size:13px;padding:10px 20px">View competitor benchmarking →</button>
   </div>
@@ -1218,6 +1333,9 @@ footer{margin-left:0!important;padding:14px 28px!important}
 
     <div class="comp-note" id="comp-note">
       ⬆ The <strong>vs. GoodPoint now</strong> column updates live based on your current simulator price. Go to the Simulator tab, adjust your price per script, then return here to see how your positioning shifts.
+    </div>
+    <div class="comp-note" style="margin-top:8px;border-left-color:#F59E0B;background:rgba(245,158,11,0.05)">
+      💰 <strong>GoodPoint real unit economics (Azure East US, March 2026):</strong> Variable cost = £3.38/script (£3.23 student AI processing + £0.15 mark scheme share). Infrastructure = £774/mo baseline. Break-even requires pricing above £3.38/script plus fixed cost recovery. At £5.00/script: <strong>gross margin ~32%</strong>. At £8.00/script: <strong>gross margin ~58%</strong>.
     </div>
     <div class="comp-note" style="margin-top:8px;border-left-color:#2563EB;background:rgba(37,99,235,0.08)">
       🌱 <strong>Growth moat:</strong> None of the 6 competitors currently combine a <strong>freemium PLG entry</strong> (free ATA exam creation) with a <strong>credit-based professor referral program</strong>. Gradescope offers a free individual tier but no referral mechanic. Turnitin has no freemium layer. This combination is GoodPoint's structural acquisition advantage — model it in the <button onclick="switchTab('sim');setTimeout(toggleGrowth,300)" style="background:none;border:none;color:#2563EB;font-weight:600;cursor:pointer;font-size:12px;padding:0">Growth Mechanics →</button> section.
@@ -1266,7 +1384,7 @@ footer{margin-left:0!important;padding:14px 28px!important}
 let currentTier = 'script';
 let profitChart = null;
 const tierConfig = {
-  script:        { pricePerScript: 2.50 },
+  script:        { pricePerScript: 5.00 },
   student:       { pricePerStudent: 12 },
   faculty:       { annualLicence: 8000 },
   institutional: { annualLicence: 24000 }
@@ -1546,6 +1664,7 @@ function update() {
 
   updateChart(fixed, varC, currentTier, students, customers, scripts);
   if (currentPage === 'gtm') renderGTMPage();
+  if (document.getElementById('periodChart') && currentPage === 'simulator') updatePeriodChart();
 }
 
 function buildInsight(opProfit, gm, ltvcac, payback, beScripts, scripts, growth) {
@@ -2671,6 +2790,8 @@ function navigateTo(page) {
 
   // Call data renderers
   if (page === 'gtm')         renderGTMPage();
+  if (page === 'simulator') { if (typeof renderCostConfig === 'function') renderCostConfig(); }
+
   if (page === 'presentation') renderPresentation();
   if (page === 'competitors') renderCompTable();
   if (page === 'mobile')      renderMobileTab();
@@ -2816,17 +2937,33 @@ function renderGTMCompetitors() {
 
 // ── Presentation ─────────────────────────────────────────────────────────────
 var presoIndex  = 0;
-var presoTotal  = 9;
+var presoTotal  = 12;
 var presoActive = false;
 
 function renderPresentation() {
   presoIndex  = 0;
   presoActive = true;
   buildPresoDots();
-  renderPresoSlide(0, 0);
+  // Directly activate first slide without any transition (avoids black screen)
+  document.querySelectorAll('.preso-slide').forEach(s => {
+    s.classList.remove('active','exit-left');
+    s.style.transform = '';
+    s.style.opacity   = '';
+  });
+  const s0 = document.getElementById('slide-0');
+  if (s0) s0.classList.add('active');
+  // Update counter + progress
+  const ctr = document.getElementById('preso-counter');
+  if (ctr) ctr.textContent = '1 / ' + presoTotal;
+  const bar = document.getElementById('preso-bar');
+  if (bar) bar.style.width = (1 / presoTotal * 100).toFixed(1) + '%';
+  document.querySelectorAll('.preso-dot').forEach((d,i) => d.classList.toggle('active', i===0));
+  const prev = document.getElementById('preso-prev');
+  const next = document.getElementById('preso-next');
+  if (prev) prev.disabled = true;
+  if (next) next.disabled = (presoTotal <= 1);
   renderPresoLiveData();
   document.addEventListener('keydown', presKeyNav);
-  // Hide sidebar and footer for true fullscreen feel
   const sb = document.getElementById('sidebar');
   const ft = document.querySelector('footer');
   if (sb) sb.style.display = 'none';
@@ -2995,6 +3132,247 @@ function exitPresentation() {
   if (ft) ft.style.display = '';
   document.body.style.overflow = '';
   navigateTo('gtm');
+}
+
+
+// ══════════════════════════════════════════════ COST CONFIGURATION
+const CC_INFRA_DEFAULTS = [
+  { id:'cc_aks_user',    label:'AKS — User Pool (8 vCPU, 32 GB)',        val:236 },
+  { id:'cc_aks_sys',     label:'AKS — System Pool (8 vCPU, 32 GB)',       val:71  },
+  { id:'cc_aks_cluster', label:'AKS Cluster (Standard tier)',              val:57  },
+  { id:'cc_apim',        label:'API Management',                           val:118 },
+  { id:'cc_gateway',     label:'Application Gateway (WAF v2, 3 zones)',    val:263 },
+  { id:'cc_cosmos',      label:'Cosmos DB (NoSQL, autoscale)',              val:8   },
+  { id:'cc_blob',        label:'Blob Storage (GZRS, ~60 GB)',              val:5   },
+  { id:'cc_registry',    label:'Container Registry (Standard)',             val:16  },
+  { id:'cc_other',       label:'Other (Key Vault, VNet, Identity)',         val:0   },
+];
+
+const CC_EXAM_DEFAULTS = [
+  { id:'cc_ms_scan',   label:'Mark scheme scanning',    val:4.45 },
+  { id:'cc_struct',    label:'Structure extraction',    val:0.10 },
+  { id:'cc_ai_enh',   label:'AI enhancement',          val:0.20 },
+];
+
+const CC_STUDENT_DEFAULTS = [
+  { id:'cc_ans_scan',  label:'Student answer scanning', val:1.21 },
+  { id:'cc_ans_ext',   label:'Answer extraction',       val:0.08 },
+  { id:'cc_mark1',     label:'First-pass marking',      val:1.23 },
+  { id:'cc_mark2',     label:'Second-pass moderation',  val:0.67 },
+  { id:'cc_feedback',  label:'Overall feedback',        val:0.04 },
+];
+
+const CC_ASSUMPTION_DEFAULTS = [
+  { id:'cc_students',  label:'Students per class',      val:32,   step:1,    note:'per class' },
+  { id:'cc_classes',   label:'Classes per school',      val:16,   step:1,    note:'per school' },
+  { id:'cc_exams',     label:'Exams per year',          val:10,   step:1,    note:'per class' },
+  { id:'cc_fx',        label:'Exchange rate £1 = $',    val:1.27, step:0.01, note:'March 2026' },
+];
+
+function ccField(def, decimals, oninput) {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+    <label style="font-size:12px;color:#8B9AB0;flex:1">${def.label}</label>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="font-size:12px;color:#475569">£</span>
+      <input type="number" id="${def.id}" value="${def.val}" step="${def.step||0.01}" min="0"
+        style="width:80px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
+               border-radius:6px;color:#E2E8F0;font-size:13px;padding:4px 8px;text-align:right;
+               font-family:inherit;outline:none"
+        oninput="recalcCosts()" onfocus="this.style.borderColor='#2563EB'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'">
+    </div>
+  </div>`;
+}
+
+function ccAssumField(def) {
+  return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+    <label style="font-size:12px;color:#8B9AB0;flex:1">${def.label} <span style="color:#334155">(${def.note})</span></label>
+    <input type="number" id="${def.id}" value="${def.val}" step="${def.step||1}" min="0"
+      style="width:80px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
+             border-radius:6px;color:#E2E8F0;font-size:13px;padding:4px 8px;text-align:right;
+             font-family:inherit;outline:none"
+      oninput="recalcCosts()" onfocus="this.style.borderColor='#F59E0B'" onblur="this.style.borderColor='rgba(255,255,255,0.12)'">
+  </div>`;
+}
+
+function renderCostConfig() {
+  const iEl = document.getElementById('infra-fields');
+  const eEl = document.getElementById('per-exam-fields');
+  const sEl = document.getElementById('per-student-fields');
+  const aEl = document.getElementById('assumption-fields');
+  if (!iEl) return;
+  if (!iEl.innerHTML) {
+    iEl.innerHTML = CC_INFRA_DEFAULTS.map(d => ccField(d,0)).join('');
+    eEl.innerHTML = CC_EXAM_DEFAULTS.map(d => ccField(d,2)).join('');
+    sEl.innerHTML = CC_STUDENT_DEFAULTS.map(d => ccField(d,2)).join('');
+    aEl.innerHTML = CC_ASSUMPTION_DEFAULTS.map(d => ccAssumField(d)).join('');
+  }
+  recalcCosts();
+}
+
+function ccVal(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+
+function recalcCosts() {
+  // Infrastructure total
+  const infraTotal = CC_INFRA_DEFAULTS.reduce((s,d) => s + ccVal(d.id), 0);
+
+  // Per-exam fixed
+  const examFixed = CC_EXAM_DEFAULTS.reduce((s,d) => s + ccVal(d.id), 0);
+
+  // Per-student variable
+  const studentVar = CC_STUDENT_DEFAULTS.reduce((s,d) => s + ccVal(d.id), 0);
+
+  // Assumptions
+  const studentsPerClass = ccVal('cc_students') || 32;
+  const classesPerSchool = ccVal('cc_classes')  || 16;
+  const examsPerYear     = ccVal('cc_exams')    || 10;
+
+  // Derived
+  const examSharePerStudent = studentsPerClass > 0 ? examFixed / studentsPerClass : 0;
+  const varCostPerScript    = studentVar + examSharePerStudent;
+  const costPerClassExam    = examFixed + studentVar * studentsPerClass;
+  const costPerSchoolYear   = classesPerSchool * examsPerYear * costPerClassExam;
+
+  // Update banner
+  const fmtGBP = n => n >= 1000 ? '£' + (n/1000).toFixed(1) + 'K' : '£' + n.toFixed(2);
+  const setEl  = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+  setEl('cc-out-fixed',   '£' + infraTotal.toFixed(0));
+  setEl('cc-out-var',     '£' + varCostPerScript.toFixed(2));
+  setEl('cc-out-class',   '£' + costPerClassExam.toFixed(0));
+  setEl('cc-out-school',  fmtGBP(costPerSchoolYear));
+  setEl('cc-infra-total', '£' + infraTotal.toFixed(0));
+  setEl('cc-exam-total',  '£' + examFixed.toFixed(2));
+  setEl('cc-student-total','£' + studentVar.toFixed(2));
+
+  // ── Push to simulator ─────────────────────────────────────────────────────
+  const fcEl = document.getElementById('fixedCost');
+  const vcEl = document.getElementById('varCost');
+  if (fcEl) { fcEl.value = infraTotal.toFixed(0); }
+  if (vcEl) { vcEl.value = varCostPerScript.toFixed(2); }
+  update();
+}
+
+function resetCostConfig() {
+  CC_INFRA_DEFAULTS.forEach(d => { const el = document.getElementById(d.id); if (el) el.value = d.val; });
+  CC_EXAM_DEFAULTS.forEach(d => { const el = document.getElementById(d.id); if (el) el.value = d.val; });
+  CC_STUDENT_DEFAULTS.forEach(d => { const el = document.getElementById(d.id); if (el) el.value = d.val; });
+  CC_ASSUMPTION_DEFAULTS.forEach(d => { const el = document.getElementById(d.id); if (el) el.value = d.val; });
+  recalcCosts();
+}
+
+// ══════════════════════════════════════════════ PERIOD CHART
+var periodChart = null;
+
+function updatePeriodChart() {
+  const grEl = document.getElementById('growthRate');
+  const pmEl = document.getElementById('periodMonths');
+  const grOut = document.getElementById('growthRateOut');
+  const pmOut = document.getElementById('periodMonthsOut');
+  if (!grEl || !pmEl) return;
+
+  const growthPct = parseFloat(grEl.value) || 5;
+  const months    = parseInt(pmEl.value)   || 24;
+  if (grOut) grOut.textContent = growthPct + '%';
+  if (pmOut) pmOut.textContent = months;
+
+  // Base values from simulator
+  const scripts   = parseFloat(document.getElementById('scripts')?.value)   || 427;
+  const varC      = parseFloat(document.getElementById('varCost')?.value)    || 3.38;
+  const fixed     = parseFloat(document.getElementById('fixedCost')?.value)  || 774;
+  const customers = parseFloat(document.getElementById('customers')?.value)  || 5;
+  const churnRate = (parseFloat(document.getElementById('churn')?.value) || 2) / 100;
+  const scriptsPerCust = customers > 0 ? scripts / customers : scripts;
+  const growthFactor   = 1 + growthPct / 100;
+
+  const labels    = [];
+  const revData   = [];
+  const cogsData  = [];
+  const profitData= [];
+  const cumData   = [];
+  let cumProfit   = 0;
+  let curCust     = customers;
+
+  for (let m = 0; m < months; m++) {
+    labels.push('M' + (m + 1));
+    curCust = Math.max(0, curCust * (1 - churnRate) * growthFactor);
+    const curScripts = curCust * scriptsPerCust;
+    const rev  = (typeof calcRevenue === 'function')
+      ? calcRevenue(curScripts, parseFloat(document.getElementById('students')?.value)||1000, curCust, currentTier)
+      : curScripts * (tierConfig.script?.pricePerScript || 5);
+    const cogs   = varC * curScripts;
+    const profit = rev - cogs - fixed;
+    cumProfit   += profit;
+    revData.push(Math.round(rev));
+    cogsData.push(Math.round(cogs + fixed));
+    profitData.push(Math.round(profit));
+    cumData.push(Math.round(cumProfit));
+  }
+
+  const canvas = document.getElementById('periodChart');
+  if (!canvas) return;
+
+  const chartData = {
+    labels,
+    datasets: [
+      { label:'Revenue',           data:revData,    borderColor:'#2563EB', backgroundColor:'rgba(37,99,235,0.08)',  fill:true, tension:.35, pointRadius:0, borderWidth:2 },
+      { label:'Total costs',       data:cogsData,   borderColor:'#EF4444', backgroundColor:'transparent',           fill:false, tension:.35, pointRadius:0, borderWidth:2 },
+      { label:'Operating profit',  data:profitData, borderColor:'#34D399', backgroundColor:'rgba(52,211,153,0.08)', fill:true, tension:.35, pointRadius:0, borderWidth:2 },
+    ]
+  };
+
+  const cfg = {
+    type:'line',
+    data: chartData,
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ position:'top', labels:{ color:'#8B9AB0', font:{size:11} } },
+        tooltip:{
+          backgroundColor:'#0D1628',
+          titleColor:'#E2E8F0',
+          bodyColor:'#94A3B8',
+          borderColor:'rgba(255,255,255,0.1)',
+          borderWidth:1,
+          callbacks:{ label: ctx => ' ' + ctx.dataset.label + ': £' + ctx.parsed.y.toLocaleString() }
+        }
+      },
+      scales:{
+        x:{ ticks:{ color:'#475569', font:{size:10}, maxTicksLimit:12 }, grid:{ color:'rgba(255,255,255,0.04)' } },
+        y:{ ticks:{ color:'#475569', font:{size:10}, callback: v => '£' + (Math.abs(v)>=1000 ? (v/1000).toFixed(1)+'K' : v) }, grid:{ color:'rgba(255,255,255,0.04)' }, border:{ dash:[4,4] } }
+      }
+    }
+  };
+
+  if (periodChart) { periodChart.destroy(); periodChart = null; }
+  try { periodChart = new Chart(canvas, sanitizeChartConfig(cfg)); } catch(e) { console.error('Period chart error:', e); }
+
+  // Summary row
+  const breakEvenMonth = profitData.findIndex(p => p >= 0) + 1;
+  const finalRev       = revData[revData.length-1];
+  const finalProfit    = profitData[profitData.length-1];
+  const summary        = document.getElementById('period-summary');
+  if (summary) {
+    const fmtK = n => (Math.abs(n)>=1000 ? '£'+(n/1000).toFixed(1)+'K' : '£'+Math.round(n));
+    summary.innerHTML = [
+      { l:'Revenue at M'+months,   v:fmtK(finalRev),                         c:'#2563EB' },
+      { l:'Profit at M'+months,    v:fmtK(finalProfit),                       c:finalProfit>=0?'#34D399':'#FCA5A5' },
+      { l:'Break-even month',      v:breakEvenMonth > 0 ? 'M'+breakEvenMonth : 'Already profitable', c:'#FCD34D' },
+    ].map(s => `<div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:8px 12px;text-align:center">
+      <div style="font-size:11px;color:#475569;margin-bottom:3px">${s.l}</div>
+      <div style="font-size:16px;font-weight:700;color:${s.c}">${s.v}</div>
+    </div>`).join('');
+  }
+}
+
+
+function toggleCostConfig() {
+  const body  = document.getElementById('cc-body');
+  const arrow = document.getElementById('cc-arrow');
+  if (!body) return;
+  const open = body.style.display !== 'none';
+  body.style.display  = open ? 'none' : '';
+  if (arrow) arrow.style.transform = open ? 'rotate(180deg)' : '';
 }
 
 </script>
@@ -3214,7 +3592,9 @@ function exitPresentation() {
     </table>
   </div>
 
-</div>
+</div
+
+>
 </div>
 
 <div class="modal-overlay" id="mob-modal" onclick="if(event.target===this)closeMobModal()">
@@ -3283,32 +3663,50 @@ function exitPresentation() {
 
     <!-- Top bar -->
     <div class="preso-topbar">
-      <div class="preso-logo">GoodPoint</div>
-      <div class="preso-counter" id="preso-counter">1 / 9</div>
-      <button class="preso-exit" onclick="exitPresentation()">✕ Exit presentation</button>
+      <div class="preso-logo">GoodPoint · Zanista AI</div>
+      <div class="preso-counter" id="preso-counter">1 / 12</div>
+      <button class="preso-exit" onclick="exitPresentation()">✕ Exit</button>
     </div>
-    <div class="preso-progress"><div class="preso-progress-bar" id="preso-bar" style="width:11.1%"></div></div>
+    <div class="preso-progress"><div class="preso-progress-bar" id="preso-bar" style="width:8.3%"></div></div>
 
-    <!-- Slides stage -->
+    <!-- Stage -->
     <div class="preso-stage" id="preso-stage">
 
-      <!-- SLIDE 1: Title -->
+      <!-- SLIDE 0: Zanista Logo -->
       <div class="preso-slide active" id="slide-0">
-        <div style="max-width:760px;margin:0 auto;text-align:center">
-          <div class="s-eyebrow">Zanista AI · Confidential · 2026</div>
-          <div class="s-title" style="font-size:52px;margin-bottom:16px">GoodPoint</div>
-          <div style="font-size:20px;color:#475569;margin-bottom:40px">Go-To-Market · Cost Model · Competitive Intelligence · Mobile Roadmap</div>
-          <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
-            <span style="background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#93C5FD;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600">UK &amp; North America</span>
-            <span style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#34D399;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600">12-Month Plan</span>
-            <span style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#FCD34D;padding:7px 18px;border-radius:999px;font-size:12px;font-weight:600">Live Simulator Data</span>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center">
+          <!-- Zanista logo recreation -->
+          <div style="margin-bottom:32px">
+            <svg width="80" height="48" viewBox="0 0 80 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="0,48 20,0 40,48" fill="#2563EB" opacity="0.9"/>
+              <polygon points="20,48 40,0 60,48" fill="#2563EB" opacity="0.6"/>
+              <polygon points="40,48 60,0 80,48" fill="#2563EB" opacity="0.3"/>
+            </svg>
           </div>
-          <div style="margin-top:48px;font-size:12px;color:#1E2A3A">Use ← → arrow keys or buttons below to navigate</div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.25em;color:#2563EB;text-transform:uppercase;margin-bottom:10px">Zanista AI</div>
+          <div style="font-size:42px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:8px">GoodPoint</div>
+          <div style="font-size:16px;color:#334155;margin-bottom:40px">Pricing Simulator &amp; Competitive Intelligence</div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <span style="background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);color:#93C5FD;padding:6px 16px;border-radius:999px;font-size:12px;font-weight:600">UK &amp; North America</span>
+            <span style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#34D399;padding:6px 16px;border-radius:999px;font-size:12px;font-weight:600">12-Month Plan</span>
+            <span style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:#FCD34D;padding:6px 16px;border-radius:999px;font-size:12px;font-weight:600">Live Data</span>
+          </div>
+          <div style="margin-top:48px;font-size:11px;color:#1E2A3A">Use ← → arrows or keyboard to navigate · Esc to exit</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 1: Section — Go-To-Market -->
+      <div class="preso-slide" id="slide-1">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#2563EB;margin-bottom:16px">Section 01</div>
+          <div style="width:48px;height:2px;background:#2563EB;margin:0 auto 24px"></div>
+          <div style="font-size:56px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:16px">Go-To-Market</div>
+          <div style="font-size:16px;color:#475569;max-width:480px">Strategy, target markets, competitive landscape, pricing, and UK launch timeline</div>
         </div>
       </div>
 
       <!-- SLIDE 2: The Problem -->
-      <div class="preso-slide" id="slide-1">
+      <div class="preso-slide" id="slide-2">
         <div style="max-width:900px;margin:0 auto;width:100%">
           <div class="s-eyebrow">The Problem</div>
           <div class="s-title">Marking is broken — and getting worse</div>
@@ -3316,17 +3714,17 @@ function exitPresentation() {
             <div style="display:flex;flex-direction:column;gap:12px">
               <div class="s-card" style="border-left:3px solid #EF4444">
                 <div class="s-card-title" style="color:#FCA5A5">UK Sector Crisis</div>
-                <div class="s-body">45% of UK universities in operating deficit. £303M in severance paid in 2024. Marking costs are unsustainable — lecturers spend 20–40% of time on grading STEM papers with no AI support.</div>
+                <div class="s-body">45% of UK universities in operating deficit. £303M in severance paid in 2024. Marking costs are unsustainable — lecturers spend 20–40% of their time grading STEM papers with no AI support.</div>
               </div>
               <div class="s-card" style="border-left:3px solid #F59E0B">
-                <div class="s-card-title" style="color:#FCD34D">AI Cheating Paradox</div>
+                <div class="s-card-title" style="color:#FCD34D">The AI Cheating Paradox</div>
                 <div class="s-body">AI essay-writing has forced universities back to paper exams — massively increasing handwritten marking volume at exactly the moment staff budgets are being cut.</div>
               </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:12px">
               <div class="s-card" style="border-left:3px solid #2563EB">
                 <div class="s-card-title" style="color:#93C5FD">The Cost</div>
-                <div class="s-body" style="font-size:15px">A 1,000-student STEM module costs <span style="color:#FCD34D;font-weight:700">£15,000–£25,000</span> in lecturer marking time per year. At scale, this is the second-largest departmental cost after salaries.</div>
+                <div class="s-body" style="font-size:15px">A 1,000-student STEM module costs <span style="color:#FCD34D;font-weight:700">£15,000–£25,000</span> in lecturer marking time per year. Second-largest departmental cost after salaries.</div>
               </div>
               <div class="s-card" style="border-left:3px solid #34D399">
                 <div class="s-card-title" style="color:#34D399">The Opportunity</div>
@@ -3338,17 +3736,17 @@ function exitPresentation() {
       </div>
 
       <!-- SLIDE 3: GTM Strategy -->
-      <div class="preso-slide" id="slide-2">
+      <div class="preso-slide" id="slide-3">
         <div style="max-width:920px;margin:0 auto;width:100%">
           <div class="s-eyebrow">Go-To-Market</div>
           <div class="s-title">Targets &amp; Channels</div>
-          <div class="s-kpi-grid" style="margin-top:24px">
-            <div class="s-kpi"><div class="s-kpi-val">6+</div><div class="s-kpi-lbl">UK paid logos by M12</div></div>
+          <div class="s-kpi-grid" style="margin-top:20px">
+            <div class="s-kpi"><div class="s-kpi-val">6+</div><div class="s-kpi-lbl">UK paid logos M12</div></div>
             <div class="s-kpi"><div class="s-kpi-val" style="color:#34D399">£330K</div><div class="s-kpi-lbl">UK base ARR year 1</div></div>
-            <div class="s-kpi"><div class="s-kpi-val" style="color:#A78BFA">8+</div><div class="s-kpi-lbl">NA paid logos by M12</div></div>
+            <div class="s-kpi"><div class="s-kpi-val" style="color:#A78BFA">8+</div><div class="s-kpi-lbl">NA paid logos M12</div></div>
             <div class="s-kpi"><div class="s-kpi-val" style="color:#F59E0B">60%</div><div class="s-kpi-lbl">Pilot-to-paid conversion</div></div>
           </div>
-          <div class="s-2col" style="margin-top:20px">
+          <div class="s-2col" style="margin-top:16px">
             <div class="s-card">
               <div class="s-card-title">UK — JISC Framework</div>
               <div class="s-row"><span class="s-lbl">Beachhead</span><span class="s-val">Russell Group STEM depts</span></div>
@@ -3357,7 +3755,7 @@ function exitPresentation() {
               <div class="s-row"><span class="s-lbl">TAM</span><span class="s-val">24 Russell + ~100 post-92 + 230 FE</span></div>
             </div>
             <div class="s-card">
-              <div class="s-card-title" style="color:#A78BFA">North America — Design Partners</div>
+              <div class="s-card-title" style="color:#A78BFA">North America</div>
               <div class="s-row"><span class="s-lbl">Beachhead</span><span class="s-val">R1/R2 public STEM depts</span></div>
               <div class="s-row"><span class="s-lbl">Buyer</span><span class="s-val">Dept Chair + Dir. Assessment</span></div>
               <div class="s-row"><span class="s-lbl">Trigger</span><span class="s-val-amber">AI cheating → paper exams surge</span></div>
@@ -3368,82 +3766,88 @@ function exitPresentation() {
       </div>
 
       <!-- SLIDE 4: Competitors (DYNAMIC) -->
-      <div class="preso-slide" id="slide-3">
+      <div class="preso-slide" id="slide-4">
         <div style="max-width:960px;margin:0 auto;width:100%">
           <div class="s-eyebrow">Competitive Intelligence</div>
           <div class="s-title">Landscape — live from Benchmarking</div>
-          <div style="margin-top:20px;overflow-x:auto" id="preso-comp-wrap">
+          <div style="margin-top:16px;overflow-x:auto">
             <table style="width:100%;border-collapse:collapse;font-size:13px">
-              <thead>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
-                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Competitor</th>
-                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Model</th>
-                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Entry price</th>
-                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">STEM</th>
-                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">GDPR</th>
-                  <th style="padding:10px 14px;text-align:left;color:#334155;font-weight:700;font-size:11px;text-transform:uppercase">Threat</th>
-                  <th style="padding:10px 14px;text-align:left;color:#34D399;font-weight:700;font-size:11px;text-transform:uppercase">vs GoodPoint</th>
-                </tr>
-              </thead>
+              <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
+                <th style="padding:10px 12px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">Competitor</th>
+                <th style="padding:10px 12px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">Model</th>
+                <th style="padding:10px 12px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">Entry price</th>
+                <th style="padding:10px 12px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">STEM</th>
+                <th style="padding:10px 12px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">GDPR</th>
+                <th style="padding:10px 12px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">Threat</th>
+                <th style="padding:10px 12px;text-align:left;color:#34D399;font-size:11px;font-weight:700;text-transform:uppercase">vs GoodPoint</th>
+              </tr></thead>
               <tbody id="preso-comp-body"></tbody>
             </table>
-          </div>
-          <div style="margin-top:16px;padding:12px 16px;background:rgba(37,99,235,0.08);border-radius:8px;font-size:12px;color:#475569">
-            GoodPoint advantage: only solution combining true STEM handwriting + governance-grade audit trail + GDPR-native architecture.
           </div>
         </div>
       </div>
 
-      <!-- SLIDE 5: Pricing (DYNAMIC) -->
-      <div class="preso-slide" id="slide-4">
+      <!-- SLIDE 5: Section — Cost & Price -->
+      <div class="preso-slide" id="slide-5">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#34D399;margin-bottom:16px">Section 02</div>
+          <div style="width:48px;height:2px;background:#34D399;margin:0 auto 24px"></div>
+          <div style="font-size:56px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:16px">Cost &amp; Price</div>
+          <div style="font-size:16px;color:#475569;max-width:480px">Azure infrastructure costs, AI API breakdown, pricing model, unit economics, and ARR targets</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: Pricing (DYNAMIC) -->
+      <div class="preso-slide" id="slide-6">
         <div style="max-width:920px;margin:0 auto;width:100%">
           <div class="s-eyebrow">Cost &amp; Price — live from Simulator</div>
           <div class="s-title">Pricing Model</div>
-          <div class="s-3col" style="margin-top:24px">
+          <div class="s-3col" style="margin-top:20px">
             <div class="s-card">
               <div class="s-card-title">Per-script <span id="preso-script-active" style="display:none;font-size:9px;background:rgba(37,99,235,0.3);color:#93C5FD;padding:1px 5px;border-radius:3px;margin-left:4px">active</span></div>
-              <div style="font-size:32px;font-weight:700;color:#2563EB;margin:10px 0" id="preso-p-script">£2.50</div>
+              <div style="font-size:30px;font-weight:700;color:#2563EB;margin:8px 0" id="preso-p-script">£5.00</div>
               <div class="s-body">Per script graded. Aligns with marking budgets. No procurement needed at dept level.</div>
             </div>
             <div class="s-card">
               <div class="s-card-title">Per-student <span id="preso-student-active" style="display:none;font-size:9px;background:rgba(37,99,235,0.3);color:#93C5FD;padding:1px 5px;border-radius:3px;margin-left:4px">active</span></div>
-              <div style="font-size:32px;font-weight:700;color:#2563EB;margin:10px 0" id="preso-p-student">£12</div>
+              <div style="font-size:30px;font-weight:700;color:#2563EB;margin:8px 0" id="preso-p-student">£12/yr</div>
               <div class="s-body">Annual per-student licence. Bridges to institutional model. Predictable for finance teams.</div>
             </div>
             <div class="s-card">
               <div class="s-card-title">Institutional <span id="preso-inst-active" style="display:none;font-size:9px;background:rgba(37,99,235,0.3);color:#93C5FD;padding:1px 5px;border-radius:3px;margin-left:4px">active</span></div>
-              <div style="font-size:32px;font-weight:700;color:#2563EB;margin:10px 0" id="preso-p-inst">£24K</div>
+              <div style="font-size:30px;font-weight:700;color:#2563EB;margin:8px 0" id="preso-p-inst">£24K/yr</div>
               <div class="s-body">Annual institutional licence. Max ARR per account. JISC framework route at scale.</div>
             </div>
           </div>
-          <div style="margin-top:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px" id="preso-cost-row"></div>
+          <div style="margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px" id="preso-cost-row"></div>
         </div>
       </div>
 
-      <!-- SLIDE 6: Unit Economics (DYNAMIC) -->
-      <div class="preso-slide" id="slide-5">
+      <!-- SLIDE 7: Unit Economics (DYNAMIC) -->
+      <div class="preso-slide" id="slide-7">
         <div style="max-width:920px;margin:0 auto;width:100%">
           <div class="s-eyebrow">Unit Economics — live from Simulator</div>
           <div class="s-title">The Numbers Today</div>
-          <div class="s-kpi-grid" style="margin-top:24px" id="preso-econ-grid"></div>
-          <div class="s-2col" style="margin-top:20px">
-            <div class="s-card" id="preso-becard">
-              <div class="s-card-title">Break-even</div>
-            </div>
+          <div class="s-kpi-grid" style="margin-top:20px" id="preso-econ-grid"></div>
+          <div class="s-2col" style="margin-top:16px">
+            <div class="s-card" id="preso-becard"><div class="s-card-title">Break-even</div></div>
             <div class="s-card">
-              <div class="s-card-title">Why the margin works</div>
-              <div class="s-body" style="font-size:13px;line-height:1.7">LLM inference cost per script is ~£0.10–0.15. At £2.50/script the gross margin exceeds 90%. Profitability is driven by adoption volume — not by price level. Every additional department onboarded adds near-pure margin.</div>
+              <div class="s-card-title">Real cost basis (Azure, March 2026)</div>
+              <div class="s-row"><span class="s-lbl">Infrastructure / mo</span><span class="s-val-green">£774</span></div>
+              <div class="s-row"><span class="s-lbl">AI API variable / script</span><span class="s-val-amber">£3.38</span></div>
+              <div class="s-row"><span class="s-lbl">Cost per class exam (32 students)</span><span class="s-val">£108</span></div>
+              <div class="s-row"><span class="s-lbl">App Gateway + AKS share</span><span class="s-val">~80% of infra</span></div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SLIDE 7: ARR Targets -->
-      <div class="preso-slide" id="slide-6">
+      <!-- SLIDE 8: ARR Targets -->
+      <div class="preso-slide" id="slide-8">
         <div style="max-width:900px;margin:0 auto;width:100%">
           <div class="s-eyebrow">Revenue Targets</div>
           <div class="s-title">ARR Sensitivities · UK · Year 1</div>
-          <div style="margin-top:24px;overflow-x:auto">
+          <div style="margin-top:20px;overflow-x:auto">
           <table style="width:100%;border-collapse:collapse;font-size:14px">
             <thead><tr style="border-bottom:1px solid rgba(255,255,255,0.08)">
               <th style="padding:10px 14px;text-align:left;color:#334155;font-size:11px;font-weight:700;text-transform:uppercase">Driver</th>
@@ -3454,87 +3858,96 @@ function exitPresentation() {
             <tbody>
               <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:9px 14px;color:#94A3B8">Paid logos</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">3</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">6</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">10</td></tr>
               <tr style="border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02)"><td style="padding:9px 14px;color:#94A3B8">Direct ARR</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">£105K</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">£330K</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">£750K</td></tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:9px 14px;color:#94A3B8">JISC framework</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">Not won</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">Lot won, Q4 ramp</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">Lot won, fast ramp</td></tr>
+              <tr style="border-bottom:1px solid rgba(255,255,255,0.05)"><td style="padding:9px 14px;color:#94A3B8">JISC framework</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">Not won</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">Lot won, Q4</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">Lot won, fast</td></tr>
               <tr style="border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.02)"><td style="padding:9px 14px;color:#94A3B8">Framework ARR</td><td style="padding:9px 14px;color:#FCA5A5;text-align:right">£0</td><td style="padding:9px 14px;color:#34D399;text-align:right;font-weight:700">£150K</td><td style="padding:9px 14px;color:#FCD34D;text-align:right">£400K</td></tr>
-              <tr style="background:rgba(37,99,235,0.1)"><td style="padding:11px 14px;color:#fff;font-weight:700;font-size:15px">Total GoodPoint ARR</td><td style="padding:11px 14px;color:#FCA5A5;text-align:right;font-weight:700">£105K</td><td style="padding:11px 14px;color:#34D399;text-align:right;font-weight:700;font-size:18px">£480K</td><td style="padding:11px 14px;color:#FCD34D;text-align:right;font-weight:700">£1.15M</td></tr>
+              <tr style="background:rgba(37,99,235,0.08)"><td style="padding:11px 14px;color:#fff;font-weight:700;font-size:15px">Total GoodPoint ARR</td><td style="padding:11px 14px;color:#FCA5A5;text-align:right;font-weight:700">£105K</td><td style="padding:11px 14px;color:#34D399;text-align:right;font-weight:700;font-size:18px">£480K</td><td style="padding:11px 14px;color:#FCD34D;text-align:right;font-weight:700">£1.15M</td></tr>
             </tbody>
           </table>
           </div>
         </div>
       </div>
 
-      <!-- SLIDE 8: Mobile App Roadmap -->
-      <div class="preso-slide" id="slide-7">
-        <div style="max-width:920px;margin:0 auto;width:100%">
+      <!-- SLIDE 9: Section — Product Roadmap -->
+      <div class="preso-slide" id="slide-9">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#A78BFA;margin-bottom:16px">Section 03</div>
+          <div style="width:48px;height:2px;background:#A78BFA;margin:0 auto 24px"></div>
+          <div style="font-size:56px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:16px">Product Roadmap</div>
+          <div style="font-size:16px;color:#475569;max-width:480px">Mobile app strategy, build scenarios, and the 12-month execution plan</div>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: Mobile App Roadmap -->
+      <div class="preso-slide" id="slide-10">
+        <div style="max-width:960px;margin:0 auto;width:100%">
           <div class="s-eyebrow">Mobile App Roadmap</div>
           <div class="s-title">Build Scenarios &amp; Recommendation</div>
-          <div class="s-3col" style="margin-top:24px">
+          <div class="s-3col" style="margin-top:20px">
             <div class="s-card" style="border-top:3px solid #34D399">
               <div class="s-card-title" style="color:#34D399">PWA — Recommended now</div>
-              <div style="font-size:24px;font-weight:700;color:#34D399;margin:8px 0">£15K–60K</div>
+              <div style="font-size:22px;font-weight:700;color:#34D399;margin:8px 0">£15K–60K</div>
               <div class="s-row"><span class="s-lbl">Time to market</span><span class="s-val">6–12 weeks</span></div>
               <div class="s-row"><span class="s-lbl">Camera (STEM scripts)</span><span class="s-val-green">Yes</span></div>
-              <div class="s-row"><span class="s-lbl">App Store</span><span class="s-val-red">No</span></div>
-              <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val-green">84% (no install)</span></div>
-              <div class="s-row"><span class="s-lbl">Maintenance/yr</span><span class="s-val">£3K–10K</span></div>
-              <div style="margin-top:10px;font-size:11px;background:rgba(16,185,129,0.1);color:#34D399;padding:7px 10px;border-radius:6px">Best fit for MVP stage — student script submission via phone camera</div>
+              <div class="s-row"><span class="s-lbl">App Store</span><span class="s-val-red">No (browser)</span></div>
+              <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val-green">84%</span></div>
+              <div class="s-row"><span class="s-lbl">Maintenance / yr</span><span class="s-val">£3K–10K</span></div>
+              <div style="margin-top:10px;font-size:11px;background:rgba(16,185,129,0.1);color:#34D399;padding:7px 10px;border-radius:6px">Best fit for MVP — student script submission via phone camera</div>
             </div>
             <div class="s-card" style="border-top:3px solid #FCD34D">
               <div class="s-card-title" style="color:#FCD34D">Cross-platform — Post-PMF</div>
-              <div style="font-size:24px;font-weight:700;color:#FCD34D;margin:8px 0">£50K–120K</div>
+              <div style="font-size:22px;font-weight:700;color:#FCD34D;margin:8px 0">£50K–120K</div>
               <div class="s-row"><span class="s-lbl">Time to market</span><span class="s-val">3–6 months</span></div>
               <div class="s-row"><span class="s-lbl">Camera</span><span class="s-val-green">Full native</span></div>
               <div class="s-row"><span class="s-lbl">App Store</span><span class="s-val-green">iOS + Android</span></div>
-              <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val">~50–60%</span></div>
-              <div class="s-row"><span class="s-lbl">Maintenance/yr</span><span class="s-val">£8K–20K</span></div>
-              <div style="margin-top:10px;font-size:11px;background:rgba(245,158,11,0.1);color:#FCD34D;padding:7px 10px;border-radius:6px">After ARR &gt; £150K — App Store presence signals maturity to procurement</div>
+              <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val">~55%</span></div>
+              <div class="s-row"><span class="s-lbl">Maintenance / yr</span><span class="s-val">£8K–20K</span></div>
+              <div style="margin-top:10px;font-size:11px;background:rgba(245,158,11,0.1);color:#FCD34D;padding:7px 10px;border-radius:6px">After ARR &gt; £150K — App Store presence signals maturity</div>
             </div>
             <div class="s-card" style="border-top:3px solid #475569">
               <div class="s-card-title" style="color:#64748B">Native iOS + Android — Series A+</div>
-              <div style="font-size:24px;font-weight:700;color:#64748B;margin:8px 0">£70K–180K+</div>
+              <div style="font-size:22px;font-weight:700;color:#64748B;margin:8px 0">£70K–180K+</div>
               <div class="s-row"><span class="s-lbl">Time to market</span><span class="s-val">6–12 months</span></div>
               <div class="s-row"><span class="s-lbl">Camera</span><span class="s-val-green">Best quality</span></div>
               <div class="s-row"><span class="s-lbl">App Store</span><span class="s-val-green">iOS + Android</span></div>
               <div class="s-row"><span class="s-lbl">B2B adoption</span><span class="s-val">~28%</span></div>
-              <div class="s-row"><span class="s-lbl">Maintenance/yr</span><span class="s-val">£15K–35K</span></div>
-              <div style="margin-top:10px;font-size:11px;background:rgba(71,85,105,0.2);color:#64748B;padding:7px 10px;border-radius:6px">Gradescope went native only after 3.6M students across 2,600 institutions</div>
+              <div class="s-row"><span class="s-lbl">Maintenance / yr</span><span class="s-val">£15K–35K</span></div>
+              <div style="margin-top:10px;font-size:11px;background:rgba(71,85,105,0.2);color:#64748B;padding:7px 10px;border-radius:6px">Gradescope went native only after 2,600+ institutions</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- SLIDE 9: Next Steps -->
-      <div class="preso-slide" id="slide-8">
-        <div style="max-width:800px;margin:0 auto;text-align:center;width:100%">
+      <!-- SLIDE 11: Next Steps -->
+      <div class="preso-slide" id="slide-11">
+        <div style="max-width:760px;margin:0 auto;text-align:center;width:100%">
           <div class="s-eyebrow">Next Steps</div>
-          <div class="s-title" style="font-size:42px;margin-bottom:20px">What happens next</div>
-          <div style="display:flex;flex-direction:column;gap:12px;text-align:left;max-width:600px;margin:0 auto">
-            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
-              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">1</div>
-              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Submit JISC RFI — deadline 13 March 2026</div><div style="font-size:12px;color:#475569">Opens the door to 165 universities and 230 FE colleges through the framework lot</div></div>
+          <div class="s-title" style="font-size:38px;margin-bottom:20px">What happens next</div>
+          <div style="display:flex;flex-direction:column;gap:10px;text-align:left;max-width:580px;margin:0 auto">
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:14px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">1</div>
+              <div><div style="font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:2px">Submit JISC RFI — deadline 13 March 2026</div><div style="font-size:11px;color:#475569">Opens 165 universities and 230 FE colleges via framework lot</div></div>
             </div>
-            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
-              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">2</div>
-              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Close 2 paid pilots by M3</div><div style="font-size:12px;color:#475569">Proof points required for the tender — one Russell Group and one post-92</div></div>
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:14px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">2</div>
+              <div><div style="font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:2px">Close 2 paid pilots by M3</div><div style="font-size:11px;color:#475569">One Russell Group, one post-92 — proof points required for tender</div></div>
             </div>
-            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
-              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">3</div>
-              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Launch PWA for script submission</div><div style="font-size:12px;color:#475569">Students photograph handwritten STEM scripts. Removes friction, enables scale without hardware</div></div>
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:14px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">3</div>
+              <div><div style="font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:2px">Launch PWA for script submission</div><div style="font-size:11px;color:#475569">Students photograph handwritten STEM scripts — removes friction at scale</div></div>
             </div>
-            <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
-              <div style="background:#2563EB;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">4</div>
-              <div><div style="font-size:14px;font-weight:600;color:#E2E8F0;margin-bottom:3px">Submit JISC tender — September 2026</div><div style="font-size:12px;color:#475569">Framework award expected October 2026. First framework customers onboarded Q4 2026</div></div>
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:14px;background:#0D1628;border:1px solid rgba(255,255,255,0.08);border-radius:12px">
+              <div style="background:#2563EB;color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0">4</div>
+              <div><div style="font-size:13px;font-weight:600;color:#E2E8F0;margin-bottom:2px">Submit JISC tender — September 2026</div><div style="font-size:11px;color:#475569">Framework award expected October 2026. First framework customers Q4 2026</div></div>
             </div>
           </div>
-          <div style="margin-top:32px;font-size:13px;color:#1E2A3A">Adjust simulator assumptions and return to this presentation to see updated numbers</div>
         </div>
       </div>
 
-    </div><!-- end preso-stage -->
+    </div><!-- end stage -->
 
     <!-- Nav bar -->
     <div class="preso-nav-bar">
-      <button class="preso-btn" id="preso-prev" onclick="presoNav(-1)">← Previous</button>
+      <button class="preso-btn" id="preso-prev" onclick="presoNav(-1)" disabled>← Previous</button>
       <div class="preso-dots" id="preso-dots"></div>
       <button class="preso-btn" id="preso-next" onclick="presoNav(1)">Next →</button>
     </div>
@@ -3543,4 +3956,5 @@ function exitPresentation() {
 </div>
 
 </div><!-- end content-area -->
-</body>
+</body
+>
